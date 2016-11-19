@@ -1,0 +1,14 @@
+.wpcf7-validation-errors {
+    background: #ffe2e2;
+    border: 1px solid #ff0000;
+    color: #C10000;
+}
+ 
+.wpcf7-response-output {
+    margin: 2em 0;
+    padding: 15px;
+    border-radius: 5px;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;	
+}
