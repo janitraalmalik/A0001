@@ -1,16 +1,20 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class model_menu_management extends CI_Model {
+class Satuan_model extends MY_Model {
+
+	private $table 			= 'p_m_satuan';
+	private $column_order 	= array(null,'satuan_kd','satuan_name',null);
+	private $column_search 	= array('satuan_kd','satuan_name');  
+	private $order 			= array('id' => 'desc'); 
 	
-	private $table 			= 'menu';
-	private $column_order 	= array(null,'nama','uri','id_menu_induk','aktif',null);
-	private $column_search 	= array('nama','uri','id_menu_induk','aktif');  
-	private $order 			= array('id_menu' => 'desc'); 
-	public	$nama  	  		= '';
-	public	$uri  	  		= '';
-	public	$id_menu_induk  = '';
-	public	$aktif 	  	  	= '';
+	public	$username  	  	= '';
+	public	$password  	  	= '';
+	public	$name_users	  	= '';
+	public	$photo 	  	  	= '';
+	public	$blockage 	  	= '';
+	public  $id_users_group	= '';
+	public  $name_group		= '';
     
     public function __construct(){
         parent::__construct();
@@ -25,7 +29,6 @@ class model_menu_management extends CI_Model {
 	
 	private function _get_query() {
 		$this->db->from($this->table);
-		$this->db->where('aktif','Y');
 
 		$i = 0;
 		foreach ($this->column_search as $item) {
@@ -53,7 +56,7 @@ class model_menu_management extends CI_Model {
 		}
 	}
 	
-	public function get_menu_management() {
+	public function get_users() {
 		$this->_get_query();
 		if($_POST['length'] != -1)
 		$this->db->limit($_POST['length'], $_POST['start']);
@@ -73,12 +76,6 @@ class model_menu_management extends CI_Model {
 		return $this->db->count_all_results();
 	}
 	
-	public function by_id_menu_management($id){
-		$datasrc = $this->db->get_where('menu', array('id_menu' => $id));
-		return $datasrc->num_rows() > 0 ? $datasrc->row() : $this;
-	}
-	
 }
-
-/* End of file Model_menu_management.php */
-/* Location: ./application/modules/back_office/models/Model_menu_management.php */
+/* End of file Model_users.php */
+/* Location: ./application/modules/back_office/models/Model_users.php */

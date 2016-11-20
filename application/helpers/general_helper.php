@@ -59,14 +59,14 @@ function seo_title($s){
 	return $s;
 }
 
-function options($src, $id, $ref_val, $text_field){
+function options($src, $id, $ref_val, $text_field, $selected=''){
 	$options = '';
 	foreach ($src->result() as $row) {
 		$opt_value	= $row->$id;
 		$text_value	= $row->$text_field;
 		
 		if ($row->$id == $ref_val) {
-			$options .= '<option value="'.$opt_value.'" selected>'.$text_value.'</option>';
+			$options .= '<option value="'.$opt_value.'" '. $selected .'>'.$text_value.'</option>';
 		}
 		else {
 			$options .= '<option value="'.$opt_value.'">'.$text_value.'</option>';
@@ -272,7 +272,14 @@ function generate_code_date(){
 	return $reg;
 }
 
-
+function post($key= '', $clean = false){
+	if($key){
+		$CI =& get_instance();	
+		return $CI->input->post($key);
+	}else{
+		return $_POST;
+	}
+}
 
 /* End of file gmf_helper.php */
 /* Location: ./application/helpers/gmf_helper.php */

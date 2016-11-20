@@ -10,10 +10,13 @@ class Users_group extends MX_Controller {
 		date_default_timezone_set('Asia/Jakarta');
 		$this->page->use_directory();
 		$this->load->model('model_users');
+        $this->moduleTitle = 'User Groups';
 	}
 	
 	public function index() {
 		$this->page->view('users_group_index', array (
+			'moduleTitle'      => $this->moduleTitle,
+			'moduleSubTitle'   => 'List ' . $this->moduleTitle,
 			'add'		=> $this->page->base_url('/add'),
 			'grid'		=> $this->model_users->get_users_group(),
 		));
@@ -30,7 +33,8 @@ class Users_group extends MX_Controller {
 		}
 		
 		$this->page->view('users_group_form', array (
-			'ttl'			=> $title,
+			'moduleTitle'      => $this->moduleTitle,
+			'moduleSubTitle'   => $title,
 			'back'			=> $this->agent->referrer(),
 			'action'		=> $this->page->base_url("/{$action}/{$id}"),
 			'users_group'	=> $this->model_users->by_id_users_group($id),

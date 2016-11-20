@@ -6,28 +6,39 @@ $().ready(function(){
 });
 </script>
 
+<?php $this->load->view('templates/message_handler') ?>
 
 <?php echo form_open_multipart($action, array('class' => 'form-horizontal row-form', 'data-toggle' => 'validator')); ?>
     <div class="form-group">
         <label class="col-sm-2 control-label input-sm">Username</label>
 		<div class="col-sm-4">
-		  <input class="form-control input-sm" type="text" name="username" id="inputName" placeholder="Username" value="<?php echo $users->username; ?>" required />
+		  <input class="form-control input-sm" type="text" name="username" id="inputName" placeholder="Username" value="<?php echo (empty($users->username))? set_value('username'):$users->username; ?>" />
+		  <?php echo form_error('username', '<label class="text-red">', '</label>'); ?>
 		</div>
 	</div>
-	<?php if($this->uri->segment(3) == 'add'):?>
+    <div class="form-group">
+        <label class="col-sm-2 control-label input-sm">Full Name</label>
+		<div class="col-sm-4">
+		  <input class="form-control input-sm" type="text" name="name_users" id="inputName" placeholder="Name" value="<?php echo (empty($users->name_users))? set_value('name_users'):$users->name_users; ?>" />
+          <?php echo form_error('name_users', '<div class="text-red">', '</div><br/>'); ?>
+		</div>
+	</div>
+	<?php if($this->uri->segment(3) == 'add' || $this->uri->segment(3) == 'insert'):?>
 		<div class="form-group">
 			<label class="col-sm-2 control-label input-sm">Password</label>
 			<div class="col-sm-4">
 			  <input class="form-control input-sm" type="password" name="password" data-minlength="6" id="inputPassword" placeholder="" value="" required />
+              <?php echo form_error('password', '<label class="text-red">', '</label>'); ?>
+			</div>
+		</div>
+        <div class="form-group">
+			<label class="col-sm-2 control-label input-sm">Re-Password</label>
+			<div class="col-sm-4">
+			  <input class="form-control input-sm" type="password" name="repassword" data-minlength="6" id="inputPassword" placeholder="" value="" required />
 			</div>
 		</div>
 	<?php endif; ?>
-    <div class="form-group">
-        <label class="col-sm-2 control-label input-sm">Name</label>
-		<div class="col-sm-4">
-		  <input class="form-control input-sm" type="text" name="name_users" id="inputName" placeholder="Name" value="<?php echo $users->name_users; ?>" required />
-		</div>
-	</div>
+    
 	<?php if($this->uri->segment(3) == 'edit') { ?>
     <div class="form-group">
         <label class="col-sm-2 control-label input-sm">Photo</label>
@@ -54,13 +65,22 @@ $().ready(function(){
 	<?php } ?>
    
     <div class="form-group">
-        <label class="col-sm-2 control-label input-sm">Jenis Usaha</label>
+        <label class="col-sm-2 control-label input-sm">Jenis Usaha </label>
 		<div class="col-sm-4">
-            <select class="form-control select2" multiple="multiple" data-placeholder="Jenis Usaha" style="width: 100%;">
-              <?php foreach($jnsUsaha->result() as $row):?>
-                <option value="<?php echo $row->jns_usaha_kd?>"><?php echo $row->nama?></option>
+            <?php if($this->uri->segment(3) != 'edit') { ?>
+            <select name="jnsUsaha[]" class="form-control select2" multiple="multiple" data-placeholder="Jenis Usaha" style="width: 100%;">
+              <?php foreach($jnsUsaha->result() as $row):?>               
+                    <option value="<?php echo $row->id?>" <?php echo @(in_array($row->id, set_value('jnsUsaha[]'), true))? 'selected' : '';?>><?php echo $row->nama?></option>
               <?php endforeach; ?>
             </select>
+            <?php } else { ?>
+            <select name="jnsUsaha[]" class="form-control select2" multiple="multiple" data-placeholder="Jenis Usaha" style="width: 100%;">
+              <?php foreach($jnsUsaha->result() as $row):?>               
+                    <option value="<?php echo $row->id?>" <?php echo @(in_array($row->id, $users_jns_usaha, true))? 'selected' : '';?>><?php echo $row->nama?></option>
+              <?php endforeach; ?>
+            </select>
+            <?php } ?>
+            <?php echo form_error('jnsUsaha', '<div class="text-red">', '</div><br/>'); ?>
 		</div>
 	</div>
     <div class="form-group">
@@ -68,7 +88,9 @@ $().ready(function(){
 		<div class="col-sm-4">
             <select name="id_users_group_fk" class="form-control select2 input-sm" style="width: 100%;">
 				<option value="0">--- Choose Group User ---</option>
-				<?php echo modules::run('setting/users_group/options_users_group', $users->id_users_group_fk); ?>
+                <?php foreach($usersGroup->result() as $row):?>               
+                    <option value="<?php echo $row->id_users_group?>" <?php echo @($row->id_users_group == $users->id_users_group_fk)? 'selected' : '';?>><?php echo $row->name_group?></option>
+                <?php endforeach; ?>
 			</select>
 		</div>
 	</div>

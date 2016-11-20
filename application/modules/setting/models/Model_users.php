@@ -1,7 +1,7 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Model_users extends CI_Model {
+class Model_users extends MY_Model {
 
 	private $table 			= 'users';
 	private $column_order 	= array(null,'username','name_users','name_group','blockage',null);
@@ -15,6 +15,17 @@ class Model_users extends CI_Model {
 	public	$blockage 	  	= '';
 	public  $id_users_group	= '';
 	public  $name_group		= '';
+    
+    public function __construct(){
+        parent::__construct();
+        $this->load->database();
+        /* updated by same */
+        $this->_user_id = 0;
+        $this->_username = '';
+        $this->tblName = $this->table;
+        $this->tblId = 'id';
+        /* end */
+    }
 	
 	private function _get_query() {
 		$this->db->from($this->table);
@@ -78,7 +89,7 @@ class Model_users extends CI_Model {
 			FROM users_group
 			ORDER BY id_users_group DESC
 		";
-		return $this->db->query($query)->result();
+		return $this->db->query($query);
 	}
     
     public function getAllJns(){
@@ -89,6 +100,16 @@ class Model_users extends CI_Model {
 		";
 		return $this->db->query($query);
     }
+    
+    public function users_jns_usaha($id){
+        $query = "
+			SELECT jns_usaha_id
+			FROM users_jns_usaha
+            WHERE user_id = $id
+		";
+		return $this->db->query($query);
+    }
+    
 	
 	public function by_id_users_group($id){
 		$datasrc = $this->db->get_where('users_group', array('id_users_group' => $id));

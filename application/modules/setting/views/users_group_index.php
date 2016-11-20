@@ -23,7 +23,7 @@ $(document).ready(function(){
 		<tbody>
 			<?php 
 				$no = 1;
-				foreach($grid as $record) :
+				foreach($grid->result() as $record) :
 			?>
 					<tr>
 						<td align="center"><?php echo $no; ?></td>
