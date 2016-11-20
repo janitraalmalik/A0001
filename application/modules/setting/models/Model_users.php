@@ -4,8 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Model_users extends CI_Model {
 
 	private $table 			= 'users';
-	private $column_order 	= array(null,'username','name','name_group','blockage',null);
-	private $column_search 	= array('username','name','name_group','blockage');  
+	private $column_order 	= array(null,'username','name_users','name_group','blockage',null);
+	private $column_search 	= array('username','name_users','name_group','blockage');  
 	private $order 			= array('id' => 'desc'); 
 	
 	public	$username  	  	= '';
@@ -80,6 +80,15 @@ class Model_users extends CI_Model {
 		";
 		return $this->db->query($query)->result();
 	}
+    
+    public function getAllJns(){
+        $query = "
+			SELECT *
+			FROM jns_usaha
+			ORDER BY id DESC
+		";
+		return $this->db->query($query);
+    }
 	
 	public function by_id_users_group($id){
 		$datasrc = $this->db->get_where('users_group', array('id_users_group' => $id));

@@ -1,14 +1,11 @@
-<?php echo jquery_select2(); ?>
+
 
 <script type="text/javascript">
 $().ready(function(){
-	$('[name=id_users_group_fk]').select2({width : '75%'});
+	
 });
 </script>
 
-<!--section class="content-header">
-	<h1>Management User <small><i class="fa fa-fw fa-angle-double-right"></i> <?php echo $ttl; ?></small></h1>
-</section-->
 
 <?php echo form_open_multipart($action, array('class' => 'form-horizontal row-form', 'data-toggle' => 'validator')); ?>
     <div class="form-group">
@@ -55,11 +52,22 @@ $().ready(function(){
 		</div>
 	</div>
 	<?php } ?>
+   
+    <div class="form-group">
+        <label class="col-sm-2 control-label input-sm">Jenis Usaha</label>
+		<div class="col-sm-4">
+            <select class="form-control select2" multiple="multiple" data-placeholder="Jenis Usaha" style="width: 100%;">
+              <?php foreach($jnsUsaha->result() as $row):?>
+                <option value="<?php echo $row->jns_usaha_kd?>"><?php echo $row->nama?></option>
+              <?php endforeach; ?>
+            </select>
+		</div>
+	</div>
     <div class="form-group">
         <label class="col-sm-2 control-label input-sm">Group Users</label>
 		<div class="col-sm-4">
-			<select name="id_users_group_fk" required>
-				<option value="0">--- choose Group users ---</option>
+            <select name="id_users_group_fk" class="form-control select2 input-sm" style="width: 100%;">
+				<option value="0">--- Choose Group User ---</option>
 				<?php echo modules::run('setting/users_group/options_users_group', $users->id_users_group_fk); ?>
 			</select>
 		</div>

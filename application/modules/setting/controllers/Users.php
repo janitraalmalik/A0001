@@ -15,10 +15,14 @@ class Users extends MX_Controller {
 		
 		$this->gallerypath = realpath(APPPATH . '../assets/photo_user');
 		$this->gallery_path_url = base_url().'assets/photo_user/';
+        $this->moduleTitle = 'Users';
+        
 	}
 	
 	public function index() {
 		$this->page->view('users_index', array (
+			'moduleTitle'      => $this->moduleTitle,
+			'moduleSubTitle'   => 'List Users',
 			'add'		=> $this->page->base_url('/add')
 		));
 	}
@@ -57,14 +61,16 @@ class Users extends MX_Controller {
 		
 		$title = '';
 		if($this->uri->segment(3) == 'add'){ 
-			$title = 'Add';
+			$title = 'Add User';
 		} else {
-			$title = 'Edit';
+			$title = 'Edit User';
 		}
 		
 		$this->page->view('users_form', array (
-			'ttl'		=> $title,
-			'back'		=> $this->agent->referrer(),
+			'moduleTitle'      => $this->moduleTitle,
+			'moduleSubTitle'   => $title,
+			'jnsUsaha'         => $this->model_users->getAllJns(),
+			'back'		       => $this->agent->referrer(),
 			'action'	=> $this->page->base_url("/{$action}/{$id}"),
 			'users'		=> $this->model_users->by_id_users($id),
 			'aksi'		=> $action,

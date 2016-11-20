@@ -272,5 +272,7 @@ function generate_code_date(){
 	return $reg;
 }
 
+
+
 /* End of file gmf_helper.php */
 /* Location: ./application/helpers/gmf_helper.php */
