@@ -15,7 +15,7 @@
       
       <li class="dropdown tasks-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <span><?php echo $this->session->userdata('users')->name_users; ?></span>
+              <span><?php $userSession = $this->session->userdata('userSession');print_r($userSession['fullName']); ?></span>
             </a>
             <ul class="dropdown-menu">
               <li class="header"><b>Setting</b></li>
