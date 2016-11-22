@@ -27,6 +27,11 @@ class Users extends MX_Controller {
 		));
 	}
 	
+	function tes_abas(){
+	die("tes Push");	
+	}
+	}
+	
 	public function ajax_get_users(){
 		$list = $this->model_users->get_users();
 		$data = array();
