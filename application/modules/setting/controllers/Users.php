@@ -27,11 +27,6 @@ class Users extends MX_Controller {
 		));
 	}
 	
-	function tes_abas(){
-	die("tes Push");	
-	}
-	
-	
 	public function ajax_get_users(){
 		$list = $this->model_users->get_users();
 		$data = array();
@@ -65,19 +60,19 @@ class Users extends MX_Controller {
 		if ($this->agent->referrer() == '') redirect($this->page->base_url());
 		
 		$title = '';
+        $user_jnsUsaha = '';
 		if($this->uri->segment(3) == 'add'){ 
 			$title = 'Add User';
-		} else {
+		} elseif ($this->uri->segment(3) == 'edit') {
 			$title = 'Edit User';
-		}
-        
-        $users_jns_usaha = $this->model_users->users_jns_usaha($id);
-        $user_jnsUsaha = array();
-        if(count($users_jns_usaha->result()) >= 1){
-            foreach($users_jns_usaha->result() as $row){
-                $user_jnsUsaha[] = $row->jns_usaha_id;
+            $users_jns_usaha = $this->model_users->users_jns_usaha($id);
+            $user_jnsUsaha = array();
+            if(count($users_jns_usaha->result()) >= 1){
+                foreach($users_jns_usaha->result() as $row){
+                    $user_jnsUsaha[] = $row->jns_usaha_id;
+                }
             }
-        }
+		}
         
 		$this->page->view('users_form', array (
 			'ui_messages'      => $this->session->flashdata('ui_messages'),

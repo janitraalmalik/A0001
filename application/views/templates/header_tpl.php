@@ -2,7 +2,7 @@
 <!-- Logo -->
 <a href="<?php echo site_url(); ?>" class="logo">
   <span class="logo-mini"><b>BS</b>T</span>
-  <span class="logo-lg"><b>BST </b>System</span>
+  <span class="logo-lg"><b>BST </b>System </span>
 </a>
 <!-- Header Navbar: style can be found in header.less -->
 <nav class="navbar navbar-static-top" role="navigation">
@@ -11,11 +11,9 @@
   
     <ul class="nav navbar-nav">
       
-      <!-- Tasks: style can be found in dropdown.less -->
-      
       <li class="dropdown tasks-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <span><?php $userSession = $this->session->userdata('userSession');print_r($userSession['fullName']); ?></span>
+              <span><?php $userSession = $this->session->userdata('userSession'); echo $userSession['fullName']; ?></span>
             </a>
             <ul class="dropdown-menu">
               <li class="header"><b>Setting</b></li>

@@ -8,14 +8,6 @@ class Satuan_model extends MY_Model {
 	private $column_search 	= array('satuan_kd','satuan_name');  
 	private $order 			= array('id' => 'desc'); 
 	
-	public	$username  	  	= '';
-	public	$password  	  	= '';
-	public	$name_users	  	= '';
-	public	$photo 	  	  	= '';
-	public	$blockage 	  	= '';
-	public  $id_users_group	= '';
-	public  $name_group		= '';
-    
     public function __construct(){
         parent::__construct();
         $this->load->database();
@@ -28,6 +20,9 @@ class Satuan_model extends MY_Model {
     }
 	
 	private function _get_query() {
+	   
+        $this->db->where('kd_jns_usaha', 'JU001');
+        $this->db->where('deleted_at =',null);
 		$this->db->from($this->table);
 
 		$i = 0;
@@ -55,8 +50,8 @@ class Satuan_model extends MY_Model {
 			$this->db->order_by(key($order), $order[key($order)]);
 		}
 	}
-	
-	public function get_users() {
+    
+    public function get_data() {
 		$this->_get_query();
 		if($_POST['length'] != -1)
 		$this->db->limit($_POST['length'], $_POST['start']);
@@ -64,7 +59,7 @@ class Satuan_model extends MY_Model {
 		
 		return $query->result();
 	}
-
+	
 	public function count_filtered() {
 		$this->_get_query();
 		$query = $this->db->get();

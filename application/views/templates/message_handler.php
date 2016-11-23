@@ -1,4 +1,5 @@
 <?php
+
 if(isset($ui_messages)){
 	foreach($ui_messages as $msg){
 		$msg_class = 	($msg['severity'] == 'SUCCESS' ? 'success' : 
