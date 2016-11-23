@@ -7,7 +7,7 @@
     		<label class="col-sm-2 control-label input-sm">Code *</label>
     		<div class="col-sm-3">
                 <input 
-                    class="form-control input-sm" 
+                    class="form-control input-sm " 
                     type="text" 
                     name="codeSatuan" 
                     placeholder="Code" 
