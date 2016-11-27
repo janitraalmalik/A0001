@@ -100,7 +100,7 @@
         <!-- ./col -->
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
-          <a href="#" class="">
+          <a href="<?php echo base_url(); ?>hrm" class="">
             <div class="small-box bg-red">
                 <div class="inner">
                   <h3>HRM</h3><br /><br />
