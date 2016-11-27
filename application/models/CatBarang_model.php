@@ -1,13 +1,13 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Barang_model extends MY_Model {
+class CatBarang_model extends MY_Model {
 
-	private $table 			= 'p_m_barang';
-	private $column_order 	= array(null,'brg_kd','brg_nama','cat_barang_id',null);
-	private $column_search 	= array('brg_kd','brg_nama','cat_barang_id');  
+	private $table 			= 'p_m_cat_barang';
+	private $column_order 	= array(null,'cat_brg_nama','cat_brg_desc','cat_brg_parent',null);
+	private $column_search 	= array('cat_brg_nama','cat_brg_desc','cat_brg_parent');  
 	private $order 			= array('id' => 'desc'); 
-    
+	
     public function __construct(){
         parent::__construct();
         $this->load->database();
@@ -66,9 +66,11 @@ class Barang_model extends MY_Model {
 	}
 
 	public function count_all() {
-		$this->getWhere();
-        $this->db->from($this->table);
+	   
+        $this->getWhere();
+		$this->db->from($this->table);
 		return $this->db->count_all_results();
+        
 	}
     
     public function getWhere(){
