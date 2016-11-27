@@ -169,8 +169,8 @@ $().ready(function(){
             <i class="fa fa-angle-left pull-right"></i>
           </a>
           <ul class="treeview-menu">
-            <li><a href="<?php echo base_url('purchasing/data_vendor');?>"><i class="fa fa-circle-o"></i> Data Karyawam</a></li>
-            <li><a href="<?php echo base_url('purchasing/data_barang');?>"><i class="fa fa-circle-o"></i> Data Divisi</a></li>
+            <li><a href="<?php echo base_url('hrm/data_karyawan');?>"><i class="fa fa-circle-o"></i> Data Karyawan</a></li>
+            <li><a href="<?php echo base_url('hrm/data_bagian');?>"><i class="fa fa-circle-o"></i> Data Divisi</a></li>
             <li><a href="<?php echo base_url('purchasing/data_satuan');?>"><i class="fa fa-circle-o"></i> Data Gaji</a></li>
           </ul>
         </li>
