@@ -223,6 +223,7 @@ $().ready(function(){
     <!-- Main content -->
     <section class="content">
             
+            
       <div class="row">
         
         <!-- Left col -->

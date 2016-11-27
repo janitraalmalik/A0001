@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2016-11-21 23:05:23
+Date: 2016-11-27 19:44:34
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -24,7 +24,7 @@ CREATE TABLE `jns_usaha` (
   `jns_usaha_kd` varchar(255) DEFAULT NULL,
   `nama` varchar(255) DEFAULT NULL,
   `ket` varchar(255) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `created_by` int(11) DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL,
@@ -63,6 +63,27 @@ INSERT INTO `log` VALUES ('::1', null, 'guest', 'users', '2', 'UPDATE `users` SE
 INSERT INTO `log` VALUES ('::1', null, 'guest', 'users', '2', 'UPDATE `users` SET `username` = \'janitramalik\', `name_users` = \'Janitra Al Malik Update\', `password` = \'ea59fa85c6f4f65851700ecb7f7a9616\', `id_users_group_fk` = \'1\', `blockage` = \'N\', `updated_at` = \'2016-11-20 22:27:20\'\nWHERE `id` = \'2\'', 'update', '{\"username\":\"janitramalik\",\"name_users\":\"Janitra Al Malik Update\",\"password\":\"ea59fa85c6f4f65851700ecb7f7a9616\",\"id_users_group_fk\":\"1\",\"blockage\":\"N\"}', 'guest update users', '2016-11-20 22:27:20');
 INSERT INTO `log` VALUES ('::1', null, 'guest', 'users', '2', 'UPDATE `users` SET `username` = \'janitramalik\', `name_users` = \'Janitra Al Malik Update\', `password` = \'ea59fa85c6f4f65851700ecb7f7a9616\', `id_users_group_fk` = \'1\', `blockage` = \'N\', `updated_at` = \'2016-11-20 22:29:54\'\nWHERE `id` = \'2\'', 'update', '{\"username\":\"janitramalik\",\"name_users\":\"Janitra Al Malik Update\",\"password\":\"ea59fa85c6f4f65851700ecb7f7a9616\",\"id_users_group_fk\":\"1\",\"blockage\":\"N\"}', 'guest update users', '2016-11-20 22:29:54');
 INSERT INTO `log` VALUES ('::1', null, 'guest', 'users', '2', 'UPDATE `users` SET `username` = \'janitramalik\', `name_users` = \'Janitra Al Malik\', `password` = \'ea59fa85c6f4f65851700ecb7f7a9616\', `id_users_group_fk` = \'1\', `blockage` = \'N\', `updated_at` = \'2016-11-20 22:30:05\'\nWHERE `id` = \'2\'', 'update', '{\"username\":\"janitramalik\",\"name_users\":\"Janitra Al Malik\",\"password\":\"ea59fa85c6f4f65851700ecb7f7a9616\",\"id_users_group_fk\":\"1\",\"blockage\":\"N\"}', 'guest update users', '2016-11-20 22:30:05');
+INSERT INTO `log` VALUES ('::1', null, 'guest', 'p_m_satuan', '2', 'INSERT INTO `p_m_satuan` (`satuan_kd`, `satuan_name`, `kd_jns_usaha`, `created_at`) VALUES (\'OKK\', \'OKK\', \'JU001\', \'2016-11-23 09:32:46\')', 'update', '{\"satuan_kd\":\"OKK\",\"satuan_name\":\"OKK\",\"satuan_decs\":\"OKK\",\"kd_jns_usaha\":\"JU001\"}', 'guest update p_m_satuan', '2016-11-23 09:32:46');
+INSERT INTO `log` VALUES ('::1', null, 'guest', 'p_m_satuan', '2', 'UPDATE `p_m_satuan` SET `satuan_kd` = \'OKK\', `satuan_name` = \'OKK Update\', `satuan_desc` = \'OKK\', `kd_jns_usaha` = \'JU001\', `updated_at` = \'2016-11-23 09:39:56\'\nWHERE `id` = \'2\'', 'update', '{\"satuan_kd\":\"OKK\",\"satuan_name\":\"OKK Update\",\"satuan_desc\":\"OKK\",\"kd_jns_usaha\":\"JU001\"}', 'guest update p_m_satuan', '2016-11-23 09:39:56');
+INSERT INTO `log` VALUES ('::1', null, 'guest', 'p_m_satuan', '2', 'UPDATE `p_m_satuan` SET `satuan_kd` = \'OKK\', `satuan_name` = \'OKK\', `satuan_desc` = \'OKK\', `kd_jns_usaha` = \'JU001\', `updated_at` = \'2016-11-23 09:40:05\'\nWHERE `id` = \'2\'', 'update', '{\"satuan_kd\":\"OKK\",\"satuan_name\":\"OKK\",\"satuan_desc\":\"OKK\",\"kd_jns_usaha\":\"JU001\"}', 'guest update p_m_satuan', '2016-11-23 09:40:05');
+INSERT INTO `log` VALUES ('::1', null, 'guest', 'p_m_satuan', '2', 'UPDATE `p_m_satuan` SET `deleted_at` = \'2016-11-23 09:40:13\', `deleted_by` = 0\nWHERE `id` = \'2\'', 'deactive', '{\"id\":\"2\",\"satuan_kd\":\"OKK\",\"satuan_name\":\"OKK\",\"satuan_conv\":null,\"satuan_desc\":\"OKK\",\"kd_jns_usaha\":\"JU001\",\"created_at\":\"2016-11-23 09:32:46\",\"created_by\":null,\"updated_at\":\"2016-11-23 09:40:05\",\"updated_by\":null,\"deleted_at\":\"2016-11-23 09:40:13\",\"deleted_by\":\"0\"}', 'guest deactive p_m_satuan', '2016-11-23 09:40:13');
+INSERT INTO `log` VALUES ('::1', null, 'guest', 'p_m_satuan', '2', 'UPDATE `p_m_satuan` SET `deleted_at` = \'2016-11-23 09:40:43\', `deleted_by` = 0\nWHERE `id` = \'2\'', 'deactive', '{\"id\":\"2\",\"satuan_kd\":\"OKK\",\"satuan_name\":\"OKK\",\"satuan_conv\":null,\"satuan_desc\":\"OKK\",\"kd_jns_usaha\":\"JU001\",\"created_at\":\"2016-11-23 09:32:46\",\"created_by\":null,\"updated_at\":\"2016-11-23 09:40:05\",\"updated_by\":null,\"deleted_at\":\"2016-11-23 09:40:43\",\"deleted_by\":\"0\"}', 'guest deactive p_m_satuan', '2016-11-23 09:40:43');
+INSERT INTO `log` VALUES ('::1', null, 'guest', 'p_m_cat_barang', '6', 'INSERT INTO `p_m_cat_barang` (`cat_brg_nama`, `cat_brg_desc`, `cat_brg_parent`, `kd_jns_usaha`, `created_at`) VALUES (\'Buku\', \'Buku\', NULL, \'JU001\', \'2016-11-24 10:38:24\')', 'update', '{\"cat_brg_nama\":\"Buku\",\"cat_brg_desc\":\"Buku\",\"cat_brg_parent\":null,\"kd_jns_usaha\":\"JU001\"}', 'guest update p_m_cat_barang', '2016-11-24 10:38:25');
+INSERT INTO `log` VALUES ('::1', null, 'guest', 'p_m_cat_barang', '7', 'INSERT INTO `p_m_cat_barang` (`cat_brg_nama`, `cat_brg_desc`, `cat_brg_parent`, `kd_jns_usaha`, `created_at`) VALUES (\'Kertas\', \'Kertas\', \'6\', \'JU001\', \'2016-11-24 10:40:56\')', 'update', '{\"cat_brg_nama\":\"Kertas\",\"cat_brg_desc\":\"Kertas\",\"cat_brg_parent\":\"6\",\"kd_jns_usaha\":\"JU001\"}', 'guest update p_m_cat_barang', '2016-11-24 10:40:56');
+INSERT INTO `log` VALUES ('::1', null, 'guest', 'p_m_cat_barang', '7', 'UPDATE `p_m_cat_barang` SET `cat_brg_nama` = \'Kertas\', `cat_brg_desc` = \'Kertas\', `cat_brg_parent` = \'6\', `kd_jns_usaha` = \'JU001\', `updated_at` = \'2016-11-25 09:50:34\'\nWHERE `id` = \'7\'', 'update', '{\"cat_brg_nama\":\"Kertas\",\"cat_brg_desc\":\"Kertas\",\"cat_brg_parent\":\"6\",\"kd_jns_usaha\":\"JU001\"}', 'guest update p_m_cat_barang', '2016-11-25 09:50:34');
+INSERT INTO `log` VALUES ('::1', null, 'guest', 'p_m_cat_barang', '7', 'UPDATE `p_m_cat_barang` SET `cat_brg_nama` = \'Kertas Update\', `cat_brg_desc` = \'Kertas\', `cat_brg_parent` = \'6\', `kd_jns_usaha` = \'JU001\', `updated_at` = \'2016-11-25 09:50:47\'\nWHERE `id` = \'7\'', 'update', '{\"cat_brg_nama\":\"Kertas Update\",\"cat_brg_desc\":\"Kertas\",\"cat_brg_parent\":\"6\",\"kd_jns_usaha\":\"JU001\"}', 'guest update p_m_cat_barang', '2016-11-25 09:50:48');
+INSERT INTO `log` VALUES ('::1', null, 'guest', 'p_m_cat_barang', '7', 'UPDATE `p_m_cat_barang` SET `cat_brg_nama` = \'asdas\', `cat_brg_desc` = \'Kertas\', `cat_brg_parent` = \'6\', `kd_jns_usaha` = \'JU001\', `updated_at` = \'2016-11-25 09:51:02\'\nWHERE `id` = \'7\'', 'update', '{\"cat_brg_nama\":\"asdas\",\"cat_brg_desc\":\"Kertas\",\"cat_brg_parent\":\"6\",\"kd_jns_usaha\":\"JU001\"}', 'guest update p_m_cat_barang', '2016-11-25 09:51:02');
+INSERT INTO `log` VALUES ('::1', null, 'guest', 'p_m_cat_barang', '7', 'UPDATE `p_m_cat_barang` SET `cat_brg_nama` = \'Kertas\', `cat_brg_desc` = \'Kertas\', `cat_brg_parent` = \'6\', `kd_jns_usaha` = \'JU001\', `updated_at` = \'2016-11-25 09:51:09\'\nWHERE `id` = \'7\'', 'update', '{\"cat_brg_nama\":\"Kertas\",\"cat_brg_desc\":\"Kertas\",\"cat_brg_parent\":\"6\",\"kd_jns_usaha\":\"JU001\"}', 'guest update p_m_cat_barang', '2016-11-25 09:51:09');
+INSERT INTO `log` VALUES ('::1', null, 'guest', 'p_m_barang', '1', 'INSERT INTO `p_m_barang` (`brg_kd`, `brg_nama`, `brg_desc`, `cat_barang_id`, `kd_jns_usaha`, `created_at`) VALUES (\'0001\', \'Product A\', \'Product A\', \'7\', \'JU001\', \'2016-11-25 10:05:11\')', 'update', '{\"brg_kd\":\"0001\",\"brg_nama\":\"Product A\",\"brg_desc\":\"Product A\",\"cat_barang_id\":\"7\",\"kd_jns_usaha\":\"JU001\"}', 'guest update p_m_barang', '2016-11-25 10:05:11');
+INSERT INTO `log` VALUES ('::1', null, 'guest', 'p_m_satuan', '3', 'INSERT INTO `p_m_satuan` (`satuan_kd`, `satuan_name`, `satuan_desc`, `kd_jns_usaha`, `created_at`) VALUES (\'asdasd\', \'asdasdasdasd\', \'asdads\', \'JU001\', \'2016-11-27 12:19:39\')', 'update', '{\"satuan_kd\":\"asdasd\",\"satuan_name\":\"asdasdasdasd\",\"satuan_desc\":\"asdads\",\"kd_jns_usaha\":\"JU001\"}', 'guest update p_m_satuan', '2016-11-27 12:19:39');
+INSERT INTO `log` VALUES ('::1', null, 'guest', 'p_m_satuan', '3', 'UPDATE `p_m_satuan` SET `satuan_kd` = \'asdas\', `satuan_name` = \'asdasdasdasd Update\', `satuan_desc` = \'asdads\', `kd_jns_usaha` = \'JU001\', `updated_at` = \'2016-11-27 12:19:50\'\nWHERE `id` = \'3\'', 'update', '{\"satuan_kd\":\"asdas\",\"satuan_name\":\"asdasdasdasd Update\",\"satuan_desc\":\"asdads\",\"kd_jns_usaha\":\"JU001\"}', 'guest update p_m_satuan', '2016-11-27 12:19:50');
+INSERT INTO `log` VALUES ('::1', null, 'guest', 'p_m_cat_barang', '8', 'INSERT INTO `p_m_cat_barang` (`cat_brg_nama`, `cat_brg_desc`, `cat_brg_parent`, `kd_jns_usaha`, `created_at`) VALUES (\'asdasd\', \'asdasd\', \'6\', \'JU001\', \'2016-11-27 12:20:16\')', 'update', '{\"cat_brg_nama\":\"asdasd\",\"cat_brg_desc\":\"asdasd\",\"cat_brg_parent\":\"6\",\"kd_jns_usaha\":\"JU001\"}', 'guest update p_m_cat_barang', '2016-11-27 12:20:16');
+INSERT INTO `log` VALUES ('::1', null, 'guest', 'p_m_cat_barang', '8', 'UPDATE `p_m_cat_barang` SET `cat_brg_nama` = \'asdasd\', `cat_brg_desc` = \'asdasd\', `cat_brg_parent` = \'1\', `kd_jns_usaha` = \'JU001\', `updated_at` = \'2016-11-27 12:20:27\'\nWHERE `id` = \'8\'', 'update', '{\"cat_brg_nama\":\"asdasd\",\"cat_brg_desc\":\"asdasd\",\"cat_brg_parent\":\"1\",\"kd_jns_usaha\":\"JU001\"}', 'guest update p_m_cat_barang', '2016-11-27 12:20:27');
+INSERT INTO `log` VALUES ('::1', null, 'guest', 'p_m_cat_barang', '8', 'UPDATE `p_m_cat_barang` SET `cat_brg_nama` = \'asdasd\', `cat_brg_desc` = \'asdasd\', `cat_brg_parent` = \'0\', `kd_jns_usaha` = \'JU001\', `updated_at` = \'2016-11-27 12:20:35\'\nWHERE `id` = \'8\'', 'update', '{\"cat_brg_nama\":\"asdasd\",\"cat_brg_desc\":\"asdasd\",\"cat_brg_parent\":\"0\",\"kd_jns_usaha\":\"JU001\"}', 'guest update p_m_cat_barang', '2016-11-27 12:20:35');
+INSERT INTO `log` VALUES ('::1', null, 'guest', 'p_m_cat_barang', '8', 'UPDATE `p_m_cat_barang` SET `deleted_at` = \'2016-11-27 12:53:47\', `deleted_by` = 0\nWHERE `id` = \'8\'', 'deactive', '{\"id\":\"8\",\"cat_brg_nama\":\"asdasd\",\"cat_brg_desc\":\"asdasd\",\"cat_brg_parent\":\"0\",\"kd_jns_usaha\":\"JU001\",\"created_at\":\"2016-11-27 12:20:16\",\"created_by\":null,\"updated_at\":\"2016-11-27 12:20:35\",\"updated_by\":null,\"deleted_at\":\"2016-11-27 12:53:47\",\"deleted_by\":\"0\"}', 'guest deactive p_m_cat_barang', '2016-11-27 12:53:47');
+INSERT INTO `log` VALUES ('::1', null, 'guest', 'p_m_barang', '2', 'INSERT INTO `p_m_barang` (`brg_kd`, `brg_nama`, `brg_desc`, `cat_barang_id`, `kd_jns_usaha`, `created_at`) VALUES (\'OK\', \'kkajjsk\', \'jsjsjsj\', \'1\', \'JU001\', \'2016-11-27 12:55:40\')', 'update', '{\"brg_kd\":\"OK\",\"brg_nama\":\"kkajjsk\",\"brg_desc\":\"jsjsjsj\",\"cat_barang_id\":\"1\",\"kd_jns_usaha\":\"JU001\"}', 'guest update p_m_barang', '2016-11-27 12:55:40');
+INSERT INTO `log` VALUES ('::1', null, 'guest', 'p_m_barang', '2', 'UPDATE `p_m_barang` SET `brg_kd` = \'OK\', `brg_nama` = \'kkajjsk Update\', `brg_desc` = \'jsjsjsj\', `cat_barang_id` = \'1\', `kd_jns_usaha` = \'JU001\', `updated_at` = \'2016-11-27 12:55:53\'\nWHERE `id` = \'2\'', 'update', '{\"brg_kd\":\"OK\",\"brg_nama\":\"kkajjsk Update\",\"brg_desc\":\"jsjsjsj\",\"cat_barang_id\":\"1\",\"kd_jns_usaha\":\"JU001\"}', 'guest update p_m_barang', '2016-11-27 12:55:53');
+INSERT INTO `log` VALUES ('::1', null, 'guest', 'p_m_barang', '2', 'UPDATE `p_m_barang` SET `deleted_at` = \'2016-11-27 12:56:01\', `deleted_by` = 0\nWHERE `id` = \'2\'', 'deactive', '{\"id\":\"2\",\"brg_kd\":\"OK\",\"brg_nama\":\"kkajjsk Update\",\"brg_desc\":\"jsjsjsj\",\"cat_barang_id\":\"1\",\"kd_jns_usaha\":\"JU001\",\"created_at\":\"2016-11-27 12:55:40\",\"created_by\":null,\"updated_at\":\"2016-11-27 12:55:53\",\"updated_by\":null,\"deleted_at\":\"2016-11-27 12:56:01\",\"deleted_by\":\"0\"}', 'guest deactive p_m_barang', '2016-11-27 12:56:01');
 
 -- ----------------------------
 -- Table structure for menu
@@ -77,7 +98,7 @@ CREATE TABLE `menu` (
   `module` varchar(100) DEFAULT NULL,
   `aktif` varchar(50) DEFAULT NULL,
   `postition` varchar(255) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `created_by` int(11) DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL,
@@ -122,19 +143,53 @@ CREATE TABLE `p_m_barang` (
   `brg_kd` varchar(255) DEFAULT NULL,
   `brg_nama` varchar(255) DEFAULT NULL,
   `brg_desc` varchar(255) DEFAULT NULL,
+  `cat_barang_id` int(11) DEFAULT NULL,
   `kd_jns_usaha` varchar(255) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `created_by` int(11) DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
   `deleted_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of p_m_barang
 -- ----------------------------
+INSERT INTO `p_m_barang` VALUES ('1', '0001', 'Product A', 'Product A', '7', 'JU001', '2016-11-25 10:05:11', null, null, null, null, null);
+INSERT INTO `p_m_barang` VALUES ('2', 'OK', 'kkajjsk Update', 'jsjsjsj', '1', 'JU001', '2016-11-27 12:55:40', null, '2016-11-27 12:55:53', null, '2016-11-27 12:56:01', '0');
+
+-- ----------------------------
+-- Table structure for p_m_cat_barang
+-- ----------------------------
+DROP TABLE IF EXISTS `p_m_cat_barang`;
+CREATE TABLE `p_m_cat_barang` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `cat_brg_nama` varchar(255) DEFAULT NULL,
+  `cat_brg_desc` varchar(255) DEFAULT NULL,
+  `cat_brg_parent` int(11) DEFAULT NULL,
+  `kd_jns_usaha` varchar(255) DEFAULT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `created_by` int(11) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  `deleted_by` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of p_m_cat_barang
+-- ----------------------------
+INSERT INTO `p_m_cat_barang` VALUES ('1', 'A', 'A', '0', 'JU001', '2016-11-24 09:29:50', null, null, null, null, null);
+INSERT INTO `p_m_cat_barang` VALUES ('2', 'A.1', 'A.1', '1', 'JU001', '2016-11-24 09:30:08', null, null, null, null, null);
+INSERT INTO `p_m_cat_barang` VALUES ('3', 'A.2', 'A.2', '1', 'JU001', '2016-11-24 09:30:16', null, null, null, null, null);
+INSERT INTO `p_m_cat_barang` VALUES ('4', 'A.2', 'A.2', '1', 'JU001', '2016-11-24 09:30:31', null, null, null, null, null);
+INSERT INTO `p_m_cat_barang` VALUES ('5', 'A.1.a', 'A.1.a', '2', 'JU001', '2016-11-24 09:52:29', null, null, null, null, null);
+INSERT INTO `p_m_cat_barang` VALUES ('6', 'Buku', 'Buku', '5', 'JU001', '2016-11-24 10:38:24', null, null, null, null, null);
+INSERT INTO `p_m_cat_barang` VALUES ('7', 'Kertas', 'Kertas', '6', 'JU001', '2016-11-24 10:40:56', null, '2016-11-25 09:51:09', null, null, null);
+INSERT INTO `p_m_cat_barang` VALUES ('8', 'asdasd', 'asdasd', '0', 'JU001', '2016-11-27 12:20:16', null, '2016-11-27 12:20:35', null, '2016-11-27 12:53:47', '0');
 
 -- ----------------------------
 -- Table structure for p_m_satuan
@@ -147,18 +202,21 @@ CREATE TABLE `p_m_satuan` (
   `satuan_conv` int(11) DEFAULT NULL,
   `satuan_desc` varchar(255) DEFAULT NULL,
   `kd_jns_usaha` varchar(5) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `created_by` int(11) DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
   `deleted_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of p_m_satuan
 -- ----------------------------
+INSERT INTO `p_m_satuan` VALUES ('1', 'PCS', 'PCS', null, 'PCS', 'JU001', '2016-11-23 00:39:46', null, null, null, null, null);
+INSERT INTO `p_m_satuan` VALUES ('2', 'OKK', 'OKK', null, 'OKK', 'JU001', '2016-11-23 09:32:46', null, '2016-11-23 09:40:05', null, '2016-11-23 09:40:43', '0');
+INSERT INTO `p_m_satuan` VALUES ('3', 'asdas', 'asdasdasdasd Update', null, 'asdads', 'JU001', '2016-11-27 12:19:39', null, '2016-11-27 12:19:50', null, null, null);
 
 -- ----------------------------
 -- Table structure for p_m_status
@@ -169,7 +227,7 @@ CREATE TABLE `p_m_status` (
   `sts_nama` varchar(255) DEFAULT NULL,
   `sts_desc` varchar(255) DEFAULT NULL,
   `kd_jns_usaha` varchar(5) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `created_by` int(11) DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL,
@@ -196,7 +254,7 @@ CREATE TABLE `p_m_vendor_supplier` (
   `vend_tlp` varchar(255) DEFAULT NULL,
   `vend_pic` varchar(255) DEFAULT '',
   `kd_jns_usaha` varchar(5) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `created_by` int(11) DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL,
@@ -223,7 +281,7 @@ CREATE TABLE `p_t_po` (
   `po_tgl_pengeriman` datetime DEFAULT NULL,
   `kd_skm_pembayaran` varchar(255) DEFAULT NULL,
   `kd_jns_usaha` varchar(255) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `created_by` int(11) DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL,
@@ -248,7 +306,7 @@ CREATE TABLE `p_t_podetail` (
   `harga_satuan` decimal(18,2) DEFAULT NULL,
   `kd_satuan` varchar(255) DEFAULT NULL,
   `kd_jns_usaha` varchar(255) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `created_by` int(11) DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL,
@@ -273,7 +331,7 @@ CREATE TABLE `users` (
   `name_users` varchar(255) DEFAULT NULL,
   `photo` varchar(255) DEFAULT NULL,
   `blockage` varchar(1) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `created_by` int(11) DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL,
@@ -297,7 +355,7 @@ CREATE TABLE `users_group` (
   `name_group` varchar(50) DEFAULT NULL,
   `blockage` varchar(2) DEFAULT NULL,
   `is_deleted` int(11) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `created_by` int(11) DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL,
