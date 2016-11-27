@@ -281,5 +281,51 @@ function post($key= '', $clean = false){
 	}
 }
 
+function selectCat($parent, $level, $paramID='') {
+    
+    $CI 	=& get_instance();
+    
+    $result = $CI->db->query("SELECT a.id, a.cat_brg_nama, a.cat_brg_parent, Deriv1.Count FROM p_m_cat_barang a
+                                LEFT OUTER JOIN (
+                                	SELECT
+                                		cat_brg_parent,
+                                		COUNT(*) AS Count
+                                	FROM
+                                		p_m_cat_barang
+                                    WHERE deleted_at IS NULL
+                                	GROUP BY
+                                		cat_brg_parent
+                                ) Deriv1 ON a.id = Deriv1.cat_brg_parent
+                                 WHERE a.deleted_at IS NULL AND a.cat_brg_parent=" . $parent);
+    $selected = '';
+    foreach($result->result() as $row){
+        
+        if($paramID == $row->id){
+            $selected = 'selected';
+        }
+        
+        if ($row->Count > 0) {
+            echo "<option value='" . $row->id . "' " . $selected . ">" . str_repeat('&nbsp;&nbsp;',$level) . '- ' . $row->cat_brg_nama . "</option>";
+            selectCat($row->id, $level + 1, $paramID);
+        } elseif ($row->Count == 0) {
+            echo "<option value='" . $row->id . "' " . $selected . ">" . str_repeat('&nbsp;&nbsp;',$level) . '- ' . $row->cat_brg_nama . "</option>";
+        } else;
+    }
+     
+}
+
+function getNameCategory($param) {
+    
+    if(empty($param)) { return false; }
+    
+    $CI 	=& get_instance();
+    
+    $result = $CI->db->query("SELECT cat_brg_nama FROM p_m_cat_barang WHERE deleted_at IS NULL AND id=" . $param)->row();
+    
+    return $result->cat_brg_nama;
+}
+
+
+
 /* End of file gmf_helper.php */
 /* Location: ./application/helpers/gmf_helper.php */
