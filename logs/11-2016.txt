@@ -1,0 +1,1 @@
+127.0.0.1  guest p_m_satuan 4 INSERT INTO `p_m_satuan` (`satuan_kd`, `satuan_name`, `satuan_desc`, `kd_jns_usaha`, `created_at`) VALUES ('004', 'biji', 'oks', 'JU001', '2016-11-27 12:02:40') update {"satuan_kd":"004","satuan_name":"biji","satuan_desc":"oks","kd_jns_usaha":"JU001"} guest update p_m_satuan 2016-11-27 12:02:40
