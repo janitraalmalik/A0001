@@ -84,6 +84,8 @@ $(document).ready(function() {
     			<a class="btn btn-flat bg-olive color-palette btn-sm" href="<?php echo $back; ?>"><span class="fa  fa-arrow-left"></span>&nbsp;&nbsp;Simpan</a>
     		</div>
     	</div>
+        
+        
     <?php echo form_close(); ?>
 </section>
 
