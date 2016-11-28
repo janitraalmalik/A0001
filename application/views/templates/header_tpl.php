@@ -2,7 +2,8 @@
 <!-- Logo -->
 <a href="<?php echo site_url(); ?>" class="logo">
   <span class="logo-mini"><b>BS</b>T</span>
-  <span class="logo-lg"><b>BST </b>System </span>
+  <?php $roleSession = $this->session->userdata('roleSession'); ?>
+  <span class="logo-lg"><b>BST </b>System <b><?php echo $roleSession['roleName']?></b></span>
 </a>
 <!-- Header Navbar: style can be found in header.less -->
 <nav class="navbar navbar-static-top" role="navigation">

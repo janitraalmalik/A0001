@@ -16,6 +16,12 @@ class Barang_model extends MY_Model {
         $this->_username = '';
         $this->tblName = $this->table;
         $this->tblId = 'id';
+        $roleSession = $this->session->userdata('roleSession');
+        if(isset($roleSession['roleCd'])){
+            $this->_roleCode = $roleSession['roleCd'];
+        }else{
+            $this->_roleCode = 0;
+        }
         /* end */
     }
 	
@@ -74,7 +80,7 @@ class Barang_model extends MY_Model {
     public function getWhere(){
        
        $this->db->where('deleted_at =',null);
-       return $this->db->where('kd_jns_usaha','JU001'); 
+       return $this->db->where('kd_jns_usaha',$this->_roleCode); 
         
     }
 	

@@ -191,85 +191,19 @@ function tgl_sql_export($date){
     }
 }
 
-function generate_code(){
-	$CI 	=& get_instance();
-	
-	$query = "
-		SELECT 
-		MAX(company_code) AS kode 
-		FROM company
-	";
-	$row = $CI->db->query($query)->row_array();
-	$id = $row['kode'];
-	$max_id = substr($id, 1,3);
-	$plus = $max_id+1;
-	if($plus<10){
-		$kode = "C00".$plus;
-	}
-	else{
-		$kode = "C0".$plus;
-	}	
-	
-	return $kode;
-}
-
-function generate_code_max($company_fk){
-	$CI 	=& get_instance();
-	
-	$query = "
-		SELECT 
-		MAX(employee_code) AS kode 
-		FROM transaction.employee_organization
-		WHERE company_fk = '{$company_fk}'
-	";
-	
-	$row = $CI->db->query($query)->row_array();
-	$id = $row['kode'];
-	$max_id = substr($id, 4,4);
-	$plus = $max_id+1;
-	if($plus<10){
-		$kode = $company_fk."000".$plus;
-	}
-	else if($plus<99){
-		$kode = $company_fk."00".$plus;
-	}	
-	else if($plus<999){
-		$kode = $company_fk."0".$plus;
-	}	
-	else if($plus<9999){
-		$kode = $company_fk.$plus;
-	}
-	
-	return $kode;
-}
-
-function generate_code_date(){
-	$CI 	=& get_instance();			
-	$reg 	= "";
-	
-	$CI->db->select('employee_number');
-	$CI->db->from('employee');
-	$CI->db->order_by('employee_number', 'desc');
-	$CI->db->limit(1);
-	$query = $CI->db->get();
-	
-	if ($query->num_rows()>0) {
-		$rows = $query->row();
-		$row_id = $rows->employee_number;
-		$id_row = substr($row_id,8);
-		$reg = $id_row+1;
-		
-		if (strlen($reg)==1){$reg='000'.$reg;} 
-		elseif(strlen($reg)==2){$reg='00'.$reg;}
-		elseif(strlen($reg)==3){$reg='0'.$reg;}
-		else {$reg=$reg;}
-		
-		$reg=date("y").date("m").date("d").$reg;
-	} 
-	else{
-		$reg=date("y").date("m").date("d").'0001';
-	}
-	return $reg;
+function generateCodeVendor() {
+    $CI =& get_instance();
+    
+    $dt = $CI->db->select('COUNT(vend_kd) as code')
+                                ->where('deleted_at =',null)
+                                ->where('kd_jns_usaha','JU001')
+                                ->get('p_m_vendor_supplier')->row();
+    $code  = $dt->code;
+    $codelen  = strlen($dt->code);
+    $codeResult = $kode + 1;
+    
+    $nomer = str_repeat("0", 5 - $codelen) . $codeResult;	
+	return $nomer;
 }
 
 function post($key= '', $clean = false){
@@ -325,6 +259,31 @@ function getNameCategory($param) {
     return $result->cat_brg_nama;
 }
 
+function getNameVendor($param) {
+    
+    if(empty($param)) { return false; }
+    
+    $CI 	=& get_instance();
+    
+    $result = $CI->db->query("SELECT vend_name AS nameData FROM p_m_vendor_supplier WHERE deleted_at IS NULL AND vend_kd=" . $param)->row();
+    
+    return $result->nameData;
+}
+
+function numberFormat($param){
+	return number_format($param);
+}
+
+function getStatusPO($param) {
+    
+    if(empty($param)) { return false; }
+    
+    $CI 	=& get_instance();
+    
+    $result = $CI->db->query("SELECT sts_nama AS nameData FROM p_m_status WHERE deleted_at IS NULL AND kd_jns_usaha = 'JU001' AND id=" . $param)->row();
+    
+    return $result->nameData;
+}
 
 
 /* End of file gmf_helper.php */

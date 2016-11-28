@@ -1,6 +1,6 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Purchasing extends CI_Controller {
+class Purchasing extends MY_Controller {
     
 	public function __construct() {
 	   

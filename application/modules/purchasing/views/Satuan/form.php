@@ -39,14 +39,14 @@ $(document).ready(function() {
 <section class="content">
     <?php echo form_open($action, array('class' => 'form-horizontal row-form')); ?>
         <div class="form-group">
-    		<label class="col-sm-2 control-label input-sm">Code *</label>
+    		<label class="col-sm-2 control-label input-sm">Kode *</label>
     		<div class="col-sm-3">
                 <input 
                     class="form-control input-sm" 
                     type="text" 
                     id="barcode"
                     name="codeSatuan" 
-                    placeholder="Code" 
+                    placeholder="Kode" 
                     value="<?php echo (empty($contentData['satuan_kd']))? set_value('codeSatuan') : $contentData['satuan_kd']; ?>" 
                     <?php echo (empty($contentData['satuan_kd']))? '' : 'readonly="true"'; ?>" 
                     required="true" autofocus="true" />
@@ -54,7 +54,7 @@ $(document).ready(function() {
     		</div>
     	</div>
     	<div class="form-group">
-    		<label class="col-sm-2 control-label input-sm">Name *</label>
+    		<label class="col-sm-2 control-label input-sm">Nama *</label>
     		<div class="col-sm-3">
                 <input 
                     class="form-control input-sm"
@@ -67,21 +67,21 @@ $(document).ready(function() {
     		</div>
     	</div>
         <div class="form-group">
-    		<label class="col-sm-2 control-label input-sm">Description</label>
+    		<label class="col-sm-2 control-label input-sm">Keterangan</label>
             <div class="col-sm-3">
                 <textarea 
                     class="form-control" 
                     rows="3" 
                     name="descSatuan" 
-                    placeholder="Description"
+                    placeholder="Keterangan"
                 ><?php echo (empty($contentData['satuan_desc']))? set_value('descSatuan') : $contentData['satuan_desc'] ; ?></textarea>
     		</div>
     	</div>
     	<div class="form-group">
     		<div class="col-sm-offset-2 col-sm-6">
                 <input type="hidden" name="id" value="<?php echo (isset($contentData->id))? $contentData->id : ''; ?>"/>
-    			<button type="submit" class="btn btn-flat btn-primary color-palette btn-sm"><span class="fa fa-save"></span> &nbsp;Save </button>
-    			<a class="btn btn-flat bg-olive color-palette btn-sm" href="<?php echo $back; ?>"><span class="fa  fa-arrow-left"></span>&nbsp;&nbsp;Back</a>
+    			<button type="submit" class="btn btn-flat btn-primary color-palette btn-sm"><span class="fa fa-save"></span> &nbsp;Simpan </button>
+    			<a class="btn btn-flat bg-olive color-palette btn-sm" href="<?php echo $back; ?>"><span class="fa  fa-arrow-left"></span>&nbsp;&nbsp;Simpan</a>
     		</div>
     	</div>
     <?php echo form_close(); ?>
