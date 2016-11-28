@@ -20,10 +20,8 @@ class hrm extends CI_Controller {
 		));
     }
     
-    function tes(){
-    die("abas");	
-    }
-    }
+    
+    
 }
 /* End of file Purchasing.php */
 /* Location: ./application/modules/purchasing/controllers/Purchasing.php */
