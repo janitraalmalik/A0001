@@ -3,10 +3,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Karyawan_model extends MY_Model {
 
-	private $table 			= 'hr_m_karyawan';
+	private $table 			= 'm_hrm_karyawan';
 	private $column_order 	= array(null,'nik_kary','nama_kary','agama_kary','sex_kary','bagian_kary','telp_kary','alamat_kary',null);
 	private $column_search 	= array('nik_kary','nama_kary','agama_kary','sex_kary','bagian_kary','telp_kary','alamat_kary');  
-	private $order 			= array('id' => 'desc'); 
+	private $order 			= array('id_kary' => 'desc'); 
 	
     public function __construct(){
         parent::__construct();
