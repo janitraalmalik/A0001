@@ -1,21 +1,13 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Vendor_model extends MY_Model {
+class Vendors_model extends MY_Model {
 
 	private $table 			= 'p_m_vendor_supplier';
-	private $column_order 	= array(null,'vend_kd','vend_name','vend_pic',null);
-	private $column_search 	= array('vend_kd','vend_name','vend_pic');  
+	private $column_order 	= array(null,'vend_kd','vend_name','vend_tlp','vend_pic',null);
+	private $column_search 	= array('vend_kd','vend_name','vend_tlp','vend_pic');  
 	private $order 			= array('id' => 'desc'); 
 	
-	public	$username  	  	= '';
-	public	$password  	  	= '';
-	public	$name_users	  	= '';
-	public	$photo 	  	  	= '';
-	public	$blockage 	  	= '';
-	public  $id_users_group	= '';
-	public  $name_group		= '';
-    
     public function __construct(){
         parent::__construct();
         $this->load->database();
@@ -24,10 +16,18 @@ class Vendor_model extends MY_Model {
         $this->_username = '';
         $this->tblName = $this->table;
         $this->tblId = 'id';
+        $roleSession = $this->session->userdata('roleSession');
+        if(isset($roleSession['roleCd'])){
+            $this->_roleCode = $roleSession['roleCd'];
+        }else{
+            $this->_roleCode = 0;
+        }
         /* end */
     }
 	
 	private function _get_query() {
+	   
+        $this->getWhere();
 		$this->db->from($this->table);
 
 		$i = 0;
@@ -55,8 +55,8 @@ class Vendor_model extends MY_Model {
 			$this->db->order_by(key($order), $order[key($order)]);
 		}
 	}
-	
-	public function get_users() {
+    
+    public function get_data() {
 		$this->_get_query();
 		if($_POST['length'] != -1)
 		$this->db->limit($_POST['length'], $_POST['start']);
@@ -64,7 +64,7 @@ class Vendor_model extends MY_Model {
 		
 		return $query->result();
 	}
-
+	
 	public function count_filtered() {
 		$this->_get_query();
 		$query = $this->db->get();
@@ -72,9 +72,17 @@ class Vendor_model extends MY_Model {
 	}
 
 	public function count_all() {
+        $this->getWhere();
 		$this->db->from($this->table);
 		return $this->db->count_all_results();
 	}
+    
+    public function getWhere(){
+       
+       $this->db->where('deleted_at =',null);
+       return $this->db->where('kd_jns_usaha',$this->_roleCode); 
+        
+    }
 	
 }
 /* End of file Model_users.php */

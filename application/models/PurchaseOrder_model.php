@@ -1,11 +1,11 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class CatBarang_model extends MY_Model {
+class PurchaseOrder_model extends MY_Model {
 
-	private $table 			= 'p_m_cat_barang';
-	private $column_order 	= array(null,'cat_brg_nama','cat_brg_desc','cat_brg_parent',null);
-	private $column_search 	= array('cat_brg_nama','cat_brg_desc','cat_brg_parent');  
+	private $table 			= 'p_t_po';
+	private $column_order 	= array(null,'po_no','po_tgl','po_tgl_tagihan','kd_vendor_supplier','status_po_id','po_total',null);
+	private $column_search 	= array('po_no','po_tgl','po_tgl_tagihan','kd_vendor_supplier','status_po_id','po_total');  
 	private $order 			= array('id' => 'desc'); 
 	
     public function __construct(){
@@ -55,8 +55,8 @@ class CatBarang_model extends MY_Model {
 			$this->db->order_by(key($order), $order[key($order)]);
 		}
 	}
-	
-	public function get_data() {
+    
+    public function get_data() {
 		$this->_get_query();
 		if($_POST['length'] != -1)
 		$this->db->limit($_POST['length'], $_POST['start']);
@@ -64,7 +64,7 @@ class CatBarang_model extends MY_Model {
 		
 		return $query->result();
 	}
-
+	
 	public function count_filtered() {
 		$this->_get_query();
 		$query = $this->db->get();
@@ -72,17 +72,15 @@ class CatBarang_model extends MY_Model {
 	}
 
 	public function count_all() {
-	   
         $this->getWhere();
 		$this->db->from($this->table);
 		return $this->db->count_all_results();
-        
 	}
     
     public function getWhere(){
        
        $this->db->where('deleted_at =',null);
-       return $this->db->where('kd_jns_usaha','JU001'); 
+       return $this->db->where('kd_jns_usaha',$this->_roleCode); 
         
     }
 	

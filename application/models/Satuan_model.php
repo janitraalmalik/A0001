@@ -16,13 +16,19 @@ class Satuan_model extends MY_Model {
         $this->_username = '';
         $this->tblName = $this->table;
         $this->tblId = 'id';
+        $roleSession = $this->session->userdata('roleSession');
+        if(isset($roleSession['roleCd'])){
+            $this->_roleCode = $roleSession['roleCd'];
+        }else{
+            $this->_roleCode = 0;
+        }
+        
         /* end */
     }
 	
 	private function _get_query() {
 	   
-        $this->db->where('kd_jns_usaha', 'JU001');
-        $this->db->where('deleted_at =',null);
+        $this->getWhere();
 		$this->db->from($this->table);
 
 		$i = 0;
@@ -67,9 +73,18 @@ class Satuan_model extends MY_Model {
 	}
 
 	public function count_all() {
+        $this->getWhere();	   
 		$this->db->from($this->table);
 		return $this->db->count_all_results();
 	}
+    
+    
+    public function getWhere(){
+       
+       $this->db->where('deleted_at =',null);
+       return $this->db->where('kd_jns_usaha',$this->_roleCode); 
+        
+    }
 	
 }
 /* End of file Model_users.php */

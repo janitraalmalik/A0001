@@ -8,14 +8,7 @@ class Status_model extends MY_Model {
 	private $column_search 	= array('sts_nama');  
 	private $order 			= array('id' => 'desc'); 
 	
-	public	$username  	  	= '';
-	public	$password  	  	= '';
-	public	$name_users	  	= '';
-	public	$photo 	  	  	= '';
-	public	$blockage 	  	= '';
-	public  $id_users_group	= '';
-	public  $name_group		= '';
-    
+
     public function __construct(){
         parent::__construct();
         $this->load->database();
@@ -24,10 +17,18 @@ class Status_model extends MY_Model {
         $this->_username = '';
         $this->tblName = $this->table;
         $this->tblId = 'id';
+        $roleSession = $this->session->userdata('roleSession');
+        if(isset($roleSession['roleCd'])){
+            $this->_roleCode = $roleSession['roleCd'];
+        }else{
+            $this->_roleCode = 0;
+        }
         /* end */
     }
 	
 	private function _get_query() {
+	   
+        $this->getWhere();
 		$this->db->from($this->table);
 
 		$i = 0;
@@ -72,9 +73,17 @@ class Status_model extends MY_Model {
 	}
 
 	public function count_all() {
-		$this->db->from($this->table);
+		$this->getWhere();
+        $this->db->from($this->table);
 		return $this->db->count_all_results();
 	}
+    
+    public function getWhere(){
+       
+       $this->db->where('deleted_at =',null);
+       return $this->db->where('kd_jns_usaha',$this->_roleCode); 
+        
+    }
 	
 }
 /* End of file Model_users.php */

@@ -1,6 +1,6 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Data_satuan extends CI_Controller {
+class Data_satuan extends MY_Controller {
     
 	public function __construct() {
 	   

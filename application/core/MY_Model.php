@@ -15,10 +15,11 @@ class MY_Model extends CI_Model {
         parent::__construct();
         $this->load->database();
         /* updated by same */
-        $userData = $this->session->userdata("adminData");
-        if(isset($userData['id'])){
-            $this->_user_id = $userData['id'];
-            $this->_username = $userData['username'];
+        $userData = $this->session->userdata("userSession");
+        
+        if(isset($userData['UserId'])){
+            $this->_user_id = $userData['UserId'];
+            $this->_username = $userData['userName'];
         }else{
             $this->_user_id = 0;
             $this->_username = 'Guest';
@@ -86,7 +87,15 @@ class MY_Model extends CI_Model {
                 $insert[$key] = $val;
             }   
         }
+                
+        $userData = $this->session->userdata("userSession");
+        if(isset($userData['UserId'])){
+            $user_id = $userData['UserId'];
+        }else{
+            $user_id = 0;
+        }
         $insert["created_at"] = date("Y-m-d H:i:s");
+        $insert['created_by'] = $user_id;
         $this->db->insert($tblName, $insert); 
         $insert_id = $this->db->insert_id();
         $query = $this->db->last_query();
@@ -102,7 +111,16 @@ class MY_Model extends CI_Model {
                 $update[$key] = $val;
             }
         }
+        
+        $userData = $this->session->userdata("userSession");
+        if(isset($userData['UserId'])){
+            $user_id = $userData['UserId'];
+        }else{
+            $user_id = 0;
+        }        
+        
         $update["updated_at"] = date("Y-m-d H:i:s");
+        $update['updated_by'] = $user_id;
         $this->db->where($by,$id);
         $this->db->update($tblName, $update); 
         $query = $this->db->last_query();
@@ -135,9 +153,16 @@ class MY_Model extends CI_Model {
         return $count;
     }
     private function DeleteRow($tblName,$id,$by,$log = 1){
-
+        
+        $userData = $this->session->userdata("userSession");
+        if(isset($userData['UserId'])){
+            $user_id = $userData['UserId'];
+        }else{
+            $user_id = 0;
+        }
+        
         $data["deleted_at"] = date("Y-m-d H:i:s");
-        $data['deleted_by'] = $this->_user_id;
+        $data['deleted_by'] = $user_id;
         $this->db->where($by,$id);
         $this->db->update($tblName, $data);
 
@@ -148,8 +173,16 @@ class MY_Model extends CI_Model {
         }
     }
     private function restoreRow($tblName,$id,$by,$log = 1){
+        
+        $userData = $this->session->userdata("userSession");
+        if(isset($userData['UserId'])){
+            $user_id = $userData['UserId'];
+        }else{
+            $user_id = 0;
+        }
+        
         $data["deleted_at"] = NULL;
-        //$data['deleted_by'] = $this->_user_id;
+        $data['deleted_by'] = $user_id;
         $this->db->where($by,$id);
         $this->db->update($tblName, $data);
         $query = $this->db->last_query();
@@ -173,15 +206,13 @@ class MY_Model extends CI_Model {
         $month = date("m-Y");
         $ip = $this->input->ip_address();
         
-        
-        
-        $userData = $this->session->userdata("adminData");
-        if(isset($userData['id'])){
-            $user_id = $userData['id'];
-            $user_name = $userData['username'];
+        $userData = $this->session->userdata("userSession");
+        if(isset($userData['UserId'])){
+            $user_id = $userData['UserId'];
+            $user_name = $userData['userName'];
         }else{
             $user_id = 0;
-            $user_name = "guest";
+            $user_name = "UnKnowUser";
         }
 
         $insert['ip'] = $ip;

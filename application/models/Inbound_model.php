@@ -1,13 +1,13 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class CatBarang_model extends MY_Model {
+class Inbound_model extends MY_Model {
 
-	private $table 			= 'p_m_cat_barang';
-	private $column_order 	= array(null,'cat_brg_nama','cat_brg_desc','cat_brg_parent',null);
-	private $column_search 	= array('cat_brg_nama','cat_brg_desc','cat_brg_parent');  
-	private $order 			= array('id' => 'desc'); 
-	
+	private $table 			= 'v_i_inbound_grid';
+	private $column_order 	= array('id_inbound','date_in',null,'brg_nama',null,null,null,null,null);
+	private $column_search 	= array('id_inbound','brg_nama','date_in');  
+	private $order 			= array('date_in' => 'asc'); 
+    
     public function __construct(){
         parent::__construct();
         $this->load->database();
@@ -15,13 +15,7 @@ class CatBarang_model extends MY_Model {
         $this->_user_id = 0;
         $this->_username = '';
         $this->tblName = $this->table;
-        $this->tblId = 'id';
-        $roleSession = $this->session->userdata('roleSession');
-        if(isset($roleSession['roleCd'])){
-            $this->_roleCode = $roleSession['roleCd'];
-        }else{
-            $this->_roleCode = 0;
-        }
+        $this->tblId = 'id_inbound';
         /* end */
     }
 	
@@ -72,16 +66,14 @@ class CatBarang_model extends MY_Model {
 	}
 
 	public function count_all() {
-	   
-        $this->getWhere();
-		$this->db->from($this->table);
+		$this->getWhere();
+        $this->db->from($this->table);
 		return $this->db->count_all_results();
-        
 	}
     
     public function getWhere(){
        
-       $this->db->where('deleted_at =',null);
+       $this->db->where('delete_at =',null);
        return $this->db->where('kd_jns_usaha','JU001'); 
         
     }

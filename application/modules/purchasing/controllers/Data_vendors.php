@@ -1,6 +1,6 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Data_catbarang extends MY_Controller {
+class Data_vendors extends MY_Controller {
     
 	public function __construct() {
 	   
@@ -8,13 +8,13 @@ class Data_catbarang extends MY_Controller {
         
 		date_default_timezone_set('Asia/Jakarta');
 		$this->page->use_directory();
-        $this->moduleTitle = 'Data Item Category';
-		$this->load->model('CatBarang_model');
+        $this->moduleTitle = 'Data Vendors';
+		$this->load->model('Vendors_model');
 	}
     
     private function process_grid_state(){
 		$segments = $this->uri->rsegment_array();
-		$grid_state = 'purchasing/data_catbarang';
+		$grid_state = 'purchasing/data_vendors';
 		foreach($segments as $segment){
 			if(strrpos($segment, ':') !== FALSE){
 				$grid_state .= $segment.'/';
@@ -26,7 +26,7 @@ class Data_catbarang extends MY_Controller {
 	public function index() {
 	   //$grid_state = $this->process_grid_state();
       
-	   $this->page->view('CatBarang/index', array (
+	   $this->page->view('Vendors/index', array (
 			'moduleTitle'      => $this->moduleTitle,
 			'moduleSubTitle'   => '',
 			'add'		=> $this->page->base_url('/add')
@@ -36,25 +36,34 @@ class Data_catbarang extends MY_Controller {
     public function get_data(){
         
         $grid_state = $this->process_grid_state();
-		$list = $this->CatBarang_model->get_data();
+		$list = $this->Vendors_model->get_data();
 		$data = array();
 		$no = $_POST['start'];
-		foreach ($list as $grid) {			
+		foreach ($list as $grid) {
 			$no++;
 			$row = array();
 			$row[] = $no;
-			$row[] = $grid->cat_brg_nama;
-			$row[] = getNameCategory($grid->cat_brg_parent);
+			$row[] = $grid->vend_kd;
+			$row[] = $grid->vend_name;
+			$row[] = $grid->vend_tlp;
+			$row[] = $grid->vend_pic;
 			$row[] = '<div style="width:100%;text-align:center;">
-                        <a class="btn btn-xs btn-flat btn-info" href="'.site_url($grid_state . '/edit/' .$grid->id).'" title="Update Data">Update</a> &nbsp;
-                        <a class="btn btn-xs btn-flat btn-danger" onclick="return confirm(\'Are you sure to delete data ' . $grid->cat_brg_nama . ' ?\')" href="'.site_url($grid_state . '/delete/'.$grid->id).'" title="Delete Data">Delete</a>
+                        <a 
+                            class="btn btn-xs btn-flat btn-info" 
+                            href="'.site_url($grid_state . '/edit/' .$grid->id).'" 
+                            title="Update Data">Update</a> &nbsp;
+                        <a 
+                            class="btn btn-xs btn-flat btn-danger" 
+                            onclick="return confirm(\'Are you sure to delete data ' . $grid->vend_name . ' ?\')" 
+                            href="'.site_url($grid_state . '/delete/'.$grid->id).'" 
+                            title="Delete Data">Delete</a>
                     </div>';
 			$data[] = $row;
 		}
 		$output = array(
 			"draw" 				=> $_POST['draw'],
-			"recordsTotal" 		=> $this->CatBarang_model->count_all(),
-			"recordsFiltered" 	=> $this->CatBarang_model->count_filtered(),
+			"recordsTotal" 		=> $this->Vendors_model->count_all(),
+			"recordsFiltered" 	=> $this->Vendors_model->count_filtered(),
 			"data" 				=> $data,
 		);
 		//output to json format
@@ -72,7 +81,7 @@ class Data_catbarang extends MY_Controller {
 		} elseif ($this->uri->segment(3) == 'edit') {
 			$title = 'Edit ';
             if($id != ''){
-                $contentData = $this->CatBarang_model->find($id,'id');
+                $contentData = $this->Vendors_model->find($id,'id');
                 if(count($contentData) == 0){
                     redirect($this->page->base_url('/'));
                 }           
@@ -89,7 +98,7 @@ class Data_catbarang extends MY_Controller {
             			'contentData'	   => $contentData
                         );
         
-		$this->page->view('CatBarang/form',$contect);
+		$this->page->view('Vendors/form',$contect);
 	}
 	
 	public function add(){
@@ -103,18 +112,21 @@ class Data_catbarang extends MY_Controller {
 	public function insert(){		
 		if ( ! $this->input->post()) show_404(); 
 	   	
-        
-		$this->form_validation->set_rules('nameCatBarang', 'Name', 'required');
+		$this->form_validation->set_rules('nameVendors', 'Name', 'required');
+		$this->form_validation->set_rules('phoneVendors', 'Phone', 'required');
+		$this->form_validation->set_rules('picVendors', 'PIC', 'required');
         
 		if($this->form_validation->run()){
 		  
     		$insertContent = array(
-                                'cat_brg_nama'     => post('nameCatBarang'),
-                                'cat_brg_desc'   => post('descCatBarang'),
-								'cat_brg_parent'   => post('parentCatBarang'),
+                                'vend_kd'     => generateCodeVendor(),
+                                'vend_name'   => post('nameVendors'),
+								'vend_alamat'   => post('addressVendors'),
+								'vend_tlp'   => post('phoneVendors'),
+								'vend_pic'   => post('picVendors'),
 								'kd_jns_usaha'  => 'JU001',
                             );
-            $insert = $this->CatBarang_model->add($insertContent);
+            $insert = $this->Vendors_model->add($insertContent);
             if($insert == true){
                 redirect($this->page->base_url('/'));
             }
@@ -137,18 +149,21 @@ class Data_catbarang extends MY_Controller {
 	public function update($id){		
 		if ( ! $this->input->post()) show_404(); 
 
-        $this->form_validation->set_rules('nameCatBarang', 'Name', 'required');
+        $this->form_validation->set_rules('nameVendors', 'Name', 'required');
+		$this->form_validation->set_rules('phoneVendors', 'Phone', 'required');
+		$this->form_validation->set_rules('picVendors', 'PIC', 'required');
         
 		if($this->form_validation->run()){
 		    
 			$updateContent = array(
-                    'cat_brg_nama'     => post('nameCatBarang'),
-                    'cat_brg_desc'   => post('descCatBarang'),
-					'cat_brg_parent'   => post('parentCatBarang'),
-					'kd_jns_usaha'  => 'JU001',
+                                'vend_name'   => post('nameVendors'),
+								'vend_alamat'   => post('addressVendors'),
+								'vend_tlp'   => post('phoneVendors'),
+								'vend_pic'   => post('picVendors'),
+                                'kd_jns_usaha'  => 'JU001',
 			);		
 			
-            $this->CatBarang_model->update($id,$updateContent,"id");
+            $this->Vendors_model->update($id,$updateContent,"id");
             
         }else{
             $ui_messages[] = array(
@@ -173,34 +188,14 @@ class Data_catbarang extends MY_Controller {
         if(!isset($id) || $id == ''){
             redirect($this->page->base_url('/'));
         }
-        $data_row = $this->CatBarang_model->find($id,'id');
+        $data_row = $this->Vendors_model->find($id,'id');
         if(count($data_row) == 0){
             redirect($this->page->base_url('/'));
         }
-        $this->CatBarang_model->delete($id,'id');
+        $this->Vendors_model->delete($id,'id');
 		redirect($this->page->base_url("/"));
 		
 	}
-    
-    function display_children($parent, $level) { 
-        
-        $where = " AND cat_brg_parent = " . $parent ."";
-        $data_row = $this->CatBarang_model->all($where);
-       
-        $dataReturn = array();
-        foreach($data_row as $row){
-            
-            $dataReturn[] = array('id' => $row['id'], 'name'=> str_repeat(' ',$level) . $row['cat_brg_nama'] );
-            $this->display_children($row['id'], $level+1);
-            
-        } 
-        
-        return $dataReturn;
-    
-    } 
-    
-    
-
     
     
 }

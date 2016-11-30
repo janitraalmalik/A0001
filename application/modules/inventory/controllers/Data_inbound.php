@@ -1,6 +1,6 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Data_barang extends CI_Controller {
+class Data_inbound extends CI_Controller {
     
 	public function __construct() {
 	   
@@ -8,13 +8,13 @@ class Data_barang extends CI_Controller {
         
 		date_default_timezone_set('Asia/Jakarta');
 		$this->page->use_directory();
-        $this->moduleTitle = 'Data Items';
-		$this->load->model('Barang_model');
+        $this->moduleTitle = 'Data Inbound';
+		$this->load->model('Inbound_model');
 	}
     
     private function process_grid_state(){
 		$segments = $this->uri->rsegment_array();
-		$grid_state = 'purchasing/data_barang';
+		$grid_state = 'inventory/data_inbound';
 		foreach($segments as $segment){
 			if(strrpos($segment, ':') !== FALSE){
 				$grid_state .= $segment.'/';
@@ -26,7 +26,7 @@ class Data_barang extends CI_Controller {
 	public function index() {
 	   //$grid_state = $this->process_grid_state();
       
-	   $this->page->view('Barang/index', array (
+	   $this->page->view('Inbound/index', array (
 			'moduleTitle'      => $this->moduleTitle,
 			'moduleSubTitle'   => '',
 			'add'		=> $this->page->base_url('/add')
@@ -36,16 +36,20 @@ class Data_barang extends CI_Controller {
     public function get_data(){
         
         $grid_state = $this->process_grid_state();
-		$list = $this->Barang_model->get_data();
+		$list = $this->Inbound_model->get_data();
 		$data = array();
 		$no = $_POST['start'];
 		foreach ($list as $grid) {
 			$no++;
 			$row = array();
 			$row[] = $no;
-			$row[] = $grid->brg_kd;
+			$row[] = $grid->id_inbound;
+			$row[] = $grid->date_in;
+			$row[] = $grid->po_no;
 			$row[] = $grid->brg_nama;
-			$row[] = getNameCategory($grid->cat_barang_id);
+			$row[] = $grid->jml_in;
+			$row[] = $grid->refund;
+			$row[] = $grid->sisa;
 			$row[] = '<div style="width:100%;text-align:center;">
                         <a 
                             class="btn btn-xs btn-flat btn-info" 
@@ -61,8 +65,8 @@ class Data_barang extends CI_Controller {
 		}
 		$output = array(
 			"draw" 				=> $_POST['draw'],
-			"recordsTotal" 		=> $this->Barang_model->count_all(),
-			"recordsFiltered" 	=> $this->Barang_model->count_filtered(),
+			"recordsTotal" 		=> $this->Inbound_model->count_all(),
+			"recordsFiltered" 	=> $this->Inbound_model->count_filtered(),
 			"data" 				=> $data,
 		);
 		//output to json format

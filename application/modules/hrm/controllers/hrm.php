@@ -1,6 +1,6 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
-class hrm extends CI_Controller {
+class Hrm extends CI_Controller {
     
 	public function __construct() {
 	   
