@@ -45,6 +45,30 @@ function form_data($names){
 	return $data;
 }
 
+function net14($date){
+    $newdate = replaceIsWeekend($date);
+    $newdate = strtotime ( '+14 day' , strtotime ( $date ) ) ;
+    $newdate = date ( 'd-m-Y' , $newdate );
+    if(date('N', strtotime($newdate)) == 6){
+        $newdate = strtotime ( '+2 day' , strtotime ( $newdate ) ) ;
+    }elseif(date('N', strtotime($newdate)) == 7){
+        $newdate = strtotime ( '+1 day' , strtotime ( $newdate ) ) ;
+    } //(date('N', strtotime($newdate)) >= 6);
+    $newdate = date ( 'd-m-Y' , $newdate );
+    return $newdate;
+}
+
+function replaceIsWeekend($date){
+    $newdate = $date;
+    if(date('N', strtotime($newdate)) == 6){
+        $newdate = strtotime ( '+2 day' , strtotime ( $newdate ) ) ;
+    }elseif(date('N', strtotime($newdate)) == 7){
+        $newdate = strtotime ( '+1 day' , strtotime ( $newdate ) ) ;
+    }
+    $newdate = date ( 'd-m-Y' , $newdate );
+    return $newdate; 
+}
+
 function newline(){
 	echo "<br />";
 }
@@ -177,30 +201,41 @@ function tgl_sql($date){
 	return $date;
 }
 
-function tgl_sql_export($date){
+function dateTOSql($date){
     if(!empty($date)){
-    	$exp = explode('/',$date);
-    	if(count($exp) == 3) {
-    		$date = $exp[2].'-'.$exp[1].'-'.$exp[0];
-            $date = date('Y-m-d', strtotime($date));
-    	}
-	  return $date;
+   	    $date = date('Y-m-d', strtotime($date));
+        return $date;
     }else{
         
 	  return NULL;
     }
 }
 
-function generateCodeVendor() {
+function generateCodeVendor($jns_usaha) {
     $CI =& get_instance();
     
     $dt = $CI->db->select('COUNT(vend_kd) as code')
                                 ->where('deleted_at =',null)
-                                ->where('kd_jns_usaha','JU001')
+                                ->where('kd_jns_usaha',$jns_usaha)
                                 ->get('p_m_vendor_supplier')->row();
     $code  = $dt->code;
     $codelen  = strlen($dt->code);
-    $codeResult = $kode + 1;
+    $codeResult = $code + 1;
+    
+    $nomer = str_repeat("0", 5 - $codelen) . $codeResult;	
+	return $nomer;
+}
+
+function generateCodePO($jns_usaha) {
+    $CI =& get_instance();
+    
+    $dt = $CI->db->select('COUNT(po_no) as code')
+                                ->where('deleted_at =',null)
+                                ->where('kd_jns_usaha',$jns_usaha)
+                                ->get('p_t_po')->row();
+    $code  = $dt->code;
+    $codelen  = strlen($dt->code);
+    $codeResult = $code + 1;
     
     $nomer = str_repeat("0", 5 - $codelen) . $codeResult;	
 	return $nomer;
@@ -259,13 +294,13 @@ function getNameCategory($param) {
     return $result->cat_brg_nama;
 }
 
-function getNameVendor($param) {
+function getNameVendor($param,$jns_usaha) {
     
     if(empty($param)) { return false; }
     
     $CI 	=& get_instance();
     
-    $result = $CI->db->query("SELECT vend_name AS nameData FROM p_m_vendor_supplier WHERE deleted_at IS NULL AND vend_kd=" . $param)->row();
+    $result = $CI->db->query("SELECT vend_name AS nameData FROM p_m_vendor_supplier WHERE deleted_at IS NULL AND kd_jns_usaha = '" . $jns_usaha . "' AND vend_kd=" . $param)->row();
     
     return $result->nameData;
 }
@@ -274,13 +309,13 @@ function numberFormat($param){
 	return number_format($param);
 }
 
-function getStatusPO($param) {
+function getStatusPO($param, $jns_usaha) {
     
     if(empty($param)) { return false; }
     
     $CI 	=& get_instance();
     
-    $result = $CI->db->query("SELECT sts_nama AS nameData FROM p_m_status WHERE deleted_at IS NULL AND kd_jns_usaha = 'JU001' AND id=" . $param)->row();
+    $result = $CI->db->query("SELECT sts_nama AS nameData FROM p_m_status WHERE deleted_at IS NULL AND kd_jns_usaha = '" . $jns_usaha . "' AND id=" . $param)->row();
     
     return $result->nameData;
 }
