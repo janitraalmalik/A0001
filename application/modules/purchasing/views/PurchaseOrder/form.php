@@ -149,7 +149,7 @@
                     $subTotPO = 0;
                     $TotPO = 0;                
                 ?>
-                    <?php if(count($index) > 0): ?>
+                    <?php if(!empty($indexS) && count($index) > 0): ?>
                     <?php 
                         
                         $indexS  = set_value('index');
