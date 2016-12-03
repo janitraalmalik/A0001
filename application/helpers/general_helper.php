@@ -160,14 +160,6 @@ function terbilang($n) {
 	return $str;
 }
 
-function tgl_indo($tgl){
-	$tanggal = substr($tgl,8,2);
-	$bulan = getBulan(substr($tgl,5,2));
-	$tahun = substr($tgl,0,4);
-
-	return $tanggal.' '.$bulan.' '.$tahun;		 
-}	
-
 function getBulan($bln){
 	switch ($bln){
 		case 1: return "Januari"; break;
@@ -193,11 +185,8 @@ function tgl_str($date){
 	return $date;
 }
 
-function tgl_sql($date){
-	$exp = explode('-',$date);
-	if(count($exp) == 3) {
-		$date = $exp[2].'-'.$exp[1].'-'.$exp[0];
-	}
+function tgl_indo($date){
+    $date = date('d-m-Y', strtotime($date));
 	return $date;
 }
 

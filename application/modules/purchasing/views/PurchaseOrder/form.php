@@ -12,7 +12,7 @@
                     type="text" 
                     name="codeVendors" 
                     placeholder="" 
-                    value="<?php echo (empty($contentData['vend_kd']))? set_value('nameCode') : $contentData['vend_kd']; ?>" 
+                    value="<?php echo (empty($contentData['po_no']))? set_value('nameCode') : $contentData['po_no']; ?>" 
                     readonly="true"/>
     		</div>
     	</div>
@@ -27,7 +27,7 @@
                         <?php endforeach; ?>
                     <?php else: ?>
                         <?php foreach($vendorsData as $rowVend): ?>
-                        <option value="<?php echo $rowVend['vend_kd']?>" <?php echo (@$contentData['vend_kd'] == $rowVend['vend_kd'])?'selected':''?> ><?php echo $rowVend['vend_name']?></option>
+                        <option value="<?php echo $rowVend['vend_kd']?>" <?php echo (@$contentData['kd_vendor_supplier'] == $rowVend['vend_kd'])?'selected':''?> ><?php echo $rowVend['vend_name']?></option>
                         <?php endforeach; ?>
                     <?php endif; ?>
     			</select>
@@ -43,7 +43,7 @@
                     name="addressVendors"
                     id="addressVendors" 
                     placeholder="Alamat"
-                ><?php echo (empty($contentData['vend_alamat']))? set_value('addressVendors') : $contentData['vend_alamat'] ; ?></textarea>
+                ><?php echo (empty($vendorDataRow['vend_alamat']))? set_value('addressVendors') : $vendorDataRow['vend_alamat'] ; ?></textarea>
     		</div>
     	</div>
         <div class="form-group">
@@ -61,7 +61,7 @@
                             value="<?php echo set_value('tgltrxPO');?>"
                         <?php endif; ?>
                 <?php else: ?>
-                    value="<?php echo $contentData['po_tgl'];?>"
+                    value="<?php echo tgl_indo($contentData['po_tgl']);?>"
                 <?php endif; ?> 
                     required="true"/>
                 <?php echo form_error('tgltrxPO', '<label class="text-red">', '</label>'); ?>
@@ -84,7 +84,7 @@
                     name="phoneVendors" 
                     id="phoneVendors"
                     placeholder="No. Tlp" 
-                    value="<?php echo (empty($contentData['vend_name']))? set_value('phoneVendors') : $contentData['vend_name']; ?>" 
+                    value="<?php echo (empty($vendorDataRow['vend_tlp']))? set_value('phoneVendors') : $vendorDataRow['vend_tlp']; ?>" 
                     required="true"/>
                 <?php echo form_error('phoneVendors', '<label class="text-red">', '</label>'); ?>
     		</div>
@@ -98,7 +98,7 @@
                     name="picVendors" 
                     id="picVendors"
                     placeholder="Nama Penanggung Jawab" 
-                    value="<?php echo (empty($contentData['vend_pic']))? set_value('picVendors') : $contentData['vend_pic']; ?>" 
+                    value="<?php echo (empty($vendorDataRow['vend_pic']))? set_value('picVendors') : $vendorDataRow['vend_pic']; ?>" 
                     required="true"/>
                 <?php echo form_error('picVendors', '<label class="text-red">', '</label>'); ?>
     		</div>
@@ -118,7 +118,7 @@
                                 value="<?php echo set_value('tglPenagihanPO');?>"
                             <?php endif; ?>
                     <?php else: ?>
-                        value="<?php echo $contentData['po_tgl'];?>"
+                        value="<?php echo tgl_indo($contentData['po_tgl_tagihan']);?>"
                     <?php endif; ?>  
                     required="true"/>
                 <?php echo form_error('tglPenagihanPO', '<label class="text-red">', '</label>'); ?>
@@ -226,39 +226,109 @@
                     </tr>
                     <?php endforeach; ?>
                     <?php else: ?>
-              		<tr class="text-data-barang">
-                        <td>
-                            <select name="dtlProduk[]" id="dtlProduk-1" class="form-control select2 dtlProduk" style="width: 100%;">
-                				<option value=""></option>
-                                <?php foreach($barangData as $row): ?>
-                                <option value="<?php echo $row['brg_kd']?>"><?php echo $row['brg_nama']?></option>
-                                <?php endforeach; ?>
-                			</select> 
-                        </td>
-                        <td>
-                            <input type="text" name="dltKuantitas[]" id="dltKuantitas-1" class="form-control col-sm-12 numeric dltKuantitas" style="text-align: right;"/>
-                        </td>  
-                        <td>
-                            <input type="text" name="dtlNmSatuan[]" id="dtlNmSatuan-1" class="form-control col-sm-12" readonly="true"/>
-                            <input type="hidden" name="dtlIdSatuan[]" id="dtlIdSatuan-1"/>                               
-                        </td>  
-                        <td>
-                            <input type="text" name="dltHarga[]" id="dltHarga-1" class="form-control col-sm-12 numeric dltHarga" style="text-align: right;"/>
-                        </td>
-                        <td>
-                            <input type="text" name="dltTotal[]" id="dltTotal-1" class="form-control col-sm-12 numeric dltTotal" style="text-align: right;"/>
-                        </td>
-                        <td style="text-align: center; width: 10px;">
-                            <input type="checkbox" name="dtlPajak[]" id="dtlPajak-1" class="dtlPajak"/>
-                            <input type="hidden" name="dtlPajakCheck[]" id="dtlPajakCheck-1"/>
-                            <input type="hidden" name="dtlJmlPajak[]" id="dtlJmlPajak-1" class="dtlJmlPajak"/>
-                        </td>
-                        <td style="text-align: center; width: 10px;">
-                            <input type="hidden" name="index[]" id="index-1" value="1"/>
-                            <span style="display:none;" class="box-number-data-barang">1</span>
-                            <a class="btn btn-info" style="margin: 0!important;"><i class="fa fa-check"></i></a>
-                        </td>
-                    </tr>
+                        <?php if(!empty($contentDataDetail)): ?>
+                            <?php foreach($contentDataDetail AS $rowDetail):?>
+                                <?php
+                                    $value = $rowDetail['index'];
+                                    $dtlID = $rowDetail['id'];
+                                    $dtlProduk = $rowDetail['kd_barang'];
+                                    $dltKuantitas = str_replace(',', '', $rowDetail['jml_barang']);
+                                    $dtlIdSatuan = $rowDetail['kd_satuan'];
+                                    $contentSatuanRow = $this->Satuan_model->find($dtlIdSatuan,'id');
+                                    $dtlNmSatuan = $contentSatuanRow['satuan_name'];
+                                    $dltHarga = str_replace(',', '', $rowDetail['harga_satuan']);
+                                    $dltTotal = $dltKuantitas*$dltHarga;
+                                    $dtlPajakCheck = $rowDetail['ppn'];
+                                    $dtlPajakDesc = '';
+                                    $dtlJmlPajak = 0;
+                                    if($dtlPajakCheck == 1){
+                                        $dtlPajakDesc = 'checked';
+                                        $dtlJmlPajak = $dltTotal*10/100;
+                                    }
+                                    
+                                    $TotPajak = $TotPajak + $dtlJmlPajak;
+                                    $subTotPO = $subTotPO + $dltTotal;
+                                    $TotPO = $subTotPO + $TotPajak;
+                                ?>
+                                <tr class="text-data-barang">
+                                <td>
+                                    <select name="dtlProduk[]" id="dtlProduk-<?php echo $value;?>" class="form-control select2 dtlProduk" style="width: 100%;">
+                        				<option value=""></option>
+                                        <?php foreach($barangData as $row): ?>
+                                        <option value="<?php echo $row['brg_kd']?>" <?php echo ($dtlProduk == $row['brg_kd'])?'selected':''?> ><?php echo $row['brg_nama']?></option>
+                                        <?php endforeach; ?>
+                        			</select> 
+                                </td> 
+                                <td>
+                                    <input type="text" name="dltKuantitas[]" id="dltKuantitas-<?php echo $value;?>" class="form-control col-sm-12 numeric dltKuantitas" style="text-align: right;"  value="<?php echo $dltKuantitas;?>"/>
+                                </td>  
+                                <td>
+                                    <input type="text" name="dtlNmSatuan[]" id="dtlNmSatuan-<?php echo $value;?>" class="form-control col-sm-12" value="<?php echo $dtlNmSatuan; ?>" readonly="true"/>
+                                    <input type="hidden" name="dtlIdSatuan[]" id="dtlIdSatuan-<?php echo $value;?>" value="<?php echo $dtlIdSatuan?>"/>                               
+                                </td>  
+                                <td>
+                                    <input type="text" name="dltHarga[]" id="dltHarga-<?php echo $value;?>" class="form-control col-sm-12 numeric dltHarga" style="text-align: right;" value="<?php echo $dltHarga; ?>"/>
+                                </td>
+                                <td>
+                                    <input type="text" name="dltTotal[]" id="dltTotal-<?php echo $value;?>" class="form-control col-sm-12 numeric dltTotal" style="text-align: right;" value="<?php echo $dltTotal; ?>"/>
+                                </td>
+                                <td style="text-align: center; width: 10px;">
+                                    <input type="checkbox" name="dtlPajak[]" id="dtlPajak-<?php echo $value;?>" class="dtlPajak" <?php echo $dtlPajakDesc;?> />
+                                    <input type="hidden" name="dtlPajakCheck[]" id="dtlPajakCheck-<?php echo $value;?>" value="<?php echo $dtlPajakCheck;?>"/>
+                                    <input type="hidden" name="dtlJmlPajak[]" class="dtlJmlPajak" id="dtlJmlPajak-<?php echo $value;?>" value="<?php echo $dtlJmlPajak;?>"/>
+                                    <input type="hidden" name="dltID[]" id="index-<?php echo $value;?>" value="<?php echo $dtlID;?>"/>
+                                </td>
+                                <?php if($value == 1): ?>
+                                <td style="text-align: center; width: 10px;">
+                                    <input type="hidden" name="index[]" id="index-<?php echo $value;?>" value="<?php echo $value;?>"/>
+                                    <span style="display:none;" class="box-number-data-barang">1</span>
+                                    <a class="btn btn-info" style="margin: 0!important;"><i class="fa fa-check"></i></a>
+                                </td>
+                                <?php else: ?>
+                                <td style="text-align: center; width: 10px;">
+                                    <input type="hidden" name="index[]" id="index-<?php echo $value;?>" value="<?php echo $value;?>"/>
+                                    <span style="display:none;" class="box-number-data-barang">1</span>
+                                    <a class="remove-box btn btn-danger"><i class="fa fa-remove"></i></a>
+                                </td>
+                                <?php endif; ?>
+                            </tr>
+                            <?php endforeach; ?>
+                        <?php else:?>
+                            <tr class="text-data-barang">
+                            <td>
+                                <select name="dtlProduk[]" id="dtlProduk-1" class="form-control select2 dtlProduk" style="width: 100%;">
+                    				<option value=""></option>
+                                    <?php foreach($barangData as $row): ?>
+                                    <option value="<?php echo $row['brg_kd']?>"><?php echo $row['brg_nama']?></option>
+                                    <?php endforeach; ?>
+                    			</select> 
+                            </td>
+                            <td>
+                                <input type="text" name="dltKuantitas[]" id="dltKuantitas-1" class="form-control col-sm-12 numeric dltKuantitas" style="text-align: right;"/>
+                            </td>  
+                            <td>
+                                <input type="text" name="dtlNmSatuan[]" id="dtlNmSatuan-1" class="form-control col-sm-12" readonly="true"/>
+                                <input type="hidden" name="dtlIdSatuan[]" id="dtlIdSatuan-1"/>                               
+                            </td>  
+                            <td>
+                                <input type="text" name="dltHarga[]" id="dltHarga-1" class="form-control col-sm-12 numeric dltHarga" style="text-align: right;"/>
+                            </td>
+                            <td>
+                                <input type="text" name="dltTotal[]" id="dltTotal-1" class="form-control col-sm-12 numeric dltTotal" style="text-align: right;"/>
+                            </td>
+                            <td style="text-align: center; width: 10px;">
+                                <input type="checkbox" name="dtlPajak[]" id="dtlPajak-1" class="dtlPajak"/>
+                                <input type="hidden" name="dtlPajakCheck[]" id="dtlPajakCheck-1"/>
+                                <input type="hidden" name="dtlJmlPajak[]" id="dtlJmlPajak-1" class="dtlJmlPajak"/>
+                            </td>
+                            <td style="text-align: center; width: 10px;">
+                                <input type="hidden" name="index[]" id="index-1" value="1"/>
+                                <span style="display:none;" class="box-number-data-barang">1</span>
+                                <a class="btn btn-info" style="margin: 0!important;"><i class="fa fa-check"></i></a>
+                            </td>
+                        </tr>
+                        <?php endif;?>
+              		
                     <?php endif; ?>
                 </tbody>
             </table>
@@ -276,7 +346,7 @@
                     type="hidden" 
                     name="subTotalInput" 
                     class="subTotalInput" 
-                    value="<?php echo (empty($contentData['po_subtotal']))? set_value('subTotalInput') : $contentData['po_subtotal']; ?>"/>
+                    value="<?php echo (empty($subTotPO))? set_value('subTotalInput') : $subTotPO; ?>"/>
                 <h4 class="subTotal"><?php echo '<b> ' . ((!empty($subTotPO))? number_format($subTotPO):0) . '</b>' ; ?></h4>
     		</div>
     	</div>
@@ -289,7 +359,7 @@
                     type="hidden" 
                     name="ppnPOInput" 
                     class="ppnPOInput" 
-                    value="<?php echo (empty($contentData['totalPO']))? set_value('ppnPOInput') : $contentData['totalPO']; ?>"/>
+                    value="<?php echo (empty($TotPajak))? set_value('ppnPOInput') : $TotPajak; ?>"/>
                 <h4 class="ppnPO"><?php echo '<b> ' . ((!empty($TotPajak))? number_format($TotPajak):0) . '</b>' ; ?></h4>
     		</div>
     	</div>
@@ -302,7 +372,7 @@
                     type="hidden" 
                     name="totalPOInput"
                     class="totalPOInput" 
-                    value="<?php echo (empty($contentData['totalPO']))? set_value('totalPOInput') : $contentData['totalPO']; ?>"/>
+                    value="<?php echo (empty($TotPO))? set_value('totalPOInput') : $TotPO; ?>"/>
                 <h4 class="totalPO"><?php echo '<b>' . ((!empty($TotPO))? number_format($TotPO):0) . '</b>'; ?></h4>
     		</div>
     	</div>
