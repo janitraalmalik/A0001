@@ -48,7 +48,7 @@ $(document).ready(function(){
 				<th width=""> Tanggal Tagihan</th>
 				<th width=""> Total</th>
 				<th width=""> Status</th>
-				<th style="width:125px;"></th>
+				<th style="width:105px;"></th>
 			</tr>
 		</thead>
 	</table>

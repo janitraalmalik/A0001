@@ -114,7 +114,7 @@ class Data_karyawan extends CI_Controller {
 	}
 	
 	public function insert(){		
-		if ( ! $this->input->post()) show_404(); 
+		if ( ! $this->input->post()) redirect('my404'); 
 	   
         
 		$this->form_validation->set_rules('nik_kary', 'NIK', 'required');
@@ -159,7 +159,7 @@ class Data_karyawan extends CI_Controller {
 	}
 	
 	public function update($id){		
-		if ( ! $this->input->post()) show_404(); 
+		if ( ! $this->input->post()) redirect('my404'); 
 
         $this->form_validation->set_rules('nik_kary', 'NIK', 'required');
 		$this->form_validation->set_rules('nama_kary', 'Nama Karyawan', 'required');
@@ -202,7 +202,7 @@ class Data_karyawan extends CI_Controller {
 	}
 	
 	public function delete($id){
-		if ($this->agent->referrer() == '') show_404();
+		if ($this->agent->referrer() == '') redirect('my404');
         
         if(!isset($id) || $id == ''){
             redirect($this->page->base_url('/'));

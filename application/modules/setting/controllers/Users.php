@@ -97,7 +97,7 @@ class Users extends MX_Controller {
 	}
 	
 	public function insert(){		
-		if ( ! $this->input->post()) show_404(); 
+		if ( ! $this->input->post()) redirect('my404'); 
 	   	
         $this->form_validation->set_rules('username', 'username', 'required|is_unique[users.username]');
 		$this->form_validation->set_rules('name_users', 'Nama', 'required');
@@ -162,7 +162,7 @@ class Users extends MX_Controller {
 	}
 	
 	public function update($id){		
-		if ( ! $this->input->post()) show_404(); 
+		if ( ! $this->input->post()) redirect('my404'); 
 	
 		$userfile = $_FILES['userfile']['name'];
 		
@@ -280,7 +280,7 @@ class Users extends MX_Controller {
 	}
 	
 	public function delete($id){
-		if ($this->agent->referrer() == '') show_404();
+		if ($this->agent->referrer() == '') redirect('my404');
 		
 		$this->db->delete('users', array('id_users' => $id));
 		redirect($this->agent->referrer());

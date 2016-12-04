@@ -6,12 +6,15 @@
   <title>BST Sytem | <?php echo @$moduleTitle?></title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  
   <!-- Bootstrap 3.3.5 -->
   <link rel="stylesheet" href="<?php echo base_url(); ?>/assets/css/bootstrap.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
   <!-- Ionicons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <link rel="stylesheet" href="<?php echo base_url()?>assets/css/ionicons.min.css">
+  <!-- Date Picker -->
+  <link rel="stylesheet" href="<?php echo base_url(); ?>/assets/plugins/datepicker/datepicker3.css">
   <!-- Select2 -->
   <link rel="stylesheet" href="<?php echo base_url()?>assets/plugins/select2/select2.min.css">
   <!-- Theme style -->
@@ -25,8 +28,6 @@
   <link rel="stylesheet" href="<?php echo base_url(); ?>/assets/plugins/morris/morris.css">
   <!-- jvectormap -->
   <link rel="stylesheet" href="<?php echo base_url(); ?>/assets/plugins/jvectormap/jquery-jvectormap-1.2.2.css">
-  <!-- Date Picker -->
-  <link rel="stylesheet" href="<?php echo base_url(); ?>/assets/plugins/datepicker/datepicker3.css">
   <!-- Daterange picker -->
   <link rel="stylesheet" href="<?php echo base_url(); ?>/assets/plugins/daterangepicker/daterangepicker-bs3.css">
   <!-- bootstrap wysihtml5 - text editor -->
@@ -63,6 +64,8 @@
 <script src="<?php echo base_url(); ?>/assets/plugins/fastclick/fastclick.js"></script>
 <!-- Select2 -->
 <script src="<?php echo base_url()?>assets/plugins/select2/select2.full.min.js"></script>
+<!-- Jquery Number -->
+<script src="<?php echo base_url()?>assets/plugins/jquery-number/jquery.number.js"></script>
 <!-- DataTables -->
 <script src="<?php echo base_url(); ?>/assets/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="<?php echo base_url(); ?>/assets/plugins/datatables/dataTables.bootstrap.min.js"></script>
@@ -73,8 +76,16 @@
 
 <script type="text/javascript">
 $().ready(function(){
-    
     $(".select2").select2();
+    
+    //$(".datepicker").datepicker("update", new Date());
+    $('.datepicker').datepicker({
+            showButtonPanel: true,
+            format: 'dd-mm-yyyy',
+            daysOfWeekDisabled: [0, 6]
+    });
+    
+    $( ".numeric" ).number( true , 0);
     
     $('.datatable_general').DataTable({
       "paging": true,
@@ -83,6 +94,14 @@ $().ready(function(){
       "ordering": true,
       "info": true,
       "autoWidth": false
+    });
+    
+    var href = window.location.href;
+    $('ul.sidebar-menu a').each(function(e,i) {
+    if (href.indexOf($(this).attr('href')) >= 0) {
+        $(this).parent().addClass('active');
+        $(this).parent().parent().parent().addClass('active');
+    }
     });
     
 });
@@ -97,6 +116,60 @@ $().ready(function(){
       }
     }
 </script>
+<style>
+/*
+ * Callouts
+ *
+ * Not quite alerts, but custom and helpful notes for folks reading the docs.
+ * Requires a base and modifier class.
+ */
+
+/* Common styles for all types */
+.bs-callout {
+  padding: 20px;
+  margin: 20px 0;
+  border: 1px solid #eee;
+  border-left-width: 5px;
+  border-radius: 3px;
+}
+.bs-callout h4 {
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+.bs-callout p:last-child {
+  margin-bottom: 0;
+}
+.bs-callout code {
+  border-radius: 3px;
+}
+
+/* Tighten up space between multiple callouts */
+.bs-callout + .bs-callout {
+  margin-top: -5px;
+}
+
+/* Variations */
+.bs-callout-danger {
+  border-left-color: #ce4844;
+}
+.bs-callout-danger h4 {
+  color: #ce4844;
+}
+.bs-callout-warning {
+  border-left-color: #aa6708;
+}
+.bs-callout-warning h4 {
+  color: #aa6708;
+}
+.bs-callout-info {
+  border-left-color: #1b809e;
+}
+.bs-callout-info h4 {
+  color: #1b809e;
+}
+
+
+</style>
   
 </head>
 <body class="sidebar-mini skin-blue-light fixed">
