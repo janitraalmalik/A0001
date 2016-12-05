@@ -46,6 +46,7 @@ $(document).ready(function(){
 				<th width=""> Nama</th>
 				<th width=""> Tanggal</th>
 				<th width=""> Tanggal Tagihan</th>
+				<th width=""> Sisa Tagihan</th>
 				<th width=""> Total</th>
 				<th width=""> Status</th>
 				<th style="width:105px;"></th>

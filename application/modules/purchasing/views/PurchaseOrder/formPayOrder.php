@@ -1,12 +1,13 @@
 
 <?php $this->load->view('templates/message_handler') ?>
 
+
 <section class="content">
     <?php echo form_open($action, array('class' => 'form-horizontal row-form')); ?>
     <div class="col-sm-6">
     	<div class="form-group">
-    		<label class="col-sm-3 control-label input-sm">Nama Perusahaan *</label>
-    		<div class="col-sm-9">
+    		<label class="col-sm-4 control-label">Nama Perusahaan *</label>
+    		<div class="col-sm-8">
                 <select id="nameVendors" class="form-control select2" style="width: 100%;" disabled >
     				<option value=""></option>
                     <?php $nameVendors = set_value('nameVendors'); if(!empty($nameVendors) || $nameVendors != ''): ?>
@@ -26,10 +27,10 @@
     </div>
     <div class="col-sm-6">
         <div class="form-group">
-    		<label class="col-sm-3 control-label input-sm">Tanggal Penagihan</label>
-            <div class="col-sm-9">
+    		<label class="col-sm-4 control-label">Tanggal Penagihan</label>
+            <div class="col-sm-8">
                 <input 
-                    class="form-control input-sm datepicker"
+                    class="form-control datepicker"
                     type="text" 
                     name="tglPenagihanPO" 
                     id="tglPenagihanPO" 
@@ -72,7 +73,19 @@
                                 $tglPO = $row['po_tgl'];
                                 $tglTagihanPO = $row['po_tgl_tagihan'];
                                 $totalTagihanPO = $row['po_total'];
-                                $TotPO = $TotPO + $totalTagihanPO
+                                $payOrder = $row['po_bayar'];
+                                $sisaBayar = $totalTagihanPO-$payOrder;
+                                $sumTot = 0;
+                                $jmlBayarZ = set_value("jmlBayar[]");
+                                if(!empty($jmlBayarZ)){
+                                    foreach($jmlBayarZ AS $key => $val){
+                                        $sumTot = $sumTot + str_replace(',', '', $val);
+                                    }
+                                    $TotPO = $sumTot;
+                                }else{
+                                    $TotPO = $TotPO + $sisaBayar;    
+                                }
+                                
                                 
                             ?>
                             <tr class="text-data-po warning">
@@ -80,14 +93,14 @@
                                     <?php echo $noPO;?>
                                     <input 
                                         type="hidden" 
-                                        name="noPO" 
+                                        name="noPO[]" 
                                         id="noPO-1" 
                                         class="noPO"
                                         value="<?php echo $noPO?>" 
                                     />
                                     <input 
                                         type="hidden" 
-                                        name="idPO" 
+                                        name="idPO[]" 
                                         id="idPO-1" 
                                         class="idPO"
                                         value="<?php echo $idPO?>" 
@@ -103,7 +116,7 @@
                                     <?php echo number_format($totalTagihanPO);?>
                                     <input 
                                         type="hidden" 
-                                        name="jmlTagihan" 
+                                        name="jmlTagihan[]" 
                                         id="jmlTagihan-1" 
                                         class="jmlTagihan"
                                         value="<?php echo $totalTagihanPO?>" 
@@ -112,12 +125,12 @@
                                 <td style="text-align: right;">
                                     <input 
                                         type="hidden" 
-                                        name="jmlSisaTagihan" 
+                                        name="jmlSisaTagihan[]" 
                                         id="jmlSisaTagihan-1" 
                                         class="jmlSisaTagihan"
-                                        value="<?php echo $totalTagihanPO?>" 
+                                        value="<?php echo $sisaBayar?>" 
                                     />
-                                    <?php echo number_format($totalTagihanPO);?>
+                                    <?php echo number_format($sisaBayar);?>
                                 </td>
                                 <td style="text-align: center;">
                                     <input 
@@ -125,9 +138,10 @@
                                         name="jmlBayar[]" 
                                         id="jmlBayar-1" 
                                         class="form-control col-sm-12 numeric jmlBayar"
-                                        value="<?php echo $totalTagihanPO?>" 
+                                        value="<?php echo (!empty($sisaBayar))? $sisaBayar : set_value("jmlBayar[0]"); ?>"
                                         style="text-align: right;" 
                                     />
+                                    <input type="hidden" name="index[]" id="index-1" value="1"/>
                                     <span style="display:none;" class="box-number-data-po">1</span>
                                 </td>
                             </tr>
@@ -138,26 +152,28 @@
                         if(!empty($contentListPO)): ?>
                         <?php $index = 2; foreach($contentListPO AS $rowPO):?>
                             <?php
-                                $idPO = $row['id'];
+                                $idPO = $rowPO['id'];
                                 $noPO = $rowPO['po_no'];
                                 $tglPO = $rowPO['po_tgl'];
                                 $tglTagihanPO = $rowPO['po_tgl_tagihan'];
                                 $totalTagihanPO = $rowPO['po_total'];
-                                
+                                $payOrder = $rowPO['po_bayar'];
+                                $sisaBayar = $totalTagihanPO-$payOrder;
+                                $indexZ = $index-1;
                             ?>
                             <tr class="text-data-po">
                                 <td>
                                     <?php echo $noPO;?>
                                     <input 
                                         type="hidden" 
-                                        name="noPO" 
+                                        name="noPO[]" 
                                         id="noPO-1" 
                                         class="noPO"
                                         value="<?php echo $noPO?>" 
                                     />
                                     <input 
                                         type="hidden" 
-                                        name="idPO" 
+                                        name="idPO[]" 
                                         id="idPO-1" 
                                         class="idPO"
                                         value="<?php echo $idPO?>" 
@@ -172,7 +188,7 @@
                                 <td style="text-align: right;">
                                     <input 
                                         type="hidden" 
-                                        name="jmlTagihan" 
+                                        name="jmlTagihan[]" 
                                         id="jmlTagihan-<?php echo $index?>" 
                                         class="jmlTagihan"
                                         value="<?php echo $totalTagihanPO?>" 
@@ -182,21 +198,23 @@
                                 <td style="text-align: right;">
                                     <input 
                                         type="hidden" 
-                                        name="jmlSisaTagihan" 
+                                        name="jmlSisaTagihan[]" 
                                         id="jmlSisaTagihan-<?php echo $index?>" 
                                         class="jmlSisaTagihan"
-                                        value="<?php echo $totalTagihanPO?>" 
+                                        value="<?php echo $sisaBayar?>" 
                                     />
-                                    <?php echo number_format($totalTagihanPO);?>
+                                    <?php echo number_format($sisaBayar);?>
                                 </td>
                                 <td style="text-align: center;">
                                     <input 
                                         type="text" 
-                                        name="jmlBayar" 
+                                        name="jmlBayar[]" 
                                         id="jmlBayar-<?php echo $index?>" 
-                                        class="form-control col-sm-12 numeric jmlBayar" 
+                                        class="form-control col-sm-12 numeric jmlBayar"
+                                        value="<?php echo (!empty(set_value("jmlBayar[".$indexZ."]")))? set_value("jmlBayar[".$indexZ."]") : 0; ?>"
                                         style="text-align: right;" 
                                     />
+                                    <input type="hidden" name="index[]" id="index-<?php echo $index?>" value="<?php echo $index?>"/>
                                     <span style="display:none;" class="box-number-data-po"><?php echo $index?></span>
                                 </td>
                             </tr>
@@ -229,7 +247,7 @@
         <div class="form-group">
     		<div class="col-sm-offset-2 col-sm-6">
                 <input type="hidden" name="id" value="<?php echo (empty($contentData['id']))? '' : $contentData['id']; ?>"/>
-    			<button type="submit" class="btn btn-flat btn-primary color-palette btn-sm"><span class="fa fa-save"></span> &nbsp;Simpan </button>
+    			<button type="submit" class="btn btn-flat btn-primary color-palette btn-sm"><span class="fa fa-save"></span> &nbsp;Bayar </button>
     			<a class="btn btn-flat bg-olive color-palette btn-sm" href="<?php echo $back; ?>"><span class="fa  fa-arrow-left"></span>&nbsp;&nbsp;Kembali</a>
     		</div>
     	</div>
@@ -264,7 +282,7 @@
                     $('#jmlBayar-' + index).val(jmlSisaTagihan)
                 }
                 
-                var total = jmlBayar + sum;
+                var total = sum;
                 $('.totalPO').number(total).css('font-weight', 'bold');
                 $('.totalPOInput').val(total);
               

@@ -8,7 +8,8 @@ class Purchase_order extends MY_Controller {
 		$this->page->use_directory();
         $this->moduleTitle = 'Purchase Order';
 		$this->load->model('PurchaseOrder_model');
-		$this->load->model('PurchaseOrderDetail_model');        
+		$this->load->model('PurchaseOrderDetail_model');
+		$this->load->model('PayOrder_model');                
 		$this->load->model('Barang_model');
 		$this->load->model('Satuan_model');
 		$this->load->model('Vendors_model');       
@@ -44,8 +45,12 @@ class Purchase_order extends MY_Controller {
 		$no = $_POST['start'];
 		foreach ($list as $grid) {
             $color = 'warning';
+            $linkOutstanding = '';
             if($grid->status_po_id == 1){
                 $color = 'danger';
+                $linkOutstanding = '<li><a  
+                                href="'.site_url($grid_state . '/payOrder/' .$grid->id).'" 
+                                title="Pembayaran">Pembayaran</a></li>';
             }else{
                 $color = 'success';
             }
@@ -58,7 +63,8 @@ class Purchase_order extends MY_Controller {
 			$row[] = getNameVendor($grid->kd_vendor_supplier,$this->_roleCode);
 			$row[] = tgl_indo($grid->po_tgl);
 			$row[] = tgl_indo($grid->po_tgl_tagihan);
-			$row[] = numberFormat($grid->po_total);
+			$row[] = "<div style='text-align:right;'>" . numberFormat($grid->po_total-$grid->po_bayar) . "</div>";
+			$row[] = "<div style='text-align:right;'>" . numberFormat($grid->po_total) . "</div>";
 			$row[] = '<span class="label label-'.$color.'">' . getStatusPO($grid->status_po_id,$this->_roleCode) . '</span>';
 			$row[] = '<div class="btn-group">
                           <button type="button" class="btn btn-xs btn-flat btn-info">Action</button>
@@ -70,9 +76,7 @@ class Purchase_order extends MY_Controller {
                             <li><a  
                                 href="'.site_url($grid_state . '/edit/' .$grid->id).'" 
                                 title="Ubah Data">Ubah</a></li>
-                            <li><a  
-                                href="'.site_url($grid_state . '/payOrder/' .$grid->id).'" 
-                                title="Pembayaran">Pembayaran</a></li>
+                            ' . $linkOutstanding . '
                             <li><a 
                                 onclick="return confirm(\'Apa Anda Yakin Untuk Menghapus Data ' . $grid->po_no . ' ?\')" 
                                 href="'.site_url($grid_state . '/delete/'.$grid->id).'" 
@@ -115,7 +119,7 @@ class Purchase_order extends MY_Controller {
                     redirect($this->page->base_url('/'));
                 }           
             }
-		} elseif ($this->uri->segment(3) == 'payOrder') {
+		} elseif ($this->uri->segment(3) == 'payOrder' OR $this->uri->segment(3) == 'insertPayOrder') {
 		  $title = 'Pembayaran ';
             if($id != ''){
                 $contentData = $this->PurchaseOrder_model->find($id,'id');                
@@ -125,7 +129,10 @@ class Purchase_order extends MY_Controller {
                 // -------------------------//
                 $whereListPO = " AND kd_vendor_supplier = '" . $contentData['kd_vendor_supplier'] . "'";
                 $whereListPO .= " AND po_no != '" . $contentData['po_no'] . "'";
+                $whereListPO .= " AND status_po_id = 1";
                 $contentListPO = $this->PurchaseOrder_model->all($whereListPO);
+                
+                //PayOrder_model
                 // -------------------------//
                 $vendorDataRow = $this->Vendors_model->find($contentData['kd_vendor_supplier'],'vend_kd');
                 if(count($contentData) == 0){
@@ -166,7 +173,7 @@ class Purchase_order extends MY_Controller {
 	}
     
     public function payOrder($id){
-		$this->form('payOrder','formPayOrder', $id);
+		$this->form('insertPayOrder','formPayOrder', $id);
 	}
 	
 	public function insert(){		
@@ -379,7 +386,137 @@ class Purchase_order extends MY_Controller {
 		redirect($this->page->base_url());
                 
 	}
-	
+    
+    public function insertPayOrder($id){		
+		if ( ! $this->input->post()) redirect('my404'); 
+
+        
+        $indexS  = post('index');
+        $jmlBayarS  = post('jmlBayar');
+        $noPOS  = post('noPO');
+        $jmlSisaTagihanS  = post('jmlSisaTagihan');
+        foreach($indexS as $key=>$val) 
+        {
+            $jmlBayar  = str_replace(',', '',$jmlBayarS[$key]);
+            $noPO  = $noPOS[$key];
+            $jmlSisaTagihan  = str_replace(',', '',$jmlSisaTagihanS[$key]);
+            
+            if($jmlBayar > $jmlSisaTagihan){
+                $this->form_validation->set_rules("noPO[".$key."]", "", "callback_validate_jumlahbayar");
+            }
+            
+        }
+        $this->form_validation->set_rules('nameVendors', 'Nama', 'required');
+        
+        
+		if($this->form_validation->run()){
+           
+            
+            $tglPenagihanPO  = post('tglPenagihanPO');
+            $indexS  = post('index');
+            $noPOS  = post('noPO');
+            $idPOS  = post('idPO');
+            $jmlTagihanS  = post('jmlTagihan');
+            $jmlSisaTagihanS  = post('jmlSisaTagihan');
+            $jmlBayarS  = post('jmlBayar');
+            $id  = post('id');
+            
+            //echo $jmlBayarS[2] . '<br />';
+
+            foreach($indexS AS $key2=> $val2){
+                
+                $jmlBayar = $jmlBayarS[$key2];  
+                
+                if($jmlBayar == '' || $jmlBayar == 0 || !isset($jmlBayar)){
+                    unset($indexS[$key2]);
+                    unset($noPOS[$key2]);
+                    unset($idPOS[$key2]);
+                    unset($jmlTagihanS[$key2]);
+                    unset($jmlSisaTagihanS[$key2]);
+                    unset($jmlBayarS[$key2]);         
+                }
+               
+            }
+            
+            $index = 1;
+            
+            $generateCodePayment = generateCodePayment($this->_roleCode);
+            foreach($indexS AS $key2 => $row2){
+                
+                $noPO = $noPOS[$key2];
+                $idPO = $idPOS[$key2];
+                $jmlTagihan = str_replace(',', '', $jmlTagihanS[$key2]);
+                $jmlSisaTagihan = str_replace(',', '', $jmlSisaTagihanS[$key2]);
+                $jmlBayar = str_replace(',', '', $jmlBayarS[$key2]);
+                
+                $insertContent = array(
+                                            'pembayaran_no' => $generateCodePayment,
+                                            'po_no' => $noPO,
+                                            'po_tgl' => dateTOSql($tglPenagihanPO),
+            								'kd_vendor_supplier'    => post('nameVendors'),
+            								'pembayaran_total'  => $jmlBayar,
+            								'kd_jns_usaha'  => $this->_roleCode,
+                                        );
+                                        
+                $this->PayOrder_model->add($insertContent);
+                
+                
+                $data_rowPO = $this->PurchaseOrder_model->find($idPO,'id');
+                
+                $statusPO = 1;
+                $terbayar = $data_rowPO['po_bayar']+$jmlBayar;
+                if($data_rowPO['po_total'] == $terbayar){
+                    $statusPO = 2;
+                }
+                
+                $updateContentPO = array(
+                                            'status_po_id' => $statusPO,
+                                            'po_bayar' => $terbayar
+                                        );
+                $this->PurchaseOrder_model->update($idPO,$updateContentPO,"id");
+                
+                
+                $index++;
+            }
+            
+            saveCodePayment($this->_roleCode);
+                                    
+        }else{
+            $ui_messages[] = array(
+				'severity' => 'ERROR',
+				'title' => '',
+				'message' =>  strip_tags(validation_errors()),
+			);
+            
+            $this->session->set_flashdata('ui_messages',$ui_messages);
+//            redirect('setting/users/add');       
+            $this->form('insertPayOrder','formPayOrder', $id);
+            return true;
+		}
+			
+		redirect($this->page->base_url());
+                
+	}
+    
+    function validate_jumlahbayar($str)
+    {
+        
+       $this->form_validation->set_message("validate_jumlahbayar","{No Transaksi : " . $str . ", Jumlah Bayar Tidak boleh melebihi Tagihan},");
+       if(isset($str)){
+            return FALSE;  
+       }else{ 
+            return TRUE;
+       }
+       
+    }
+    
+    public function cetak(){
+        $this->pdf->load_view('example_to_pdf');
+        $this->pdf->set_paper('A4', 'portrait');
+		$this->pdf->render();
+		$this->pdf->stream("name-file.pdf",array("Attachment"=>0));
+    }
+    
 	public function delete($id){
 		if ($this->agent->referrer() == '') redirect('my404');
         

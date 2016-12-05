@@ -1,46 +1,44 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
+/**
+ * CodeIgniter PDF Library
+ *
+ * Generate PDF's in your CodeIgniter applications.
+ *
+ * @package			CodeIgniter
+ * @subpackage		Libraries
+ * @category		Libraries
+ * @author			Chris Harvey
+ * @license			MIT License
+ * @link			https://github.com/chrisnharvey/CodeIgniter-PDF-Generator-Library
+ */
 
+require_once(dirname(__FILE__) . '/dompdf/dompdf_config.inc.php');
 
-class Pdf {
-
-	
-	public function create($content, $file_name)
+class Pdf extends DOMPDF
+{
+	/**
+	 * Get an instance of CodeIgniter
+	 *
+	 * @access	protected
+	 * @return	void
+	 */
+	protected function ci()
 	{
-		$ci = &get_instance();
-		$ci->load->helper('tcpdf');
-		
-		$pdf = init_pdf();
-		
-		// set document information
-		$pdf->SetCreator(PDF_CREATOR);
-		$pdf->SetAuthor('Yenda Purbadian');
-		$pdf->SetTitle('Delivery Report Aircraft Status');
-		$pdf->SetSubject('Delivery Report Aircraft Status');
-		$pdf->SetKeywords('');
-		
-		// header
-		$pdf->SetHeaderMargin(10);
-		
-		// footer
-		$pdf->setPrintFooter(FALSE);
-		
-		// margin
-		$pdf->SetMargins(15, 30, 15, 15);
-		$pdf->SetAutoPageBreak(TRUE, 25);
-		
-		// font
-		$pdf->SetFont('tahoma', '', 10);
-		
-		// output
-		$pdf->AddPage();
-		$pdf->writeHTML($content, TRUE, FALSE, TRUE, FALSE, '');
-		$pdf->lastPage();
-		$pdf->Output($file_name.'.pdf', 'I');
+		return get_instance();
 	}
-	
-}
-// END MY_Pdf class
 
-/* End of file Pdf.php */
-/* Location: ./application/libraries/Pdf.php */
+	/**
+	 * Load a CodeIgniter view into domPDF
+	 *
+	 * @access	public
+	 * @param	string	$view The view to load
+	 * @param	array	$data The view data
+	 * @return	void
+	 */
+	public function load_view($view, $data = array())
+	{
+		$html = $this->ci()->load->view($view, $data, TRUE);
+
+		$this->load_html($html);
+	}
+}
