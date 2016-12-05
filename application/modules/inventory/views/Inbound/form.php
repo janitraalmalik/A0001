@@ -1,5 +1,10 @@
 
+<?php //var_dump($getPO);exit(); 
+	//die('tes');
+?>
+
 <?php $this->load->view('templates/message_handler') ?>
+
 
 <section class="content">
     <?php echo form_open($action, array('class' => 'form-horizontal row-form')); ?>

@@ -10,7 +10,7 @@ class Data_inbound extends CI_Controller {
 		$this->page->use_directory();
         $this->moduleTitle = 'Data Inbound';
 		$this->load->model('Inbound_model');
-	}
+			}
     
     private function process_grid_state(){
 		$segments = $this->uri->rsegment_array();
@@ -91,6 +91,9 @@ class Data_inbound extends CI_Controller {
             }
 		} 
         
+        $getPO = $this->Inbound_model->getPO();
+        
+        //var_dump($getPO);exit();
         
         $contect = array(
                         'ui_messages'      => $this->session->flashdata('ui_messages'),
@@ -98,14 +101,16 @@ class Data_inbound extends CI_Controller {
             			'moduleSubTitle'   => $title,
             			'back'		       => $grid_state,
             			'action'	       => $this->page->base_url("/{$action}/{$id}"),
-            			'contentData'	   => $contentData
+            			'contentData'	   => $contentData,
+            			'getPO'			   => $getPO			
                         );
         
-		$this->page->view('Barang/form',$contect);
+		$this->page->view('inventory/form',$contect);
 	}
 	
 	public function add(){
-		$this->form();
+		//die('tes');
+		$this->load->view('inventory/Inbound/form');
 	}
 	
 	public function edit($id){
