@@ -9,6 +9,8 @@ class Data_inbound extends CI_Controller {
 		date_default_timezone_set('Asia/Jakarta');
 		$this->page->use_directory();
         $this->moduleTitle = 'Data Inbound';
+                      
+		$this->load->model('Barang_model');
 		$this->load->model('Inbound_model');
 			}
     
@@ -73,7 +75,7 @@ class Data_inbound extends CI_Controller {
 		echo json_encode($output);
 	}       
     
-    private function form($action = 'insert', $id = ''){
+    private function form($action = 'insert', $viewTPL='form', $id = ''){
 		if ($this->agent->referrer() == '') redirect($this->page->base_url());
 		
         $grid_state = $this->process_grid_state();
@@ -92,7 +94,7 @@ class Data_inbound extends CI_Controller {
 		} 
         
         $getPO = $this->Inbound_model->getPO();
-        
+        $barangData = $this->Barang_model->all();
         //var_dump($getPO);exit();
         
         $contect = array(
@@ -102,15 +104,49 @@ class Data_inbound extends CI_Controller {
             			'back'		       => $grid_state,
             			'action'	       => $this->page->base_url("/{$action}/{$id}"),
             			'contentData'	   => $contentData,
+            			'barangData'	   => $barangData,
             			'getPO'			   => $getPO			
                         );
         
-		$this->page->view('inventory/form',$contect);
+		$this->page->view('Inbound/' . $viewTPL ,$contect);
 	}
 	
 	public function add(){
 		//die('tes');
-		$this->load->view('inventory/Inbound/form');
+		//$this->load->view('inventory/Inbound/form');
+		$this->form();
+	}
+	
+	public function inbound_in($poNo){
+		
+	}
+	
+	public function showPOitem($po){
+		//$getPO = $this->Inbound_model->itemPO($po);
+		$sqld = " select a.kd_barang,
+						c.brg_nama,
+						a.kd_satuan,
+						b.satuan_name,
+						a.jml_barang
+					from p_t_podetail  a
+					left join p_m_satuan b on a.kd_satuan = b.id
+					left join p_m_barang c on c.id = a.kd_barang
+					where a.po_no = '".$po."' ";
+		$sql = $this->db->query($sqld)->result();
+		
+//		var_dump($sql->kd_barang);exit();
+	/*	
+		$data_arr = array(
+					    'kd_barang'		=> $getPO['kd_barang'],
+						'kd_satuan'		=> $getPO['kd_satuan'],
+						'satuan_name'	=> $getPO['satuan_name'],
+						'jml_barang'	=> $getPO['jml_barang']
+					);
+		*/
+		//var_dump($getPO);exit();
+					
+		die(json_encode($sql));
+		
 	}
 	
 	public function edit($id){

@@ -88,9 +88,27 @@ class Inbound_model extends MY_Model {
 	 $sql =   $this->db->select('po_no,po_desc')
 				->where('kd_jns_usaha',$this->_roleCode)
 				->where('status_po_id','1')
-				->get('p_t_po');
+				->get('p_t_po')
+				->result();
 	   return $sql; 
    }
+   
+   
+   public function itemPO($poNO){
+	$sqld = "select a.kd_barang,
+						a.kd_satuan,
+						b.satuan_name,
+						a.jml_barang
+			from p_t_podetail  a
+			left join p_m_satuan b on a.kd_satuan = b.id
+			where a.po_no = '".$poNO."' ";
+	$sql = $this->db->query($sqld);
+	return $sql->result();			
+	   
+   }
+   
+   
+   
 	
 }
 /* End of file Model_users.php */
