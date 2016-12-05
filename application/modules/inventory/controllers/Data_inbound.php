@@ -1,6 +1,6 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Data_inbound extends CI_Controller {
+class Data_inbound extends MY_Controller {
     
 	public function __construct() {
 	   
@@ -10,6 +10,7 @@ class Data_inbound extends CI_Controller {
 		$this->page->use_directory();
         $this->moduleTitle = 'Data Inbound';
                       
+		$this->load->model('InboundDetail_model');
 		$this->load->model('Barang_model');
 		$this->load->model('Inbound_model');
 			}
@@ -75,7 +76,7 @@ class Data_inbound extends CI_Controller {
 		echo json_encode($output);
 	}       
     
-    private function form($action = 'insert', $viewTPL='form', $id = ''){
+    private function form($action = 'simpan', $viewTPL='form', $id = ''){
 		if ($this->agent->referrer() == '') redirect($this->page->base_url());
 		
         $grid_state = $this->process_grid_state();
@@ -109,6 +110,32 @@ class Data_inbound extends CI_Controller {
                         );
         
 		$this->page->view('Inbound/' . $viewTPL ,$contect);
+	}
+	
+	public function simpan(){
+            $poNo  = post('poNo');
+            $jml_inS  = post('jml_in');
+            $refundS  = post('refund');
+            $brg_namaS  = post('brg_nama');
+           // $brg_namaS  = post('brg_nama');
+		
+		  foreach($brg_namaS AS $key => $val){
+                
+                $brg_nama = $val;
+                $jml_in = $jml_inS[$key];
+                $refund = $refundS[$key];
+                
+				//echo $val . '<br />';
+				$insertContentDetail = array(
+                                            'po_no' => $poNo,
+                                            'barang_kd' => $brg_nama,
+                                            'refund' => $refund,
+                                            'kd_jns_usaha'  => $this->_roleCode,
+                                        );
+                $this->InboundDetail_model->add($insertContentDetail);
+            }
+         // die();
+		
 	}
 	
 	public function add(){
@@ -153,7 +180,15 @@ class Data_inbound extends CI_Controller {
 		$this->form('update', $id);
 	}
 	
-	public function insert(){		
+	public function insert(){	
+		print_r("<pre>");
+		print_r($this->input->post());
+		
+		print_r("</pre>");
+		die;
+		
+		//die('disini');
+			
 		if ( ! $this->input->post()) redirect('my404'); 
 	   	
         

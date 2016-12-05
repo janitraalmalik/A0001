@@ -273,31 +273,39 @@ $this->load->view('templates/message_handler') ?>
     $(document).ready(function() {
     //alert("");
     
+    
+    
         $('#noPO').change(function() {
 			//alert('tes');
 			
             var po = $(this).val();
                $.getJSON('<?php echo base_url('inventory/Data_inbound/showPOitem');?>/' + po, function (data) {
                  // alert(data.kd_satuan);
+					
+			
 					var tr;
 					for (var i = 0; i < data.length; i++) {
 						tr = $('<tr/>');
-						tr.append("<td><input type='hidden' name='brg_nama' readonly='true' value='" +data[i].kd_barang +"'>" + data[i].brg_nama + "</td>");
+						tr.append("<td><input type='hidden' name='brg_nama[]' readonly='true' value='" +data[i].kd_barang +"'>" + data[i].brg_nama + "</td>");
 						tr.append("<td>" + data[i].jml_barang + "</td>");
 						tr.append("<td>" + data[i].satuan_name + "</td>");
-						tr.append("<td><input type='text' name='jml_in' id='jml_in' value='' style='text-align:right' class='form-control numeric jml_in'></td>");
-						tr.append("<td><input type='text' name='refund' id='refund' value='' style='text-align:right' class='form-control numeric'></td>");
+						tr.append("<td><input type='text' name='jml_in[]' id='jml_in' value='' style='text-align:right' class='form-control numeric jml_in'></td>");
+						tr.append("<td><input type='text' name='refund[]' id='refund' value='' style='text-align:right' class='form-control numeric'></td>");
 						//tr.append("<td>" + data[i].jml_barang + "</td>");
 						$('table').append(tr);
+						 $('.jml_in').bind('keypress', function(){
+					//alert('tesss');
+					
+					});
+				
+						$( ".numeric" ).number( true , 0);
+           
 					}
                }); 
-           
+              
         });
         
-        $('#jml_in').on('keypress', '.jml_in', function(){
-			alert('tesss');
-			
-		});
+        
         
       
     });
