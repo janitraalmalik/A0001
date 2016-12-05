@@ -236,7 +236,7 @@ $().ready(function(){
             <i class="fa fa-angle-left pull-right"></i>
           </a>
           <ul class="treeview-menu">
-            <li><a href="pages/forms/general.html"><i class="fa fa-plus text-aqua"></i>Tambah Data</a></li>
+            <li><a href="<?php echo base_url('inventory/data_inbound/add');?>"><i class="fa fa-plus text-aqua"></i>Tambah Data</a></li>
             <li><a href="<?php echo base_url('inventory/data_inbound');?>"><i class="fa fa-list text-aqua"></i> List Data Inbound</a></li>
           </ul>
         </li>

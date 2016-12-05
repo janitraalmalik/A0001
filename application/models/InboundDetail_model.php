@@ -1,9 +1,9 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class PurchaseOrderDetail_model extends MY_Model {
+class InboundDetail_model extends MY_Model {
 
-	private $table 			= 'p_t_podetail'; 
+	private $table 			= 'i_t_inbound'; 
 	
     public function __construct(){
         parent::__construct();
