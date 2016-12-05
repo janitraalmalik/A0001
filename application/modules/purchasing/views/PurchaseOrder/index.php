@@ -42,12 +42,13 @@ $(document).ready(function(){
 		<thead>
 			<tr>
 				<th width="2%">No.</th>
-				<th width=""> Kode</th>
-				<th width=""> Nama</th>
+				<th width="5%"> Kode</th>
+				<th width="20%"> Nama</th>
 				<th width=""> Tanggal</th>
 				<th width=""> Tanggal Tagihan</th>
 				<th width=""> Sisa Tagihan</th>
 				<th width=""> Total</th>
+				<th width=""> Penerimaan</th>
 				<th width=""> Status</th>
 				<th style="width:105px;"></th>
 			</tr>

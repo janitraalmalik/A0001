@@ -45,6 +45,7 @@ class Purchase_order extends MY_Controller {
 		$no = $_POST['start'];
 		foreach ($list as $grid) {
             $color = 'warning';
+            $color2 = 'warning';
             $linkOutstanding = '';
             if($grid->status_po_id == 1){
                 $color = 'danger';
@@ -53,6 +54,12 @@ class Purchase_order extends MY_Controller {
                                 title="Pembayaran">Pembayaran</a></li>';
             }else{
                 $color = 'success';
+            }
+            
+            if($grid->status_received == 1){
+                $color2 = 'danger';
+            }else{
+                $color2 = 'success';
             }
           
           
@@ -65,6 +72,7 @@ class Purchase_order extends MY_Controller {
 			$row[] = tgl_indo($grid->po_tgl_tagihan);
 			$row[] = "<div style='text-align:right;'>" . numberFormat($grid->po_total-$grid->po_bayar) . "</div>";
 			$row[] = "<div style='text-align:right;'>" . numberFormat($grid->po_total) . "</div>";
+			$row[] = '<span class="label label-'.$color2.'">' . getStatusPO($grid->status_received,$this->_roleCode) . '</span>';
 			$row[] = '<span class="label label-'.$color.'">' . getStatusPO($grid->status_po_id,$this->_roleCode) . '</span>';
 			$row[] = '<div class="btn-group">
                           <button type="button" class="btn btn-xs btn-flat btn-info">Action</button>
@@ -74,8 +82,11 @@ class Purchase_order extends MY_Controller {
                           </button>
                           <ul class="dropdown-menu" role="menu">
                             <li><a  
+                                href="'.site_url($grid_state . '/view/' .$grid->id).'" 
+                                title="Lihat Data">Lihat</a></li>
+                            <!--li><a  
                                 href="'.site_url($grid_state . '/edit/' .$grid->id).'" 
-                                title="Ubah Data">Ubah</a></li>
+                                title="Ubah Data">Ubah</a></li-->
                             ' . $linkOutstanding . '
                             <li><a 
                                 onclick="return confirm(\'Apa Anda Yakin Untuk Menghapus Data ' . $grid->po_no . ' ?\')" 
@@ -104,9 +115,26 @@ class Purchase_order extends MY_Controller {
         $vendorDataRow = '';
         $contentDataDetail = '';
         $contentListPO = '';
+        $contentDataPay = '';
 		if($this->uri->segment(3) == 'add'){ 
 			$title = 'Add ';
-		} elseif ($this->uri->segment(3) == 'edit') {
+		} elseif ($this->uri->segment(3) == 'view') {
+			$title = 'View ';
+            if($id != ''){
+                $contentData = $this->PurchaseOrder_model->find($id,'id');
+                // -------------------------//
+                $wherePODetail = " AND po_no = '" . $contentData['po_no'] . "'";
+                $contentDataDetail = $this->PurchaseOrderDetail_model->all($wherePODetail);
+                // -------------------------//
+                $wherePayOrder = " AND po_no = '" . $contentData['po_no'] . "'";
+                $contentDataPay = $this->PayOrder_model->all($wherePayOrder);
+                // -------------------------//
+                $vendorDataRow = $this->Vendors_model->find($contentData['kd_vendor_supplier'],'vend_kd');
+                if(count($contentData) == 0){
+                    redirect($this->page->base_url('/'));
+                }           
+            }
+		} elseif ($this->uri->segment(3) == 'edit' OR $this->uri->segment(3) == 'update') {
 			$title = 'Edit ';
             if($id != ''){
                 $contentData = $this->PurchaseOrder_model->find($id,'id');
@@ -158,7 +186,8 @@ class Purchase_order extends MY_Controller {
             			'satuanData'	   => $satuanData,
             			'vendorDataRow'	   => $vendorDataRow,
             			'contentDataDetail'  => $contentDataDetail,
-                        'contentListPO' => $contentListPO
+                        'contentListPO' => $contentListPO,
+                        'contentDataPay' => $contentDataPay
                         );
         
 		$this->page->view('PurchaseOrder/' . $viewTPL ,$contect);
@@ -166,6 +195,10 @@ class Purchase_order extends MY_Controller {
 	
 	public function add(){
 		$this->form();
+	}
+    
+    public function view($id){
+		$this->form('#','formView', $id);
 	}
 	
 	public function edit($id){
@@ -183,6 +216,22 @@ class Purchase_order extends MY_Controller {
 		$this->form_validation->set_rules('addressVendors', 'Alamat', 'required');
 		$this->form_validation->set_rules('phoneVendors', 'No. Tlp', 'required');
 		$this->form_validation->set_rules('picVendors', 'Nama Penanggung Jawab', 'required');
+        
+        $indexS  = post('index');
+        $jmlBayarS  = post('jmlBayar');
+        $noPOS  = post('noPO');
+        $jmlSisaTagihanS  = post('jmlSisaTagihan');
+        foreach($indexS as $key=>$val) 
+        {
+            $jmlBayar  = str_replace(',', '',$jmlBayarS[$key]);
+            $noPO  = $noPOS[$key];
+            $jmlSisaTagihan  = str_replace(',', '',$jmlSisaTagihanS[$key]);
+            
+            if($jmlBayar > $jmlSisaTagihan){
+                $this->form_validation->set_rules("noPO[".$key."]", "", "callback_validate_jumlahbayar");
+            }
+            
+        }
         
 		if($this->form_validation->run()){
             //echo generateCodePO($this->_roleCode);
@@ -238,6 +287,8 @@ class Purchase_order extends MY_Controller {
                             );
                            
             $insert = $this->PurchaseOrder_model->add($insertContent);
+            
+            saveGenerateCodePO($this->_roleCode);
             
             $index = 1;
             foreach($indexS AS $key2 => $row2){
@@ -306,6 +357,7 @@ class Purchase_order extends MY_Controller {
             $dtlPajakCheckS  = post('dtlPajakCheck');
             $dltIDS  = post('dltID');
             $id  = post('id');
+            $noPO = post('codePO');
             
             
             foreach($indexS AS $key => $val){
@@ -355,16 +407,30 @@ class Purchase_order extends MY_Controller {
                 $dtlJmlPajak = str_replace(',', '', $dtlJmlPajakS[$key2]);
                 $dltID = $dltIDS[$key2];
                 
-                $updateContentDetail = array(
-                                            'kd_barang' => $dtlProduk,
-                                            'kd_satuan' => $dtlIdSatuan,
-            								'jml_barang'    => $dltKuantitas,
-            								'harga_satuan'  => $dltHarga,
-            								'ppn'   => $dtlPajakCheck,
-            								'index' => $index,
-            								'kd_jns_usaha'  => $this->_roleCode,
-                                        );
-                $this->PurchaseOrderDetail_model->update($dltID,$updateContentDetail,"id");
+                if(!empty($dltID) || $dltID != ''){
+                    $updateContentDetail = array(
+                                                'kd_barang' => $dtlProduk,
+                                                'kd_satuan' => $dtlIdSatuan,
+                								'jml_barang'    => $dltKuantitas,
+                								'harga_satuan'  => $dltHarga,
+                								'ppn'   => $dtlPajakCheck,
+                								'index' => $index,
+                								'kd_jns_usaha'  => $this->_roleCode,
+                                            );
+                    $this->PurchaseOrderDetail_model->update($dltID,$updateContentDetail,"id");
+                }else{
+                    $insertContentDetail = array(
+                                                'po_no' => $noPO,
+                                                'kd_barang' => $dtlProduk,
+                                                'kd_satuan' => $dtlIdSatuan,
+                								'jml_barang'    => $dltKuantitas,
+                								'harga_satuan'  => $dltHarga,
+                								'ppn'   => $dtlPajakCheck,
+                								'index' => $index,
+                								'kd_jns_usaha'  => $this->_roleCode,
+                                            );
+                    $this->PurchaseOrderDetail_model->add($insertContentDetail);
+                }
                 
                 $index++;
             }
@@ -452,7 +518,7 @@ class Purchase_order extends MY_Controller {
                 $insertContent = array(
                                             'pembayaran_no' => $generateCodePayment,
                                             'po_no' => $noPO,
-                                            'po_tgl' => dateTOSql($tglPenagihanPO),
+                                            'tgl_bayar' => dateTOSql($tglPenagihanPO),
             								'kd_vendor_supplier'    => post('nameVendors'),
             								'pembayaran_total'  => $jmlBayar,
             								'kd_jns_usaha'  => $this->_roleCode,

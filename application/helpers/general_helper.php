@@ -53,7 +53,9 @@ function net14($date){
         $newdate = strtotime ( '+2 day' , strtotime ( $newdate ) ) ;
     }elseif(date('N', strtotime($newdate)) == 7){
         $newdate = strtotime ( '+1 day' , strtotime ( $newdate ) ) ;
-    } //(date('N', strtotime($newdate)) >= 6);
+    }else{
+        $newdate = strtotime ( ( $newdate ) ) ;
+    } 
     $newdate = date ( 'd-m-Y' , $newdate );
     return $newdate;
 }
@@ -64,6 +66,8 @@ function replaceIsWeekend($date){
         $newdate = strtotime ( '+2 day' , strtotime ( $newdate ) ) ;
     }elseif(date('N', strtotime($newdate)) == 7){
         $newdate = strtotime ( '+1 day' , strtotime ( $newdate ) ) ;
+    }else{
+        $newdate = strtotime ( ( $newdate ) ) ;
     }
     $newdate = date ( 'd-m-Y' , $newdate );
     return $newdate; 
@@ -218,16 +222,44 @@ function generateCodeVendor($jns_usaha) {
 function generateCodePO($jns_usaha) {
     $CI =& get_instance();
     
-    $dt = $CI->db->select('COUNT(po_no) as code')
+    $dt = $CI->db->select('count as code')
                                 ->where('deleted_at =',null)
                                 ->where('kd_jns_usaha',$jns_usaha)
-                                ->get('p_t_po')->row();
+                                ->where('type_nomor','purchaseorder')
+                                ->get('m_generatenumber')->row();
     $code  = $dt->code;
     $codelen  = strlen($dt->code);
     $codeResult = $code + 1;
     
     $nomer = str_repeat("0", 5 - $codelen) . $codeResult;	
 	return $nomer;
+}
+
+function saveGenerateCodePO($jns_usaha) {
+    $CI =& get_instance();
+    
+    $dt = $CI->db->select('count as code')
+                                ->where('deleted_at =',null)
+                                ->where('kd_jns_usaha',$jns_usaha)
+                                ->where('type_nomor','purchaseorder')
+                                ->get('m_generatenumber')->row();
+    $code  = $dt->code;
+    $codelen  = strlen($dt->code);
+    $codeResult = $code + 1;
+    
+    $nomer = str_repeat("0", 5 - $codelen) . $codeResult;
+    
+    $data = array(
+                    'kode' => $nomer,
+                    'count' => $codeResult
+                );	
+    
+    $CI->db->where('deleted_at =',null);
+    $CI->db->where('kd_jns_usaha',$jns_usaha);                 
+    $CI->db->where('type_nomor','purchaseorder'); 
+    $CI->db->update('m_generatenumber',$data);
+    
+	return true;
 }
 
 function generateCodePayment($jns_usaha) {
@@ -353,6 +385,8 @@ function getStatusPO($param, $jns_usaha) {
     
     return $result->nameData;
 }
+
+
 
 
 /* End of file gmf_helper.php */
