@@ -79,7 +79,7 @@ class Inbound_model extends MY_Model {
     
     public function getWhere(){
        
-       $this->db->where('deleted_at =',null);
+       $this->db->where('deleted_by =',0);
        return $this->db->where('kd_jns_usaha',$this->_roleCode); 
         
     }
