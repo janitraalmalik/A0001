@@ -211,7 +211,8 @@
                                         name="jmlBayar[]" 
                                         id="jmlBayar-<?php echo $index?>" 
                                         class="form-control col-sm-12 numeric jmlBayar"
-                                        value="<?php echo (!empty(set_value("jmlBayar[".$indexZ."]")))? set_value("jmlBayar[".$indexZ."]") : 0; ?>"
+										<?php $jmlbayar = set_value("jmlBayar[".$indexZ."]"); ?>
+                                        value="<?php echo (!empty($jmlbayar))? jmlbayar : 0; ?>"
                                         style="text-align: right;" 
                                     />
                                     <input type="hidden" name="index[]" id="index-<?php echo $index?>" value="<?php echo $index?>"/>
