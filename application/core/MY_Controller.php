@@ -17,6 +17,9 @@ class MY_Controller extends CI_Controller {
         if(!isset($roleSession['roleName']) || $roleSession['roleName'] == ''){
             redirect(site_url('/dashboard/roles'));
         }
+        $this->_roleId = $roleSession['roleId'];
+        $this->_roleCode = $roleSession['roleCd'];
+        $this->_roleName = $roleSession['roleName'];
         /* end */
     }
     public function __call($method, $args){

@@ -1,6 +1,6 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Data_inbound extends CI_Controller {
+class Data_inbound extends MY_Controller {
     
 	public function __construct() {
 	   
@@ -9,8 +9,11 @@ class Data_inbound extends CI_Controller {
 		date_default_timezone_set('Asia/Jakarta');
 		$this->page->use_directory();
         $this->moduleTitle = 'Data Inbound';
+                      
+		$this->load->model('InboundDetail_model');
+		$this->load->model('Barang_model');
 		$this->load->model('Inbound_model');
-	}
+			}
     
     private function process_grid_state(){
 		$segments = $this->uri->rsegment_array();
@@ -73,7 +76,7 @@ class Data_inbound extends CI_Controller {
 		echo json_encode($output);
 	}       
     
-    private function form($action = 'insert', $id = ''){
+    private function form($action = 'simpan', $viewTPL='form', $id = ''){
 		if ($this->agent->referrer() == '') redirect($this->page->base_url());
 		
         $grid_state = $this->process_grid_state();
@@ -91,6 +94,9 @@ class Data_inbound extends CI_Controller {
             }
 		} 
         
+        $getPO = $this->Inbound_model->getPO();
+        $barangData = $this->Barang_model->all();
+        //var_dump($getPO);exit();
         
         $contect = array(
                         'ui_messages'      => $this->session->flashdata('ui_messages'),
@@ -98,22 +104,92 @@ class Data_inbound extends CI_Controller {
             			'moduleSubTitle'   => $title,
             			'back'		       => $grid_state,
             			'action'	       => $this->page->base_url("/{$action}/{$id}"),
-            			'contentData'	   => $contentData
+            			'contentData'	   => $contentData,
+            			'barangData'	   => $barangData,
+            			'getPO'			   => $getPO			
                         );
         
-		$this->page->view('Barang/form',$contect);
+		$this->page->view('Inbound/' . $viewTPL ,$contect);
+	}
+	
+	public function simpan(){
+            $poNo  = post('poNo');
+            $jml_inS  = post('jml_in');
+            $refundS  = post('refund');
+            $brg_namaS  = post('brg_nama');
+           // $brg_namaS  = post('brg_nama');
+		
+		  foreach($brg_namaS AS $key => $val){
+                
+                $brg_nama = $val;
+                $jml_in = $jml_inS[$key];
+                $refund = $refundS[$key];
+                
+				//echo $val . '<br />';
+				$insertContentDetail = array(
+                                            'po_no' => $poNo,
+                                            'barang_kd' => $brg_nama,
+                                            'refund' => $refund,
+                                            'kd_jns_usaha'  => $this->_roleCode,
+                                        );
+                $this->InboundDetail_model->add($insertContentDetail);
+            }
+         // die();
+		
 	}
 	
 	public function add(){
+		//die('tes');
+		//$this->load->view('inventory/Inbound/form');
 		$this->form();
+	}
+	
+	public function inbound_in($poNo){
+		
+	}
+	
+	public function showPOitem($po){
+		//$getPO = $this->Inbound_model->itemPO($po);
+		$sqld = " select a.kd_barang,
+						c.brg_nama,
+						a.kd_satuan,
+						b.satuan_name,
+						a.jml_barang
+					from p_t_podetail  a
+					left join p_m_satuan b on a.kd_satuan = b.id
+					left join p_m_barang c on c.id = a.kd_barang
+					where a.po_no = '".$po."' ";
+		$sql = $this->db->query($sqld)->result();
+		
+//		var_dump($sql->kd_barang);exit();
+	/*	
+		$data_arr = array(
+					    'kd_barang'		=> $getPO['kd_barang'],
+						'kd_satuan'		=> $getPO['kd_satuan'],
+						'satuan_name'	=> $getPO['satuan_name'],
+						'jml_barang'	=> $getPO['jml_barang']
+					);
+		*/
+		//var_dump($getPO);exit();
+					
+		die(json_encode($sql));
+		
 	}
 	
 	public function edit($id){
 		$this->form('update', $id);
 	}
 	
-	public function insert(){		
-		if ( ! $this->input->post()) show_404(); 
+	public function insert(){	
+		print_r("<pre>");
+		print_r($this->input->post());
+		
+		print_r("</pre>");
+		die;
+		
+		//die('disini');
+			
+		if ( ! $this->input->post()) redirect('my404'); 
 	   	
         
 		$this->form_validation->set_rules('codeBarang', 'Code', 'required');
@@ -150,7 +226,7 @@ class Data_inbound extends CI_Controller {
 	}
 	
 	public function update($id){		
-		if ( ! $this->input->post()) show_404(); 
+		if ( ! $this->input->post()) redirect('my404'); 
 
         $this->form_validation->set_rules('codeBarang', 'Code', 'required');
 		$this->form_validation->set_rules('nameBarang', 'Name', 'required');
@@ -186,7 +262,7 @@ class Data_inbound extends CI_Controller {
 	}
 	
 	public function delete($id){
-		if ($this->agent->referrer() == '') show_404();
+		if ($this->agent->referrer() == '') redirect('my404');
         
         if(!isset($id) || $id == ''){
             redirect($this->page->base_url('/'));

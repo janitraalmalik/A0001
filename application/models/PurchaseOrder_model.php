@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class PurchaseOrder_model extends MY_Model {
 
 	private $table 			= 'p_t_po';
-	private $column_order 	= array(null,'po_no','po_tgl','po_tgl_tagihan','kd_vendor_supplier','status_po_id','po_total',null);
+	private $column_order 	= array(null,'po_no','po_tgl','po_tgl_tagihan','kd_vendor_supplier','status_received','status_po_id','po_total',null);
 	private $column_search 	= array('po_no','po_tgl','po_tgl_tagihan','kd_vendor_supplier','status_po_id','po_total');  
 	private $order 			= array('id' => 'desc'); 
 	

@@ -110,7 +110,7 @@ class Data_vendors extends MY_Controller {
 	}
 	
 	public function insert(){		
-		if ( ! $this->input->post()) show_404(); 
+		if ( ! $this->input->post()) redirect('my404'); 
 	   	
 		$this->form_validation->set_rules('nameVendors', 'Name', 'required');
 		$this->form_validation->set_rules('phoneVendors', 'Phone', 'required');
@@ -119,12 +119,12 @@ class Data_vendors extends MY_Controller {
 		if($this->form_validation->run()){
 		  
     		$insertContent = array(
-                                'vend_kd'     => generateCodeVendor(),
+                                'vend_kd'     => generateCodeVendor($this->_roleCode),
                                 'vend_name'   => post('nameVendors'),
 								'vend_alamat'   => post('addressVendors'),
 								'vend_tlp'   => post('phoneVendors'),
 								'vend_pic'   => post('picVendors'),
-								'kd_jns_usaha'  => 'JU001',
+								'kd_jns_usaha'  => $this->_roleCode,
                             );
             $insert = $this->Vendors_model->add($insertContent);
             if($insert == true){
@@ -147,7 +147,7 @@ class Data_vendors extends MY_Controller {
 	}
 	
 	public function update($id){		
-		if ( ! $this->input->post()) show_404(); 
+		if ( ! $this->input->post()) redirect('my404'); 
 
         $this->form_validation->set_rules('nameVendors', 'Name', 'required');
 		$this->form_validation->set_rules('phoneVendors', 'Phone', 'required');
@@ -160,7 +160,7 @@ class Data_vendors extends MY_Controller {
 								'vend_alamat'   => post('addressVendors'),
 								'vend_tlp'   => post('phoneVendors'),
 								'vend_pic'   => post('picVendors'),
-                                'kd_jns_usaha'  => 'JU001',
+                                'kd_jns_usaha'  => $this->_roleCode,
 			);		
 			
             $this->Vendors_model->update($id,$updateContent,"id");
@@ -181,9 +181,29 @@ class Data_vendors extends MY_Controller {
 		redirect($this->page->base_url());
                 
 	}
+    
+    public function detail($id){
+		if ($this->agent->referrer() == '') redirect('my404');
+        
+        if(!isset($id) || $id == ''){
+            $message_code = '003'; //Not Found Data
+            die(json_encode($message_code));
+        }
+        $data_row = $this->Vendors_model->find($id,'vend_kd');
+        
+        $data_arr = array(
+                            'id'=> $data_row['id'],
+                            'kode'=> $data_row['vend_kd'],
+                            'nama'=> $data_row['vend_name'],
+                            'phone'=> $data_row['vend_tlp'],
+                            'alamat'=> $data_row['vend_alamat'],
+                            'pic'=> $data_row['vend_pic'],
+                        );
+        die(json_encode($data_arr));
+    }
 	
 	public function delete($id){
-		if ($this->agent->referrer() == '') show_404();
+		if ($this->agent->referrer() == '') redirect('my404');
         
         if(!isset($id) || $id == ''){
             redirect($this->page->base_url('/'));

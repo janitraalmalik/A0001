@@ -98,6 +98,9 @@ class Data_karyawan extends CI_Controller {
                         'moduleTitle'      => $this->moduleTitle,
             			'moduleSubTitle'   => $title,
             			'back'		       => $grid_state,
+						'divisi'		   => $this->db->get('hr_m_bagian')->result(),
+						'agama'		  	   => $this->db->get('hr_m_agama')->result(),
+						'sex'		  	   => $this->db->get('hr_m_sex')->result(),
             			'action'	       => $this->page->base_url("/{$action}/{$id}"),
             			'contentData'	   => $contentData
                         );
@@ -114,7 +117,7 @@ class Data_karyawan extends CI_Controller {
 	}
 	
 	public function insert(){		
-		if ( ! $this->input->post()) show_404(); 
+		if ( ! $this->input->post()) redirect('my404'); 
 	   
         
 		$this->form_validation->set_rules('nik_kary', 'NIK', 'required');
@@ -132,11 +135,16 @@ class Data_karyawan extends CI_Controller {
                                 'nik_kary'     	=> post('nik_kary'),
 								'nama_kary'     => post('nama_kary'),
 								'alamat_kary'   => post('alamat_kary'),
+								'sex_kary'      => post('sex_kary'),
+								'ktp_kary'      => post('no_ktp'),
+								'tgl_lahir_kary'=> date('Y-m-d', strtotime(post('tgl_lahir_kary'))),
+								'tgl_masuk_kary'=> date('Y-m-d', strtotime(post('tgl_masuk'))),
+								'tgl_akhir_kary'=> date('Y-m-d', strtotime(post('tgl_keluar'))),
 								'bagian_kary'   => post('bagian_kary'),
 								'telp_kary'     => post('telp_kary'),
 								'agama_kary'    => post('agama_kary'),
-								'agama_kary'    => post('agama_kary'),
-                   				'kd_jns_usaha'  => 'JU001',
+								'status_kerja_kary'=> post('status_kerja'),
+                   				'kd_jns_usaha'  => 'JU001'
                             );
             $insert = $this->Karyawan_model->add($insertContent);
             if($insert == true){
@@ -159,7 +167,7 @@ class Data_karyawan extends CI_Controller {
 	}
 	
 	public function update($id){		
-		if ( ! $this->input->post()) show_404(); 
+		if ( ! $this->input->post()) redirect('my404'); 
 
         $this->form_validation->set_rules('nik_kary', 'NIK', 'required');
 		$this->form_validation->set_rules('nama_kary', 'Nama Karyawan', 'required');
@@ -175,11 +183,16 @@ class Data_karyawan extends CI_Controller {
                                 'nik_kary'     	=> post('nik_kary'),
 								'nama_kary'     => post('nama_kary'),
 								'alamat_kary'   => post('alamat_kary'),
+								'sex_kary'      => post('sex_kary'),
+								'ktp_kary'      => post('no_ktp'),
+								'tgl_lahir_kary'=> date('Y-m-d', strtotime(post('tgl_lahir_kary'))),
+								'tgl_masuk_kary'=> date('Y-m-d', strtotime(post('tgl_masuk'))),
+								'tgl_akhir_kary'=> date('Y-m-d', strtotime(post('tgl_keluar'))),
 								'bagian_kary'   => post('bagian_kary'),
 								'telp_kary'     => post('telp_kary'),
 								'agama_kary'    => post('agama_kary'),
-								'agama_kary'    => post('agama_kary'),
-                   				'kd_jns_usaha'  => 'JU001',
+								'status_kerja_kary'=> post('status_kerja'),
+                   				'kd_jns_usaha'  => 'JU001'
 			);		
 			
             $this->Karyawan_model->update($id,$updateContent,"id");
@@ -202,16 +215,16 @@ class Data_karyawan extends CI_Controller {
 	}
 	
 	public function delete($id){
-		if ($this->agent->referrer() == '') show_404();
+		if ($this->agent->referrer() == '') redirect('my404');
         
         if(!isset($id) || $id == ''){
             redirect($this->page->base_url('/'));
         }
-        $data_row = $this->Barang_model->find($id,'id');
+        $data_row = $this->Karyawan_model->find($id,'id');
         if(count($data_row) == 0){
             redirect($this->page->base_url('/'));
         }
-        $this->Barang_model->delete($id,'id');
+        $this->Karyawan_model->delete($id,'id');
 		redirect($this->page->base_url("/"));
 		
 	}

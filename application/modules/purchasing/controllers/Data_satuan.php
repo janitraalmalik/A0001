@@ -101,7 +101,7 @@ class Data_satuan extends MY_Controller {
 	}
 	
 	public function insert(){		
-		if ( ! $this->input->post()) show_404(); 
+		if ( ! $this->input->post()) redirect('my404'); 
 	   	
         
 		$this->form_validation->set_rules('codeSatuan', 'Code', 'required');
@@ -113,7 +113,7 @@ class Data_satuan extends MY_Controller {
                                 'satuan_kd'     => post('codeSatuan'),
                                 'satuan_name'   => post('nameSatuan'),
 								'satuan_desc'   => post('descSatuan'),
-								'kd_jns_usaha'  => 'JU001',
+								'kd_jns_usaha'  => $this->_roleCode,
                             );
             $insert = $this->Satuan_model->add($insertContent);
             if($insert == true){
@@ -136,7 +136,7 @@ class Data_satuan extends MY_Controller {
 	}
 	
 	public function update($id){		
-		if ( ! $this->input->post()) show_404(); 
+		if ( ! $this->input->post()) redirect('my404'); 
 
         $this->form_validation->set_rules('codeSatuan', 'Code', 'required');
         $this->form_validation->set_rules('nameSatuan', 'Name', 'required');
@@ -147,7 +147,7 @@ class Data_satuan extends MY_Controller {
                     'satuan_kd'     => post('codeSatuan'),
                     'satuan_name'   => post('nameSatuan'),
         			'satuan_desc'   => post('descSatuan'),
-        			'kd_jns_usaha'  => 'JU001',
+        			'kd_jns_usaha'  => $this->_roleCode,
 			);		
 			
             $this->Satuan_model->update($id,$updateContent,"id");
@@ -168,9 +168,26 @@ class Data_satuan extends MY_Controller {
 		redirect($this->page->base_url());
                 
 	}
+    
+    public function detail($id){
+		if ($this->agent->referrer() == '') redirect('my404');
+        
+        if(!isset($id) || $id == ''){
+            $message_code = '003'; //Not Found Data
+            die(json_encode($message_code));
+        }
+        $data_row = $this->Satuan_model->find($id,'id');
+        
+        $data_arr = array(
+                            'id'=> $data_row['id'],
+                            'kode'=> $data_row['satuan_kd'],
+                            'nama'=> $data_row['satuan_name']
+                        );
+        die(json_encode($data_arr));
+    }
 	
 	public function delete($id){
-		if ($this->agent->referrer() == '') show_404();
+		if ($this->agent->referrer() == '') redirect('my404');
         
         if(!isset($id) || $id == ''){
             redirect($this->page->base_url('/'));

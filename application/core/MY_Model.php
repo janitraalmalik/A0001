@@ -216,7 +216,7 @@ class MY_Model extends CI_Model {
         }
 
         $insert['ip'] = $ip;
-        $insert['user_id'] = $userData['id'];
+        $insert['user_id'] = $user_id;
         $insert['user_name'] = $user_name;
         $insert['affected_table'] = $table;
         $insert['affected_id'] = $id;

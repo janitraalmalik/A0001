@@ -101,7 +101,7 @@ class Data_catbarang extends MY_Controller {
 	}
 	
 	public function insert(){		
-		if ( ! $this->input->post()) show_404(); 
+		if ( ! $this->input->post()) redirect('my404'); 
 	   	
         
 		$this->form_validation->set_rules('nameCatBarang', 'Name', 'required');
@@ -112,7 +112,7 @@ class Data_catbarang extends MY_Controller {
                                 'cat_brg_nama'     => post('nameCatBarang'),
                                 'cat_brg_desc'   => post('descCatBarang'),
 								'cat_brg_parent'   => post('parentCatBarang'),
-								'kd_jns_usaha'  => 'JU001',
+								'kd_jns_usaha'  => $this->_roleCode,
                             );
             $insert = $this->CatBarang_model->add($insertContent);
             if($insert == true){
@@ -135,7 +135,7 @@ class Data_catbarang extends MY_Controller {
 	}
 	
 	public function update($id){		
-		if ( ! $this->input->post()) show_404(); 
+		if ( ! $this->input->post()) redirect('my404'); 
 
         $this->form_validation->set_rules('nameCatBarang', 'Name', 'required');
         
@@ -145,7 +145,7 @@ class Data_catbarang extends MY_Controller {
                     'cat_brg_nama'     => post('nameCatBarang'),
                     'cat_brg_desc'   => post('descCatBarang'),
 					'cat_brg_parent'   => post('parentCatBarang'),
-					'kd_jns_usaha'  => 'JU001',
+					'kd_jns_usaha'  => $this->_roleCode,
 			);		
 			
             $this->CatBarang_model->update($id,$updateContent,"id");
@@ -168,7 +168,7 @@ class Data_catbarang extends MY_Controller {
 	}
 	
 	public function delete($id){
-		if ($this->agent->referrer() == '') show_404();
+		if ($this->agent->referrer() == '') redirect('my404');
         
         if(!isset($id) || $id == ''){
             redirect($this->page->base_url('/'));

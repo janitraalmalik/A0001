@@ -109,7 +109,7 @@ class Data_barang extends MY_Controller {
 	}
 	
 	public function insert(){		
-		if ( ! $this->input->post()) show_404(); 
+		if ( ! $this->input->post()) redirect('my404'); 
 	   	
         
 		$this->form_validation->set_rules('codeBarang', 'Code', 'required');
@@ -123,7 +123,7 @@ class Data_barang extends MY_Controller {
                                 'brg_nama'   => post('nameBarang'),
 								'brg_desc'   => post('descBarang'),
 								'cat_barang_id'   => post('catBarang'),
-								'kd_jns_usaha'  => 'JU001',
+								'kd_jns_usaha'  => $this->_roleCode,
                             );
             $insert = $this->Barang_model->add($insertContent);
             if($insert == true){
@@ -146,7 +146,7 @@ class Data_barang extends MY_Controller {
 	}
 	
 	public function update($id){		
-		if ( ! $this->input->post()) show_404(); 
+		if ( ! $this->input->post()) redirect('my404'); 
 
         $this->form_validation->set_rules('codeBarang', 'Code', 'required');
 		$this->form_validation->set_rules('nameBarang', 'Name', 'required');
@@ -159,7 +159,7 @@ class Data_barang extends MY_Controller {
                                 'brg_nama'   => post('nameBarang'),
 								'brg_desc'   => post('descBarang'),
 								'cat_barang_id'   => post('catBarang'),
-                                'kd_jns_usaha'  => 'JU001',
+                                'kd_jns_usaha'  => $this->_roleCode,
 			);		
 			
             $this->Barang_model->update($id,$updateContent,"id");
@@ -182,7 +182,7 @@ class Data_barang extends MY_Controller {
 	}
 	
 	public function delete($id){
-		if ($this->agent->referrer() == '') show_404();
+		if ($this->agent->referrer() == '') redirect('my404');
         
         if(!isset($id) || $id == ''){
             redirect($this->page->base_url('/'));

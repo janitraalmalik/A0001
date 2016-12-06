@@ -6,12 +6,15 @@
   <title>BST Sytem | <?php echo @$moduleTitle?></title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  
   <!-- Bootstrap 3.3.5 -->
   <link rel="stylesheet" href="<?php echo base_url(); ?>/assets/css/bootstrap.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
   <!-- Ionicons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <link rel="stylesheet" href="<?php echo base_url()?>assets/css/ionicons.min.css">
+  <!-- Date Picker -->
+  <link rel="stylesheet" href="<?php echo base_url(); ?>/assets/plugins/datepicker/datepicker3.css">
   <!-- Select2 -->
   <link rel="stylesheet" href="<?php echo base_url()?>assets/plugins/select2/select2.min.css">
   <!-- Theme style -->
@@ -25,8 +28,6 @@
   <link rel="stylesheet" href="<?php echo base_url(); ?>/assets/plugins/morris/morris.css">
   <!-- jvectormap -->
   <link rel="stylesheet" href="<?php echo base_url(); ?>/assets/plugins/jvectormap/jquery-jvectormap-1.2.2.css">
-  <!-- Date Picker -->
-  <link rel="stylesheet" href="<?php echo base_url(); ?>/assets/plugins/datepicker/datepicker3.css">
   <!-- Daterange picker -->
   <link rel="stylesheet" href="<?php echo base_url(); ?>/assets/plugins/daterangepicker/daterangepicker-bs3.css">
   <!-- bootstrap wysihtml5 - text editor -->
@@ -63,6 +64,8 @@
 <script src="<?php echo base_url(); ?>/assets/plugins/fastclick/fastclick.js"></script>
 <!-- Select2 -->
 <script src="<?php echo base_url()?>assets/plugins/select2/select2.full.min.js"></script>
+<!-- Jquery Number -->
+<script src="<?php echo base_url()?>assets/plugins/jquery-number/jquery.number.js"></script>
 <!-- DataTables -->
 <script src="<?php echo base_url(); ?>/assets/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="<?php echo base_url(); ?>/assets/plugins/datatables/dataTables.bootstrap.min.js"></script>
@@ -73,8 +76,16 @@
 
 <script type="text/javascript">
 $().ready(function(){
-    
     $(".select2").select2();
+    
+    //$(".datepicker").datepicker("update", new Date());
+    $('.datepicker').datepicker({
+            showButtonPanel: true,
+            format: 'dd-mm-yyyy',
+            daysOfWeekDisabled: [0, 6]
+    });
+    
+    $( ".numeric" ).number( true , 0);
     
     $('.datatable_general').DataTable({
       "paging": true,
@@ -83,6 +94,14 @@ $().ready(function(){
       "ordering": true,
       "info": true,
       "autoWidth": false
+    });
+    
+    var href = window.location.href;
+    $('ul.sidebar-menu a').each(function(e,i) {
+    if (href.indexOf($(this).attr('href')) >= 0) {
+        $(this).parent().addClass('active');
+        $(this).parent().parent().parent().addClass('active');
+    }
     });
     
 });
@@ -97,6 +116,60 @@ $().ready(function(){
       }
     }
 </script>
+<style>
+/*
+ * Callouts
+ *
+ * Not quite alerts, but custom and helpful notes for folks reading the docs.
+ * Requires a base and modifier class.
+ */
+
+/* Common styles for all types */
+.bs-callout {
+  padding: 20px;
+  margin: 20px 0;
+  border: 1px solid #eee;
+  border-left-width: 5px;
+  border-radius: 3px;
+}
+.bs-callout h4 {
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+.bs-callout p:last-child {
+  margin-bottom: 0;
+}
+.bs-callout code {
+  border-radius: 3px;
+}
+
+/* Tighten up space between multiple callouts */
+.bs-callout + .bs-callout {
+  margin-top: -5px;
+}
+
+/* Variations */
+.bs-callout-danger {
+  border-left-color: #ce4844;
+}
+.bs-callout-danger h4 {
+  color: #ce4844;
+}
+.bs-callout-warning {
+  border-left-color: #aa6708;
+}
+.bs-callout-warning h4 {
+  color: #aa6708;
+}
+.bs-callout-info {
+  border-left-color: #1b809e;
+}
+.bs-callout-info h4 {
+  color: #1b809e;
+}
+
+
+</style>
   
 </head>
 <body class="sidebar-mini skin-blue-light fixed">
@@ -138,8 +211,8 @@ $().ready(function(){
           </a>
           <ul class="treeview-menu">
             <li><a href="<?php echo base_url('purchasing/data_vendors');?>"><i class="fa fa-circle-o"></i> Data Vendor / Supplier</a></li>
-            <li><a href="<?php echo base_url('purchasing/data_barang');?>"><i class="fa fa-circle-o"></i> Data Items</a></li>
-            <li><a href="<?php echo base_url('purchasing/data_catbarang');?>"><i class="fa fa-circle-o"></i> Data Item Category</a></li>
+            <li><a href="<?php echo base_url('purchasing/data_barang');?>"><i class="fa fa-circle-o"></i> Data Barang</a></li>
+            <li><a href="<?php echo base_url('purchasing/data_catbarang');?>"><i class="fa fa-circle-o"></i> Data Kategori Barang</a></li>
             <li><a href="<?php echo base_url('purchasing/data_satuan');?>"><i class="fa fa-circle-o"></i> Data Satuan</a></li>
           </ul>
         </li>
@@ -149,8 +222,10 @@ $().ready(function(){
             <i class="fa fa-angle-left pull-right"></i>
           </a>
           <ul class="treeview-menu">
-            <li><a href="pages/forms/general.html"><i class="fa fa-circle-o"></i> List Purchase Order</a></li>
-            <li><a href="pages/forms/general.html"><i class="fa fa-circle-o"></i> Outstanding</a></li>
+            <li><a href="<?php echo base_url('purchasing/purchasingReport/supplier_list');?>"><i class="fa fa-circle-o"></i> Vendor/Supplier</a></li>
+            <li><a href="<?php echo base_url('purchasing/purchasingReport/items_list');?>"><i class="fa fa-circle-o"></i> Barang</a></li>
+            <li><a href="<?php echo base_url('purchasing/purchasingReport/purchase_list');?>"><i class="fa fa-circle-o"></i> List Purchase Order</a></li>
+            <li><a href="<?php echo base_url('purchasing/purchasingReport/outstanding_list');?>"><i class="fa fa-circle-o"></i> Outstanding</a></li>
           </ul>
         </li>
         <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>
@@ -163,7 +238,7 @@ $().ready(function(){
             <i class="fa fa-angle-left pull-right"></i>
           </a>
           <ul class="treeview-menu">
-            <li><a href="pages/forms/general.html"><i class="fa fa-plus text-aqua"></i>Tambah Data</a></li>
+            <li><a href="<?php echo base_url('inventory/data_inbound/add');?>"><i class="fa fa-plus text-aqua"></i>Tambah Data</a></li>
             <li><a href="<?php echo base_url('inventory/data_inbound');?>"><i class="fa fa-list text-aqua"></i> List Data Inbound</a></li>
           </ul>
         </li>
@@ -208,7 +283,7 @@ $().ready(function(){
           <ul class="treeview-menu">
             <li><a href="<?php echo base_url('hrm/data_karyawan');?>"><i class="fa fa-circle-o"></i> Data Karyawan</a></li>
             <li><a href="<?php echo base_url('hrm/data_bagian');?>"><i class="fa fa-circle-o"></i> Data Divisi</a></li>
-            <li><a href="<?php echo base_url('purchasing/data_satuan');?>"><i class="fa fa-circle-o"></i> Data Gaji</a></li>
+            <li><a href="<?php echo base_url('hrm/data_gaji');?>"><i class="fa fa-circle-o"></i> Data Gaji</a></li>
           </ul>
         </li>
         <li class="treeview">
