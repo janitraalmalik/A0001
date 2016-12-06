@@ -33,7 +33,7 @@ $this->load->view('templates/message_handler') ?>
     	<div class="form-group">
     		<label class="col-sm-3 control-label input-sm">PO No *</label>
     		<div class="col-sm-9">
-                <select name="poNo" id="noPO" class="form-control select2" style="width: 100%;">
+                <select name="poNo" id="noPO" class="form-control select2" style="width: 100%;" required="true">
 						<option value=""></option>
                         <?php
 							
@@ -57,7 +57,7 @@ $this->load->view('templates/message_handler') ?>
                         <th style="width:70px">Kuantitas</th>
                         <th style="width:80px">Satuan</th>
                         <th style="width:120px">Jumlah In</th>
-                        <th style="width:120px">Refund</th>
+                        <!--th style="width:120px">Refund</th-->
                         <!--th style="width:50px">PPn</th-->
                         <!--th style="">&nbsp;</th-->
 			        </tr>
@@ -285,23 +285,27 @@ $this->load->view('templates/message_handler') ?>
 			
 					var tr;
 					for (var i = 0; i < data.length; i++) {
-						tr = $('<tr/>');
-						tr.append("<td><input type='hidden' name='brg_nama[]' readonly='true' value='" +data[i].kd_barang +"'>" + data[i].brg_nama + "</td>");
-						tr.append("<td>" + data[i].jml_barang + "</td>");
-						tr.append("<td>" + data[i].satuan_name + "</td>");
-						tr.append("<td><input type='text' name='jml_in[]' id='jml_in' value='' style='text-align:right' class='form-control numeric jml_in'></td>");
-						tr.append("<td><input type='text' name='refund[]' id='refund' value='' style='text-align:right' class='form-control numeric'></td>");
-						//tr.append("<td>" + data[i].jml_barang + "</td>");
+						var a = 
+						tr = $('<tr class="inbound">');
+						tr.append("<td><input type='hidden' name='brg_nama[]' id='brg_nama" + i + "' readonly='true' value='" +data[i].kd_barang +"'>" + data[i].brg_nama + "</td>");
+						tr.append("<td><input type='hidden' name='jml_barang' id='jml_barang" + i + "' readonly='true' value='" +data[i].jml_barang +"'>" + data[i].jml_barang + "</td>");
+						tr.append("<td><input type='hidden' name='satuan_name[]' readonly='true' value='" +data[i].satuan_name +"'>" + data[i].satuan_name + "</td>");
+						tr.append("<td><input type='text' name='jml_in[]' id='jml_in' value='' style='text-align:right' class='form-control numeric jml_in' required='true'></td>");
+						//tr.append("<td><input type='text' name='refund[]' id='refund' value='' style='text-align:right' class='form-control numeric refund' required='true'></td>");
+						tr.append("</tr>");
 						$('table').append(tr);
-						 $('.jml_in').bind('keypress', function(){
-					//alert('tesss');
-					
-					});
-				
 						$( ".numeric" ).number( true , 0);
-           
 					}
-               }); 
+               });
+               
+			$("#jml_in").on('keypress', function(){
+			 alert('asdasd');
+				$('.brg_nama').each(function(index){
+					var index = index + 1; 
+					alert(index);
+				});
+			}); 
+        
               
         });
         

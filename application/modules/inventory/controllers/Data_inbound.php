@@ -53,17 +53,19 @@ class Data_inbound extends MY_Controller {
 			$row[] = $grid->jml_in;
 			$row[] = $grid->refund;
 			$row[] = $grid->sisa;
+			
 			$row[] = '<div style="width:100%;text-align:center;">
                         <a 
                             class="btn btn-xs btn-flat btn-info" 
-                            href="'.site_url($grid_state . '/edit/' .$grid->id).'" 
+                            href="'.site_url($grid_state . '/edit/' .$grid->id_inbound).'" 
                             title="Update Data">Update</a> &nbsp;
                         <a 
                             class="btn btn-xs btn-flat btn-danger" 
                             onclick="return confirm(\'Are you sure to delete data ' . $grid->brg_nama . ' ?\')" 
-                            href="'.site_url($grid_state . '/delete/'.$grid->id).'" 
+                            href="'.site_url($grid_state . '/delete/'.$grid->id_inbound).'" 
                             title="Delete Data">Delete</a>
                     </div>';
+                    
 			$data[] = $row;
 		}
 		$output = array(
@@ -114,6 +116,8 @@ class Data_inbound extends MY_Controller {
 	
 	public function simpan(){
             $poNo  = post('poNo');
+            $tgltrxPO  = post('tgltrxPO');
+            //die($tgltrxPO);
             $jml_inS  = post('jml_in');
             $refundS  = post('refund');
             $brg_namaS  = post('brg_nama');
@@ -128,13 +132,16 @@ class Data_inbound extends MY_Controller {
 				//echo $val . '<br />';
 				$insertContentDetail = array(
                                             'po_no' => $poNo,
+                                            'date_in' => dateTOSql($tgltrxPO),
                                             'barang_kd' => $brg_nama,
-                                            'refund' => $refund,
+                                            'jml_in' => $jml_in,
+                                            //'refund' => $refund,
                                             'kd_jns_usaha'  => $this->_roleCode,
                                         );
                 $this->InboundDetail_model->add($insertContentDetail);
             }
          // die();
+         redirect('inventory/data_inbound/add');
 		
 	}
 	
