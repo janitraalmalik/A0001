@@ -53,7 +53,7 @@
                     type="text" 
                     name="tgl_lahir_kary" 
                     placeholder="Tgl Lahir" 
-                    value="<?php echo (empty($contentData['tgl_lahir_kary']))? set_value('tgl_lahir_kary') : $contentData['tgl_lahir_kary']; ?>"
+                    value="<?php echo (empty($contentData['tgl_lahir_kary']))? set_value('tgl_lahir_kary') : tgl_indo($contentData['tgl_lahir_kary']); ?>"
                     <?php echo (empty($contentData['tgl_lahir_kary']))? '' : 'readonly="true"'; ?>" 
                     required="true"/>
                 <?php echo form_error('tgl_lahir_kary', '<label class="text-red">', '</label>'); ?>
@@ -154,7 +154,7 @@
                     type="text" 
                     name="tgl_masuk" 
                     placeholder="Tgl Masuk" 
-                    value="<?php echo (empty($contentData['tgl_masuk_kary']))? set_value('tgl_masuk') : $contentData['tgl_masuk_kary']; ?>"
+                    value="<?php echo (empty($contentData['tgl_masuk_kary']))? set_value('tgl_masuk') : tgl_indo($contentData['tgl_masuk_kary']); ?>"
                     <?php echo (empty($contentData['tgl_masuk_kary']))? '' : 'readonly="true"'; ?>" 
                     required="true"/>
                 <?php echo form_error('tgl_masuk_kary', '<label class="text-red">', '</label>'); ?>
@@ -168,7 +168,7 @@
                     type="text" 
                     name="tgl_keluar" 
                     placeholder="Tgl Keluar" 
-                    value="<?php echo (empty($contentData['tgl_akhir_kary']))? set_value('tgl_keluar') : $contentData['tgl_akhir_kary']; ?>"
+                    value="<?php echo (empty($contentData['tgl_akhir_kary']))? set_value('tgl_keluar') : tgl_indo($contentData['tgl_akhir_kary']); ?>"
                     <?php echo (empty($contentData['tgl_akhir_kary']))? '' : 'readonly="true"'; ?>" 
                     required="true"/>
                 <?php echo form_error('tgl_akhir_kary', '<label class="text-red">', '</label>'); ?>

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 28, 2016 at 11:22 PM
+-- Generation Time: Dec 06, 2016 at 11:40 PM
 -- Server version: 5.1.33
 -- PHP Version: 5.2.9
 
@@ -84,12 +84,14 @@ CREATE TABLE IF NOT EXISTS `hr_m_gaji` (
   `deleted_at` datetime DEFAULT NULL,
   `deleted_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `hr_m_gaji`
 --
 
+INSERT INTO `hr_m_gaji` (`id`, `id_kary`, `gaji_kary`, `naik_gaji_kary`, `tunjangan_kary`, `pph_kary`, `status`, `kd_jns_usaha`, `created_at`, `created_by`, `updated_at`, `updated_by`, `deleted_at`, `deleted_by`) VALUES
+(1, 1, 5.00, 10.00, 60.00, 100.00, 0, 'JU001', '2016-12-06 11:32:06', 1, '2016-12-06 23:32:06', 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -121,12 +123,14 @@ CREATE TABLE IF NOT EXISTS `hr_m_karyawan` (
   `deleted_at` datetime DEFAULT NULL,
   `deleted_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `hr_m_karyawan`
 --
 
+INSERT INTO `hr_m_karyawan` (`id`, `nik_kary`, `nama_kary`, `tgl_lahir_kary`, `agama_kary`, `sex_kary`, `status_kary`, `bagian_kary`, `status_kerja_kary`, `tgl_masuk_kary`, `tgl_akhir_kary`, `telp_kary`, `ktp_kary`, `alamat_kary`, `status`, `kd_jns_usaha`, `created_at`, `created_by`, `updated_at`, `updated_by`, `deleted_at`, `deleted_by`) VALUES
+(1, '002', 'Gun', '2016-12-13 00:00:00', 1, 1, NULL, 1, 1, '2016-12-28 00:00:00', '2016-12-30 00:00:00', '324234234', '345345435345', 'dfdfsf', NULL, 'JU001', '2016-12-06 23:00:04', 1, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -168,6 +172,123 @@ INSERT INTO `hr_m_statuskary` (`id`, `nm_statuskary`) VALUES
 (1, 'Kontrak'),
 (2, 'Tetap'),
 (3, 'Freelance');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hr_t_absen`
+--
+
+CREATE TABLE IF NOT EXISTS `hr_t_absen` (
+  `id_absen` int(11) NOT NULL AUTO_INCREMENT,
+  `nik_kary` varchar(10) DEFAULT NULL,
+  `nama_kary` varchar(100) DEFAULT NULL,
+  `tanggal` datetime DEFAULT NULL,
+  `jam_masuk` datetime DEFAULT NULL,
+  `jam_keluar` datetime DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `kd_jns_usaha` varchar(255) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  `deleted_by` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id_absen`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `hr_t_absen`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hr_t_bayar`
+--
+
+CREATE TABLE IF NOT EXISTS `hr_t_bayar` (
+  `id_bayar` int(11) NOT NULL AUTO_INCREMENT,
+  `no_bayar` varchar(22) DEFAULT NULL,
+  `nilai_bayar` decimal(18,2) DEFAULT NULL,
+  `tgl_bayar` datetime DEFAULT NULL,
+  `id_pinjam` int(11) DEFAULT NULL,
+  `keterangan_bayar` varchar(255) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `kd_jns_usaha` varchar(255) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  `deleted_by` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id_bayar`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `hr_t_bayar`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hr_t_gaji`
+--
+
+CREATE TABLE IF NOT EXISTS `hr_t_gaji` (
+  `id_gaji` int(11) NOT NULL,
+  `nik_kary` varchar(10) DEFAULT NULL,
+  `tgl_gaji` datetime DEFAULT NULL,
+  `nilai_gaji` decimal(18,2) DEFAULT NULL,
+  `nilai_tunjangan` decimal(18,2) DEFAULT NULL,
+  `nilai_lembur` decimal(18,2) DEFAULT NULL,
+  `nilai_pph` decimal(18,2) DEFAULT NULL,
+  `keterangan_gaji` varchar(255) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `kd_jns_usaha` varchar(255) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  `deleted_by` int(11) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `hr_t_gaji`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hr_t_pinjam`
+--
+
+CREATE TABLE IF NOT EXISTS `hr_t_pinjam` (
+  `id_absen` int(11) NOT NULL AUTO_INCREMENT,
+  `nik_kary` varchar(10) DEFAULT NULL,
+  `tgl_pinjam` datetime DEFAULT NULL,
+  `nilai_pinjam` decimal(18,2) DEFAULT NULL,
+  `frequensi` int(11) DEFAULT NULL,
+  `keterangan_pinjam` varchar(255) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `kd_jns_usaha` varchar(255) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  `deleted_by` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id_absen`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `hr_t_pinjam`
+--
+
 
 -- --------------------------------------------------------
 
@@ -232,7 +353,11 @@ INSERT INTO `log` (`ip`, `user_id`, `user_name`, `affected_table`, `affected_id`
 ('127.0.0.1', NULL, 'guest', 'p_m_satuan', 4, 'INSERT INTO `p_m_satuan` (`satuan_kd`, `satuan_name`, `satuan_desc`, `kd_jns_usaha`, `created_at`) VALUES (''004'', ''biji'', ''oks'', ''JU001'', ''2016-11-27 12:02:40'')', 'update', '{"satuan_kd":"004","satuan_name":"biji","satuan_desc":"oks","kd_jns_usaha":"JU001"}', 'guest update p_m_satuan', '2016-11-27 12:02:40'),
 ('127.0.0.1', NULL, 'guest', 'hr_m_bagian', 1, 'INSERT INTO `hr_m_bagian` (`nm_bagian`, `kd_jns_usaha`, `created_at`) VALUES (''HRD'', ''JU001'', ''2016-11-27 21:06:51'')', 'update', '{"nm_bagian":"HRD","kd_jns_usaha":"JU001"}', 'guest update hr_m_bagian', '2016-11-27 21:06:51'),
 ('127.0.0.1', NULL, 'guest', 'hr_m_bagian', 1, 'UPDATE `hr_m_bagian` SET `nm_bagian` = ''Sales'', `kd_jns_usaha` = ''JU001'', `updated_at` = ''2016-11-27 21:08:40''\nWHERE `id` = ''1''', 'update', '{"nm_bagian":"Sales","kd_jns_usaha":"JU001"}', 'guest update hr_m_bagian', '2016-11-27 21:08:40'),
-('127.0.0.1', NULL, 'guest', 'hr_m_bagian', 2, 'INSERT INTO `hr_m_bagian` (`nm_bagian`, `kd_jns_usaha`, `created_at`) VALUES (''HRD'', ''JU001'', ''2016-11-27 21:09:16'')', 'update', '{"nm_bagian":"HRD","kd_jns_usaha":"JU001"}', 'guest update hr_m_bagian', '2016-11-27 21:09:16');
+('127.0.0.1', NULL, 'guest', 'hr_m_bagian', 2, 'INSERT INTO `hr_m_bagian` (`nm_bagian`, `kd_jns_usaha`, `created_at`) VALUES (''HRD'', ''JU001'', ''2016-11-27 21:09:16'')', 'update', '{"nm_bagian":"HRD","kd_jns_usaha":"JU001"}', 'guest update hr_m_bagian', '2016-11-27 21:09:16'),
+('127.0.0.1', NULL, 'admin', 'p_t_po', 1, 'INSERT INTO `p_t_po` (`kd_jns_usaha`, `created_at`, `created_by`) VALUES (''JU001'', ''2016-12-03 09:55:56'', ''1'')', 'update', '{"vend_kd":"00001","vend_name":"PT.A","vend_alamat":"K","vend_tlp":"094585867845","vend_pic":"Test","kd_jns_usaha":"JU001"}', 'admin update p_t_po', '2016-12-03 09:55:56'),
+('127.0.0.1', 1, 'admin', 'hr_m_karyawan', 1, 'INSERT INTO `hr_m_karyawan` (`nik_kary`, `nama_kary`, `alamat_kary`, `sex_kary`, `ktp_kary`, `tgl_lahir_kary`, `tgl_masuk_kary`, `tgl_akhir_kary`, `bagian_kary`, `telp_kary`, `agama_kary`, `status_kerja_kary`, `kd_jns_usaha`, `created_at`, `created_by`) VALUES (''002'', ''Gun'', ''dfdfsf'', ''1'', ''345345435345'', ''2016-12-13'', ''2016-12-28'', ''2016-12-30'', ''1'', ''324234234'', ''1'', ''1'', ''JU001'', ''2016-12-06 23:00:04'', ''1'')', 'update', '{"nik_kary":"002","nama_kary":"Gun","alamat_kary":"dfdfsf","sex_kary":"1","ktp_kary":"345345435345","tgl_lahir_kary":"2016-12-13","tgl_masuk_kary":"2016-12-28","tgl_akhir_kary":"2016-12-30","bagian_kary":"1","telp_kary":"324234234","agama_kary":"1","status_kerja_kary":"1","kd_jns_usaha":"JU001"}', 'admin update hr_m_karyawan', '2016-12-06 23:00:04'),
+('127.0.0.1', 1, 'admin', 'hr_m_gaji', 1, 'INSERT INTO `hr_m_gaji` (`id_kary`, `gaji_kary`, `naik_gaji_kary`, `tunjangan_kary`, `pph_kary`, `status`, `created_at`, `kd_jns_usaha`, `created_by`) VALUES (''1'', ''5000000'', ''10000000'', ''60000'', ''100000'', 0, ''2016-12-06 23:28:06'', ''JU001'', ''1'')', 'update', '{"id_kary":"1","gaji_kary":"5000000","naik_gaji_kary":"10000000","tunjangan_kary":"60000","pph_kary":"100000","status":0,"created_at":"2016-12-06 11:28:06","kd_jns_usaha":"JU001"}', 'admin update hr_m_gaji', '2016-12-06 23:28:06'),
+('127.0.0.1', 1, 'admin', 'hr_m_gaji', 1, 'UPDATE `hr_m_gaji` SET `id_kary` = ''1'', `gaji_kary` = ''5.000.000'', `naik_gaji_kary` = ''10'', `tunjangan_kary` = ''60'', `pph_kary` = ''100.000'', `status` = 0, `created_at` = ''2016-12-06 11:32:06'', `kd_jns_usaha` = ''JU001'', `updated_at` = ''2016-12-06 23:32:06'', `updated_by` = ''1''\nWHERE `id` = ''1''', 'update', '{"id_kary":"1","gaji_kary":"5.000.000","naik_gaji_kary":"10","tunjangan_kary":"60","pph_kary":"100.000","status":0,"created_at":"2016-12-06 11:32:06","kd_jns_usaha":"JU001"}', 'admin update hr_m_gaji', '2016-12-06 23:32:06');
 
 -- --------------------------------------------------------
 
@@ -483,12 +608,14 @@ CREATE TABLE IF NOT EXISTS `p_t_po` (
   `deleted_at` datetime DEFAULT NULL,
   `deleted_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `p_t_po`
 --
 
+INSERT INTO `p_t_po` (`id`, `po_no`, `po_tgl`, `po_desc`, `vendor_supplier`, `status_po_id`, `po_tgl_pengeriman`, `kd_skm_pembayaran`, `kd_jns_usaha`, `created_at`, `created_by`, `updated_at`, `updated_by`, `deleted_at`, `deleted_by`) VALUES
+(1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'JU001', '2016-12-03 09:55:56', 1, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -515,123 +642,6 @@ CREATE TABLE IF NOT EXISTS `p_t_podetail` (
 
 --
 -- Dumping data for table `p_t_podetail`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `t_hrm_absen`
---
-
-CREATE TABLE IF NOT EXISTS `t_hrm_absen` (
-  `id_absen` int(11) NOT NULL AUTO_INCREMENT,
-  `nik_kary` varchar(10) DEFAULT NULL,
-  `nama_kary` varchar(100) DEFAULT NULL,
-  `tanggal` datetime DEFAULT NULL,
-  `jam_masuk` datetime DEFAULT NULL,
-  `jam_keluar` datetime DEFAULT NULL,
-  `status` int(11) DEFAULT NULL,
-  `kd_jns_usaha` varchar(255) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `created_by` int(11) DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `updated_by` int(11) DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
-  `deleted_by` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id_absen`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `t_hrm_absen`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `t_hrm_bayar`
---
-
-CREATE TABLE IF NOT EXISTS `t_hrm_bayar` (
-  `id_bayar` int(11) NOT NULL AUTO_INCREMENT,
-  `no_bayar` varchar(22) DEFAULT NULL,
-  `nilai_bayar` decimal(18,2) DEFAULT NULL,
-  `tgl_bayar` datetime DEFAULT NULL,
-  `id_pinjam` int(11) DEFAULT NULL,
-  `keterangan_bayar` varchar(255) DEFAULT NULL,
-  `status` int(11) DEFAULT NULL,
-  `kd_jns_usaha` varchar(255) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `created_by` int(11) DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `updated_by` int(11) DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
-  `deleted_by` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id_bayar`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `t_hrm_bayar`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `t_hrm_gaji`
---
-
-CREATE TABLE IF NOT EXISTS `t_hrm_gaji` (
-  `id_gaji` int(11) NOT NULL,
-  `nik_kary` varchar(10) DEFAULT NULL,
-  `tgl_gaji` datetime DEFAULT NULL,
-  `nilai_gaji` decimal(18,2) DEFAULT NULL,
-  `nilai_tunjangan` decimal(18,2) DEFAULT NULL,
-  `nilai_lembur` decimal(18,2) DEFAULT NULL,
-  `nilai_pph` decimal(18,2) DEFAULT NULL,
-  `keterangan_gaji` varchar(255) DEFAULT NULL,
-  `status` int(11) DEFAULT NULL,
-  `kd_jns_usaha` varchar(255) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `created_by` int(11) DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `updated_by` int(11) DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
-  `deleted_by` int(11) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `t_hrm_gaji`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `t_hrm_pinjam`
---
-
-CREATE TABLE IF NOT EXISTS `t_hrm_pinjam` (
-  `id_absen` int(11) NOT NULL AUTO_INCREMENT,
-  `nik_kary` varchar(10) DEFAULT NULL,
-  `tgl_pinjam` datetime DEFAULT NULL,
-  `nilai_pinjam` decimal(18,2) DEFAULT NULL,
-  `frequensi` int(11) DEFAULT NULL,
-  `keterangan_pinjam` varchar(255) DEFAULT NULL,
-  `status` int(11) DEFAULT NULL,
-  `kd_jns_usaha` varchar(255) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `created_by` int(11) DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `updated_by` int(11) DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
-  `deleted_by` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id_absen`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `t_hrm_pinjam`
 --
 
 
