@@ -10,10 +10,36 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2016-12-03 16:12:43
+Date: 2016-12-06 14:06:43
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for m_generatenumber
+-- ----------------------------
+DROP TABLE IF EXISTS `m_generatenumber`;
+CREATE TABLE `m_generatenumber` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `type_nomor` varchar(255) DEFAULT NULL,
+  `kode` varchar(255) DEFAULT NULL,
+  `count` int(11) DEFAULT '0',
+  `kd_jns_usaha` varchar(255) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  `deleted_by` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of m_generatenumber
+-- ----------------------------
+INSERT INTO `m_generatenumber` VALUES ('1', 'vendor', '00000', '0', 'JU001', null, null, null, null, null, null);
+INSERT INTO `m_generatenumber` VALUES ('2', 'purchaseorder', '00003', '3', 'JU001', null, null, null, null, null, null);
+INSERT INTO `m_generatenumber` VALUES ('3', 'payorder', '00006', '6', 'JU001', null, null, null, null, null, null);
 
 -- ----------------------------
 -- Table structure for p_m_barang
@@ -165,14 +191,15 @@ CREATE TABLE `p_t_po` (
   `po_no` varchar(255) DEFAULT NULL,
   `po_tgl` date DEFAULT NULL,
   `po_tgl_tagihan` date DEFAULT NULL,
-  `po_tgl_pengeriman` datetime DEFAULT NULL,
   `po_desc` varchar(255) DEFAULT NULL,
   `kd_vendor_supplier` varchar(255) DEFAULT NULL,
   `status_po_id` int(11) DEFAULT NULL,
+  `status_received` int(11) DEFAULT '1',
   `kd_syarat_pembayaran` varchar(255) DEFAULT NULL,
   `po_subtotal` float(18,2) DEFAULT NULL,
   `po_ppn` float(18,2) DEFAULT NULL,
   `po_total` float(18,2) DEFAULT NULL,
+  `po_bayar` float(18,2) DEFAULT NULL,
   `kd_jns_usaha` varchar(255) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
@@ -181,13 +208,45 @@ CREATE TABLE `p_t_po` (
   `deleted_at` datetime DEFAULT NULL,
   `deleted_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of p_t_po
 -- ----------------------------
-INSERT INTO `p_t_po` VALUES ('1', '00001', '2016-12-05', '2016-12-19', null, 'Test Vendor', '00001', '1', '', '4000000.00', '0.00', '4000000.00', 'JU001', '2016-12-03 15:42:28', '1', null, null, null, null);
-INSERT INTO `p_t_po` VALUES ('2', '00002', '2016-12-05', '2016-12-19', null, 'Test Vendor', '00001', '1', '', '4000000.00', '0.00', '4000000.00', 'JU001', '2016-12-03 15:43:17', '1', null, null, null, null);
+INSERT INTO `p_t_po` VALUES ('1', '00001', '2016-12-05', '2016-12-19', null, '00001', '1', '1', '', '195000000.00', '19500000.00', '214500000.00', '100000000.00', 'JU001', '2016-12-05 15:39:49', '1', '2016-12-05 15:41:29', '1', null, null);
+INSERT INTO `p_t_po` VALUES ('2', '00002', '2016-12-05', '2016-12-19', null, '00001', '2', '1', '', '57200000.00', '5720000.00', '62920000.00', '62920000.00', 'JU001', '2016-12-05 15:40:37', '1', '2016-12-05 16:11:46', '1', null, null);
+INSERT INTO `p_t_po` VALUES ('3', '00003', '2016-12-05', '2016-12-19', null, '00001', '1', '1', '', '10000000.00', '0.00', '10000000.00', '5000000.00', 'JU001', '2016-12-05 15:41:01', '1', '2016-12-05 15:51:17', '1', null, null);
+
+-- ----------------------------
+-- Table structure for p_t_po_pembayaran
+-- ----------------------------
+DROP TABLE IF EXISTS `p_t_po_pembayaran`;
+CREATE TABLE `p_t_po_pembayaran` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `pembayaran_no` varchar(255) DEFAULT NULL,
+  `po_no` varchar(255) DEFAULT NULL,
+  `tgl_bayar` datetime DEFAULT NULL,
+  `kd_vendor_supplier` varchar(255) DEFAULT NULL,
+  `pembayaran_total` float(18,2) DEFAULT NULL,
+  `kd_jns_usaha` varchar(255) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  `deleted_by` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of p_t_po_pembayaran
+-- ----------------------------
+INSERT INTO `p_t_po_pembayaran` VALUES ('1', '00001', '00001', '2016-12-19 00:00:00', '00001', '100000000.00', 'JU001', '2016-12-05 15:41:29', '1', null, null, null, null);
+INSERT INTO `p_t_po_pembayaran` VALUES ('2', '00002', '00003', '2016-12-05 00:00:00', '00001', '5000000.00', 'JU001', '2016-12-05 15:51:17', '1', null, null, null, null);
+INSERT INTO `p_t_po_pembayaran` VALUES ('3', '00003', '00002', '2016-12-05 00:00:00', '00001', '30000000.00', 'JU001', '2016-12-05 16:10:44', '1', null, null, null, null);
+INSERT INTO `p_t_po_pembayaran` VALUES ('4', '00004', '00002', '2016-12-05 00:00:00', '00001', '17000000.00', 'JU001', '2016-12-05 16:11:20', '1', null, null, null, null);
+INSERT INTO `p_t_po_pembayaran` VALUES ('5', '00005', '00002', '2016-12-05 00:00:00', '00001', '5920000.00', 'JU001', '2016-12-05 16:11:37', '1', null, null, null, null);
+INSERT INTO `p_t_po_pembayaran` VALUES ('6', '00006', '00002', '2016-12-05 00:00:00', '00001', '10000000.00', 'JU001', '2016-12-05 16:11:46', '1', null, null, null, null);
 
 -- ----------------------------
 -- Table structure for p_t_podetail
@@ -201,6 +260,7 @@ CREATE TABLE `p_t_podetail` (
   `jml_barang` int(11) DEFAULT NULL,
   `harga_satuan` decimal(18,2) DEFAULT NULL,
   `ppn` int(11) DEFAULT NULL,
+  `index` int(255) DEFAULT NULL,
   `kd_jns_usaha` varchar(255) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
@@ -209,10 +269,15 @@ CREATE TABLE `p_t_podetail` (
   `deleted_at` datetime DEFAULT NULL,
   `deleted_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of p_t_podetail
 -- ----------------------------
-INSERT INTO `p_t_podetail` VALUES ('1', '00001', '0001', '1', '20', '200000.00', '0', 'JU001', '2016-12-03 15:42:28', '1', null, null, null, null);
-INSERT INTO `p_t_podetail` VALUES ('2', '00002', '0001', '1', '20', '200000.00', '0', 'JU001', '2016-12-03 15:43:17', '1', null, null, null, null);
+INSERT INTO `p_t_podetail` VALUES ('1', '00001', '0001', '1', '25', '5000000.00', '1', '1', 'JU001', '2016-12-05 15:39:49', '1', null, null, null, null);
+INSERT INTO `p_t_podetail` VALUES ('2', '00001', '0002', '2', '100', '600000.00', '1', '2', 'JU001', '2016-12-05 15:39:49', '1', null, null, null, null);
+INSERT INTO `p_t_podetail` VALUES ('3', '00001', '0001', '1', '500', '20000.00', '1', '3', 'JU001', '2016-12-05 15:39:50', '1', null, null, null, null);
+INSERT INTO `p_t_podetail` VALUES ('4', '00002', '0001', '1', '50', '10000.00', '1', '1', 'JU001', '2016-12-05 15:40:38', '1', null, null, null, null);
+INSERT INTO `p_t_podetail` VALUES ('5', '00002', '0002', '2', '100', '7000.00', '1', '2', 'JU001', '2016-12-05 15:40:38', '1', null, null, null, null);
+INSERT INTO `p_t_podetail` VALUES ('6', '00002', '0001', '1', '800', '70000.00', '1', '3', 'JU001', '2016-12-05 15:40:38', '1', null, null, null, null);
+INSERT INTO `p_t_podetail` VALUES ('7', '00003', '0001', '1', '100', '100000.00', '0', '1', 'JU001', '2016-12-05 15:41:01', '1', null, null, null, null);

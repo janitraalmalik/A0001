@@ -34,12 +34,12 @@
                       <div class="col-sm-6">    
                         <button type="submit" class="btn btn-primary">Cari</button>
                         <a 
-                            href="<?php echo base_url($uri) ?>/purchase_listPDF?start=<?php echo (!empty($inputGet['start']))? $inputGet['start'] : date('d-m-Y')?>&end=<?php echo (!empty($inputGet['end']))? $inputGet['end'] : date('d-m-Y')?>&supplier=<?php echo $inputGet['supplier']?>" 
+                            href="<?php echo base_url($uri) ?>/purchase_listPDF?start=<?php echo (!empty($inputGet['start']))? $inputGet['start'] : date('d-m-Y')?>&end=<?php echo (!empty($inputGet['end']))? $inputGet['end'] : date('d-m-Y')?>&supplier=<?php echo (!empty($inputGet['supplier']))? $inputGet['supplier'] : 0?>" 
                             class="btn btn-success">
                             Cetak PDF
                         </a>
                         <a 
-                            href="<?php echo base_url($uri) ?>/purchase_listExcel?start=<?php echo (!empty($inputGet['start']))? $inputGet['start'] : date('d-m-Y')?>&end=<?php echo (!empty($inputGet['end']))? $inputGet['end'] : date('d-m-Y')?>&supplier=<?php echo $inputGet['supplier']?>" 
+                            href="<?php echo base_url($uri) ?>/purchase_listExcel?start=<?php echo (!empty($inputGet['start']))? $inputGet['start'] : date('d-m-Y')?>&end=<?php echo (!empty($inputGet['end']))? $inputGet['end'] : date('d-m-Y')?>&supplier=<?php echo (!empty($inputGet['supplier']))? $inputGet['supplier'] : 0?>" 
                             class="btn btn-success">
                             Export Excel
                         </a>
@@ -70,7 +70,7 @@
 			</tr>
 		</thead>
         <tbody>
-            <?php if(isset($listPurchasing)):?>
+            <?php if(!empty($listPurchasing)):?>
                 <?php 
                     $totalPO = 0;
                     $totalBayar = 0;
