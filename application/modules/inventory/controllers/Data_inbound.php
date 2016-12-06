@@ -54,10 +54,15 @@ class Data_inbound extends MY_Controller {
 			$row[] = $grid->refund;
 			$row[] = $grid->sisa;
 			
+			/*  <a 
+                            class="btn btn-xs btn-flat btn-info" 
+                            href="'.site_url($grid_state . '/edit/' .$grid->id_inbound).'" 
+                            title="Update Data">Update</a> &nbsp; */
+			
 			$row[] = '<div style="width:100%;text-align:center;">
                         <a 
                             class="btn btn-xs btn-flat btn-info" 
-                            href="'.site_url($grid_state . '/edit/' .$grid->id_inbound).'" 
+                            href="#" 
                             title="Update Data">Update</a> &nbsp;
                         <a 
                             class="btn btn-xs btn-flat btn-danger" 
