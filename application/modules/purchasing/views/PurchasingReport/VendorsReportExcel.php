@@ -106,9 +106,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<tr class="info">
 				<th width="2%">No.</th>
 				<th width="10%"> Kode </th>
-				<th width="15%"> Nama Perusahaan</th>
-				<th width=""> No. Telpn</th>
-				<th width=""> PIC</th>
+				<th width="50%"> Nama Perusahaan</th>
+				<th width="30%"> No. Telpn</th>
+				<th width="30%"> PIC</th>
 			</tr>
 		</thead>
         <tbody>
@@ -116,7 +116,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <?php $no=1; foreach($contentData as $row): ?>
                     <tr>
                         <td><?php echo $no;?></td>
-                        <td><?php echo $row['vend_kd'];?></td>
+                        <td><?php echo "'" . $row['vend_kd'];?></td>
                         <td><?php echo $row['vend_name'];?></td>
                         <td><?php echo $row['vend_tlp'];?></td>
                         <td><?php echo $row['vend_pic'];?></td>
