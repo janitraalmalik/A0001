@@ -211,8 +211,8 @@ $().ready(function(){
           </a>
           <ul class="treeview-menu">
             <li><a href="<?php echo base_url('purchasing/data_vendors');?>"><i class="fa fa-circle-o"></i> Data Vendor / Supplier</a></li>
-            <li><a href="<?php echo base_url('purchasing/data_barang');?>"><i class="fa fa-circle-o"></i> Data Items</a></li>
-            <li><a href="<?php echo base_url('purchasing/data_catbarang');?>"><i class="fa fa-circle-o"></i> Data Item Category</a></li>
+            <li><a href="<?php echo base_url('purchasing/data_barang');?>"><i class="fa fa-circle-o"></i> Data Barang</a></li>
+            <li><a href="<?php echo base_url('purchasing/data_catbarang');?>"><i class="fa fa-circle-o"></i> Data Kategori Barang</a></li>
             <li><a href="<?php echo base_url('purchasing/data_satuan');?>"><i class="fa fa-circle-o"></i> Data Satuan</a></li>
           </ul>
         </li>
@@ -222,8 +222,10 @@ $().ready(function(){
             <i class="fa fa-angle-left pull-right"></i>
           </a>
           <ul class="treeview-menu">
-            <li><a href="pages/forms/general.html"><i class="fa fa-circle-o"></i> List Purchase Order</a></li>
-            <li><a href="pages/forms/general.html"><i class="fa fa-circle-o"></i> Outstanding</a></li>
+            <li><a href="<?php echo base_url('purchasing/purchasingReport/supplier_list');?>"><i class="fa fa-circle-o"></i> Vendor/Supplier</a></li>
+            <li><a href="<?php echo base_url('purchasing/purchasingReport/items_list');?>"><i class="fa fa-circle-o"></i> Barang</a></li>
+            <li><a href="<?php echo base_url('purchasing/purchasingReport/purchase_list');?>"><i class="fa fa-circle-o"></i> List Purchase Order</a></li>
+            <li><a href="<?php echo base_url('purchasing/purchasingReport/outstanding_list');?>"><i class="fa fa-circle-o"></i> Outstanding</a></li>
           </ul>
         </li>
         <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>

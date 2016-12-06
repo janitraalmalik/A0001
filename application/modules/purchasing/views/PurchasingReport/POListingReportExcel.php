@@ -1,6 +1,6 @@
 <?php
       header("Content-type: application/vnd-ms-excel");
-      header("Content-Disposition: attachment; filename=hasil.xls");
+      header("Content-Disposition: attachment; filename=" . $fileName . ".xls");
         
 ?>
 <?php
@@ -9,7 +9,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>DOM-PDF CODEIGNITER 3</title>
+	<title><?php echo $moduleTitle; ?></title>
     
 	<style type="text/css">
 
@@ -100,7 +100,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <div id="container">
 	<h2 class="text-center" style="margin: 0!important;"><b><?php echo $this->_roleName ?></b></h2>
     <h4 class="text-center" style="margin: 0!important;">Periode : <?php echo (!empty($inputGet['start']))? $inputGet['start'] : date('d-m-Y')?> - <?php echo (!empty($inputGet['end']))? $inputGet['end'] : date('d-m-Y')?></h4>
-    <h4 class="text-center" style="margin-top: 0!important;">Laporan Pembelian</h4>
+    <h4 class="text-center" style="margin-top: 0!important;"><?php echo $moduleTitle; ?></h4>
 	<table id="datatables" class="gridtable" style="font-size: 12px;">
 		<thead>
 			<tr class="info">

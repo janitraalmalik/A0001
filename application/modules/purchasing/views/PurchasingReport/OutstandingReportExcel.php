@@ -1,4 +1,10 @@
 <?php
+    
+      header("Content-type: application/vnd-ms-excel");
+      header("Content-Disposition: attachment; filename=" . $fileName . ".xls");
+        
+?>
+<?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?><!DOCTYPE html>
 <html lang="en">
@@ -6,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<meta charset="utf-8">
 	<title><?php echo $moduleTitle; ?></title>
     
-		<style type="text/css">
+	<style type="text/css">
 
 	::selection { background-color: #E13300; color: white; }
 	::-moz-selection { background-color: #E13300; color: white; }
@@ -76,14 +82,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     }
     table.gridtable th {
     	border-width: 1px;
-    	padding: 5px;
+    	padding: 8px;
     	border-style: solid;
     	border-color: #666666;
     	background-color: #dedede;
     }
     table.gridtable td {
     	border-width: 1px;
-    	padding: 5px;
+    	padding: 8px;
     	border-style: solid;
     	border-color: #666666;
     	background-color: #ffffff;
@@ -104,9 +110,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<th width="10%"> No. Transaksi</th>
 				<th width="20%"> Supplier</th>
 				<th width="12%"> Status</th>
-				<th width=""> Jumlah Tagihan</th>
-				<th width=""> Jumlah Bayar</th>
-				<th width=""> Sisa Tagihan</th>
+				<th width="12%"> Jumlah Tagihan</th>
+				<th width="12%"> Jumlah Bayar</th>
+				<th width="12%"> Sisa Tagihan</th>
 			</tr>
 		</thead>
         <tbody>
