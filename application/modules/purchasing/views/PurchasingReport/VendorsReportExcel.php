@@ -1,4 +1,9 @@
 <?php
+      header("Content-type: application/vnd-ms-excel");
+      header("Content-Disposition: attachment; filename=" . $fileName . ".xls");
+        
+?>
+<?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?><!DOCTYPE html>
 <html lang="en">
@@ -6,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<meta charset="utf-8">
 	<title><?php echo $moduleTitle; ?></title>
     
-		<style type="text/css">
+	<style type="text/css">
 
 	::selection { background-color: #E13300; color: white; }
 	::-moz-selection { background-color: #E13300; color: white; }
@@ -76,14 +81,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     }
     table.gridtable th {
     	border-width: 1px;
-    	padding: 5px;
+    	padding: 8px;
     	border-style: solid;
     	border-color: #666666;
     	background-color: #dedede;
     }
     table.gridtable td {
     	border-width: 1px;
-    	padding: 5px;
+    	padding: 8px;
     	border-style: solid;
     	border-color: #666666;
     	background-color: #ffffff;
@@ -94,52 +99,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <div id="container">
 	<h2 class="text-center" style="margin: 0!important;"><b><?php echo $this->_roleName ?></b></h2>
-    <h4 class="text-center" style="margin: 0!important;">Periode : <?php echo (!empty($inputGet['start']))? $inputGet['start'] : date('d-m-Y')?> - <?php echo (!empty($inputGet['end']))? $inputGet['end'] : date('d-m-Y')?></h4>
     <h4 class="text-center" style="margin-top: 0!important;"><?php echo $moduleTitle; ?></h4>
-	<table id="datatables" class="gridtable" style="font-size: 12px;">
+	
+    <table id="datatables" class="gridtable" style="font-size: 12px;">
 		<thead>
 			<tr class="info">
 				<th width="2%">No.</th>
-				<th width="12%"> Tanggal</th>
-				<th width="10%"> No. Transaksi</th>
-				<th width="20%"> Supplier</th>
-				<th width="12%"> Status</th>
-				<th width=""> Jumlah Tagihan</th>
-				<th width=""> Jumlah Bayar</th>
-				<th width=""> Sisa Tagihan</th>
+				<th width="10%"> Kode </th>
+				<th width="15%"> Nama Perusahaan</th>
+				<th width=""> No. Telpn</th>
+				<th width=""> PIC</th>
 			</tr>
 		</thead>
         <tbody>
-            <?php if(isset($listPurchasing)):?>
-                <?php 
-                    $totalPO = 0;
-                    $totalBayar = 0;
-                    $totalSisaBayar = 0;
-                ?>
-                <?php $no=1; foreach($listPurchasing as $row): ?>
-                    <?php 
-                        $totalPO = $totalPO+$row['po_total'];
-                        $totalBayar = $totalBayar+$row['po_bayar'];
-                        $totalSisaBayar = $totalPO-$totalBayar;
-                        $sisabayar = $row['po_total']-$row['po_bayar'];
-                    ?>
+            <?php if(!empty($contentData)):?>
+                <?php $no=1; foreach($contentData as $row): ?>
                     <tr>
                         <td><?php echo $no;?></td>
-                        <td><?php echo tgl_indo($row['po_tgl']);?></td>
-                        <td><?php echo '#' .$row['po_no'];?></td>
-                        <td><?php echo getNameVendor($row['kd_vendor_supplier'],$this->_roleCode);?></td>
-                        <td><?php echo getStatusPO($row['status_po_id'],$this->_roleCode);?></td>
-                        <td class="text-right"><?php echo number_format($row['po_total']);?></td>
-                        <td class="text-right"><?php echo number_format($row['po_bayar']);?></td>
-                        <td class="text-right"><?php echo number_format($sisabayar);?></td>
+                        <td><?php echo $row['vend_kd'];?></td>
+                        <td><?php echo $row['vend_name'];?></td>
+                        <td><?php echo $row['vend_tlp'];?></td>
+                        <td><?php echo $row['vend_pic'];?></td>
                     </tr>                
                 <?php $no++; endforeach; ?>
-                <tr class="info footReport">
-                    <td colspan="5" style="text-align: center;"><b>Total</b></td>
-                    <td class="text-right"><b><?php echo number_format($totalPO);?></b></td>
-                    <td class="text-right"><b><?php echo number_format($totalBayar);?></b></td>
-                    <td class="text-right"><b><?php echo number_format($totalSisaBayar);?></b></td>
-                </tr>
             <?php endif;?>
         </tbody>
 	</table>
