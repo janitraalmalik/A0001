@@ -57,7 +57,7 @@ function addCommas(str) {
                     name="gaji" 
 					style="text-align:right"
                     placeholder="Gaji" 
-                    value="<?php echo (empty($contentData['gaji_kary']))? set_value('gaji') : $contentData['gaji_kary']; ?>"
+                    value="<?php echo (empty($contentData['gaji_kary']))? set_value('gaji') : angka($contentData['gaji_kary']); ?>"
                     <?php echo (empty($contentData['gaji_kary']))? '' : 'readonly="true"'; ?>" 
                     required="true"/>
                 <?php echo form_error('nama_kary', '<label class="text-red">', '</label>'); ?>
@@ -72,7 +72,7 @@ function addCommas(str) {
                     name="naik_gaji_kary" 
                     placeholder="Naik Gaji Karyawan" 
 					style="text-align:right"
-                    value="<?php echo (empty($contentData['naik_gaji_kary']))? set_value('naik_gaji_kary') : $contentData['naik_gaji_kary']; ?>"
+                    value="<?php echo (empty($contentData['naik_gaji_kary']))? set_value('naik_gaji_kary') : angka($contentData['naik_gaji_kary']); ?>"
                     <?php echo (empty($contentData['naik_gaji_kary']))? '' : 'readonly="true"'; ?>" 
                     required="true"/>
                 <?php echo form_error('naik_gaji_kary', '<label class="text-red">', '</label>'); ?>
@@ -87,7 +87,7 @@ function addCommas(str) {
                     name="tunjangan_kary" 
                     placeholder="Tunjangan Karyawan" 
 					style="text-align:right"
-                    value="<?php echo (empty($contentData['tunjangan_kary']))? set_value('tunjangan_kary') : $contentData['tunjangan_kary']; ?>"
+                    value="<?php echo (empty($contentData['tunjangan_kary']))? set_value('tunjangan_kary') : angka($contentData['tunjangan_kary']); ?>"
                     <?php echo (empty($contentData['tunjangan_kary']))? '' : 'readonly="true"'; ?>" 
                     required="true"/>
                 <?php echo form_error('tunjangan_kary', '<label class="text-red">', '</label>'); ?>
@@ -102,7 +102,7 @@ function addCommas(str) {
                     name="pph_kary" 
                     placeholder="Pph" 
 					style="text-align:right"
-                    value="<?php echo (empty($contentData['pph_kary']))? set_value('pph_kary') : $contentData['pph_kary']; ?>"
+                    value="<?php echo (empty($contentData['pph_kary']))? set_value('pph_kary') : angka($contentData['pph_kary']); ?>"
                     <?php echo (empty($contentData['pph_kary']))? '' : 'readonly="true"'; ?>" 
                     required="true"/>
                 <?php echo form_error('pph_kary', '<label class="text-red">', '</label>'); ?>
