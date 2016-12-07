@@ -6,7 +6,7 @@ class Inbound_model extends MY_Model {
 	private $table 			= 'v_i_inbound_grid';
 	private $column_order 	= array('id_inbound','date_in',null,'brg_nama',null,null,null,null,null);
 	private $column_search 	= array('id_inbound','brg_nama','date_in');  
-	private $order 			= array('date_in' => 'asc'); 
+	private $order 			= array('date_in' => 'desc'); 
     
     public function __construct(){
         parent::__construct();

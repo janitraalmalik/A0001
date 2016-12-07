@@ -47,12 +47,12 @@ class Data_inbound extends MY_Controller {
 			$row = array();
 			$row[] = $no;
 			$row[] = $grid->id_inbound;
-			$row[] = $grid->date_in;
+			$row[] = tgl_indo($grid->date_in);
 			$row[] = $grid->po_no;
 			$row[] = $grid->brg_nama;
-			$row[] = $grid->jml_in;
-			$row[] = $grid->refund;
-			$row[] = $grid->sisa;
+			$row[] = number_format($grid->jml_in);
+			$row[] = number_format($grid->refund);
+			$row[] = number_format($grid->sisa);
 			
 			/*  <a 
                             class="btn btn-xs btn-flat btn-info" 
