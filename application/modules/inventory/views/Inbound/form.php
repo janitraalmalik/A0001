@@ -31,6 +31,18 @@ $this->load->view('templates/message_handler') ?>
     		</div>
     	</div>
     	<div class="form-group">
+    		<label class="col-sm-3 control-label input-sm">No Reff Vendor *</label>
+            <div class="col-sm-9">
+                <input 
+                    class="form-control input-sm "
+                    type="text" 
+                    name="noReff" 
+                    id="noReff" 
+					required="true"/>
+                <?php echo form_error('tgltrxPO', '<label class="text-red">', '</label>'); ?>
+    		</div><label class="col-sm-5 control-label input-sm"><font size="1.5" color="red">* Jika Tidak ada di isi angka 0</font> </label>
+    	</div>
+    	<div class="form-group">
     		<label class="col-sm-3 control-label input-sm">PO No *</label>
     		<div class="col-sm-9">
                 <select name="poNo" id="noPO" class="form-control select2" style="width: 100%;" required="true">

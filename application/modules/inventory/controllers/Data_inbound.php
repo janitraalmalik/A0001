@@ -53,12 +53,12 @@ class Data_inbound extends MY_Controller {
 			$row[] = number_format($grid->jml_in);
 			$row[] = number_format($grid->refund);
 			$row[] = number_format($grid->sisa);
-			
+			$row[] = '';
 			/*  <a 
                             class="btn btn-xs btn-flat btn-info" 
                             href="'.site_url($grid_state . '/edit/' .$grid->id_inbound).'" 
                             title="Update Data">Update</a> &nbsp; */
-			
+			/*
 			$row[] = '<div style="width:100%;text-align:center;">
                         <a 
                             class="btn btn-xs btn-flat btn-info" 
@@ -70,7 +70,7 @@ class Data_inbound extends MY_Controller {
                             href="'.site_url($grid_state . '/delete/'.$grid->id_inbound).'" 
                             title="Delete Data">Delete</a>
                     </div>';
-                    
+               */     
 			$data[] = $row;
 		}
 		$output = array(
@@ -121,8 +121,9 @@ class Data_inbound extends MY_Controller {
 	
 	public function simpan(){
             $poNo  = post('poNo');
+            $noReff  = post('noReff');
             $tgltrxPO  = post('tgltrxPO');
-            //die($tgltrxPO);
+           // die($noReff);
             $jml_inS  = post('jml_in');
             $refundS  = post('refund');
             $brg_namaS  = post('brg_nama');
@@ -137,6 +138,7 @@ class Data_inbound extends MY_Controller {
 				//echo $val . '<br />';
 				$insertContentDetail = array(
                                             'po_no' => $poNo,
+                                            'no_ref_vendor' => $noReff,
                                             'date_in' => dateTOSql($tgltrxPO),
                                             'barang_kd' => $brg_nama,
                                             'jml_in' => $jml_in,
