@@ -84,6 +84,10 @@ class Purchase_order extends MY_Controller {
                             <li><a  
                                 href="'.site_url($grid_state . '/view/' .$grid->id).'" 
                                 title="Lihat Data">Lihat</a></li>
+                            <li><a 
+                                target="_BLANK" 
+                                href="'.site_url($grid_state . '/cetak/' .$grid->id).'" 
+                                title="Cetak PO">Cetak</a></li>
                             <!--li><a  
                                 href="'.site_url($grid_state . '/edit/' .$grid->id).'" 
                                 title="Ubah Data">Ubah</a></li-->
@@ -576,11 +580,38 @@ class Purchase_order extends MY_Controller {
        
     }
     
-    public function cetak(){
-        $this->pdf->load_view('example_to_pdf');
+    public function cetak($id){        
+        
+        $fileName = '';
+        $contentData = '';
+        $vendorDataRow = '';
+        $contentDataDetail = '';
+        if(!empty($id)){
+            $contentData = $this->PurchaseOrder_model->find($id,'id');
+            // -------------------------//
+            $wherePODetail = " AND po_no = '" . $contentData['po_no'] . "'";
+            $contentDataDetail = $this->PurchaseOrderDetail_model->all($wherePODetail);
+            // -------------------------//            // -------------------------//
+            $vendorDataRow = $this->Vendors_model->find($contentData['kd_vendor_supplier'],'vend_kd');
+            $fileName = "PurchaseOrder-" . $contentData['po_no'];
+            
+            if(count($contentData) == 0){
+                redirect($this->page->base_url('/'));
+            }      
+        }
+        
+        
+        $this->pdf->load_view('PurchaseOrder/PurchaseFormPDF',array (
+	                               'moduleTitle'      => $this->moduleTitle,
+                        	       'contentData'   => $contentData,
+                        	       'contentDataDetail'   => $contentDataDetail,
+                                   'vendorDataRow' => $vendorDataRow
+                        		  ));
+                                  
         $this->pdf->set_paper('A4', 'portrait');
 		$this->pdf->render();
-		$this->pdf->stream("name-file.pdf",array("Attachment"=>0));
+		$this->pdf->stream($fileName .".pdf",array("Attachment"=>0));
+        
     }
     
 	public function delete($id){

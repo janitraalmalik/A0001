@@ -185,7 +185,7 @@ $().ready(function(){
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
-        <li class="header"><?php echo strtoupper(@$moduleTitle); ?> NAVIGATION</li>
+        <li class="header"><?php echo strtoupper(@$this->uri->segment(1)); ?> NAVIGATION</li>
         
         <?php if($this->uri->segment(1) == 'purchasing'): ?>
         <!--li>

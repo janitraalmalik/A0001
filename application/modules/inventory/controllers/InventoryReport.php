@@ -53,7 +53,7 @@ class InventoryReport extends MY_Controller {
             }
             $wherePO .= " ORDER BY id_inbound DESC";
            
-           $qeu  = "select * from v_i_inbound_grid Where deleted_by = 0 ".$wherePO; 
+           $qeu  = "select * from v_i_inbound_grid Where deleted_by is null ".$wherePO; 
             
            $listInbound = $this->db->query($qeu)->result_array();
 //            $listInbound = $this->Inbound_model->all($wherePO);

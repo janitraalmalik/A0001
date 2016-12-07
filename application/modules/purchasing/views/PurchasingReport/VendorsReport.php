@@ -15,11 +15,13 @@
                     <div class="form-group">
                       <div class="col-sm-6">    
                         <a 
+                            target="_BLANK"
                             href="<?php echo base_url($uri) ?>/<?php echo $linkPDF ?>" 
                             class="btn btn-success">
                             Cetak PDF
                         </a>
                         <a 
+                            target="_BLANK"
                             href="<?php echo base_url($uri) ?>/<?php echo $linkExcel ?>" 
                             class="btn btn-success">
                             Export Excel
