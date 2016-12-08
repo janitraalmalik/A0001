@@ -135,8 +135,10 @@ class Data_inbound extends MY_Controller {
                 $jml_in = $jml_inS[$key];
                 $refund = $refundS[$key];
                 
+                $generateCodeInbound = generateCodeInbound($this->_roleCode);
 				//echo $val . '<br />';
 				$insertContentDetail = array(
+											'id_inbound'	=> $generateCodeInbound,
                                             'po_no' => $poNo,
                                             'no_ref_vendor' => $noReff,
                                             'date_in' => dateTOSql($tgltrxPO),
@@ -146,7 +148,11 @@ class Data_inbound extends MY_Controller {
                                             'kd_jns_usaha'  => $this->_roleCode,
                                         );
                 $this->InboundDetail_model->add($insertContentDetail);
+                saveGenerateCodeInbound($this->_roleCode);
             }
+            
+           
+            
          // die();
          redirect('inventory/data_inbound/add');
 		
@@ -171,7 +177,7 @@ class Data_inbound extends MY_Controller {
 						a.jml_barang
 					from p_t_podetail  a
 					left join p_m_satuan b on a.kd_satuan = b.id
-					left join p_m_barang c on c.id = a.kd_barang
+					left join p_m_barang c on c.brg_kd = a.kd_barang
 					where a.po_no = '".$po."' ";
 		$sql = $this->db->query($sqld)->result();
 		

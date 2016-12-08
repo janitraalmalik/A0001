@@ -284,7 +284,11 @@ $this->load->view('templates/message_handler') ?>
 <script>
     $(document).ready(function() {
     //alert("");
-    
+		$('#noReff').keyup(function(){
+						//alert($(this).val());
+		});
+					
+		
     
     
         $('#noPO').change(function() {
@@ -293,20 +297,47 @@ $this->load->view('templates/message_handler') ?>
             var po = $(this).val();
                $.getJSON('<?php echo base_url('inventory/Data_inbound/showPOitem');?>/' + po, function (data) {
                  // alert(data.kd_satuan);
-					
-			
+				 $('.inbound').remove();
 					var tr;
 					for (var i = 0; i < data.length; i++) {
 						var a = 
 						tr = $('<tr class="inbound">');
 						tr.append("<td><input type='hidden' name='brg_nama[]' id='brg_nama" + i + "' readonly='true' value='" +data[i].kd_barang +"'>" + data[i].brg_nama + "</td>");
-						tr.append("<td><input type='hidden' name='jml_barang' id='jml_barang" + i + "' readonly='true' value='" +data[i].jml_barang +"'>" + data[i].jml_barang + "</td>");
+						tr.append("<td><input type='hidden' name='jml_barang[]' class='jml_barang" + i + "' id='jml_barang" + i + "' readonly='true' value='" +data[i].jml_barang +"' class='form-control numeric jml_barang'>" + data[i].jml_barang + "</td>");
 						tr.append("<td><input type='hidden' name='satuan_name[]' readonly='true' value='" +data[i].satuan_name +"'>" + data[i].satuan_name + "</td>");
-						tr.append("<td><input type='text' name='jml_in[]' id='jml_in' value='' style='text-align:right' class='form-control numeric jml_in' required='true'></td>");
+						tr.append("<td><input type='text' name='jml_in[]' id='jml_in" + i + "' value='' style='text-align:right' class='form-control numeric jml_in' required='true'><input type='hidden' name='poj[]' id='poj" + i + "'  ></td>");
 						//tr.append("<td><input type='text' name='refund[]' id='refund' value='' style='text-align:right' class='form-control numeric refund' required='true'></td>");
 						tr.append("</tr>");
 						$('table').append(tr);
 						$( ".numeric" ).number( true , 0);
+					
+					  $('#jml_in'+ i).on('keyup', function(){
+						//alert("tes");
+						
+							$('.jml_in').each(function(index){
+								var index = index; 
+								//alert(index);
+								var JmlIn = parseInt($(this).val());
+								var a = $('#jml_barang' + index).val()
+								//alert(a);
+								if (JmlIn > a){
+									alert("Tidak Boleh Lebih besar dari Jumlah Barang yang di PO");
+								}
+								
+								});
+						
+						});
+					
+//					$('#jml_barang'+ i).val(); 
+					//alert(h);
+					/*
+					$('#jml_in'+ i).keyup(function(){
+								var JmlIn = parseInt($(this).val());
+								var a = parseInt($('.jml_barang'+ i).val());
+								alert(JmlIn);
+						
+						});
+					*/
 					}
                });
                
