@@ -37,75 +37,75 @@ function addCommas(str) {
 		<div class="form-group">
     		<label class="col-sm-2 control-label input-sm">Nama Karyawan *</label>
     		<div class="col-sm-3">
-                <select name="id_kary" class="form-control select2 input-sm" style="width: 100%;">
+                <select name="id_kary" id="id_kary" class="form-control select2 input-sm" style="width: 100%;">
     				<option value="0">--- Choose ---</option>
                     <?php foreach($kary as $row){?>
 					<option value="<?php echo $row->id;?>" <?php if($contentData){
-						if($row->id==$contentData['id_kary']){ echo 'selected'; }
+						if($row->id==$contentData['nik_kary']){ echo 'selected'; }
 					}?>><?php echo $row->nama_kary;?></option>
 					<?php } ?>
     			</select>
-                <?php echo form_error('id_kary', '<label class="text-red">', '</label>'); ?>
+                <?php echo form_error('nik_kary', '<label class="text-red">', '</label>'); ?>
     		</div>
-    	</div>  
+    	</div> 
 		<div class="form-group">
-    		<label class="col-sm-2 control-label input-sm">Gaji</label>
+    		<label class="col-sm-2 control-label input-sm">Tgl Pinjam</label>
+    		<div class="col-sm-3">
+                <input 
+                    class="form-control input-sm datepicker"
+                    type="text" 
+                    name="tgl_pinjam" 
+                    placeholder="Tanggal Pinjam" 
+					style="text-align:right"
+                    value="<?php echo (empty($contentData['tgl_pinjam']))? set_value('tgl_pinjam') : tgl_indo($contentData['tgl_pinjam']); ?>"
+                    <?php echo (empty($contentData['tgl_pinjam']))? '' : ''; ?>" 
+                    required="true"/>
+                <?php echo form_error('tgl_pinjam', '<label class="text-red">', '</label>'); ?>
+    		</div>
+    	</div> 
+		<div class="form-group">
+    		<label class="col-sm-2 control-label input-sm">Frequensi</label>
     		<div class="col-sm-3">
                 <input 
                     class="form-control input-sm money"
                     type="text" 
-                    name="gaji" 
+                    name="frequensi" 
+                    placeholder="Frequensi" 
 					style="text-align:right"
-                    placeholder="Gaji" 
-                    value="<?php echo (empty($contentData['gaji_kary']))? set_value('gaji') : number_format($contentData['gaji_kary']); ?>"
-                    <?php echo (empty($contentData['gaji_kary']))? '' : ''; ?>" 
+                    value="<?php echo (empty($contentData['frequensi']))? set_value('frequensi') : number_format($contentData['frequensi']); ?>"
+                    <?php echo (empty($contentData['frequensi']))? '' : ''; ?>" 
                     required="true"/>
-                <?php echo form_error('nama_kary', '<label class="text-red">', '</label>'); ?>
+                <?php echo form_error('frequensi', '<label class="text-red">', '</label>'); ?>
     		</div>
-    	</div> 		
+    	</div> 
 		<div class="form-group">
-    		<label class="col-sm-2 control-label input-sm">Naik Gaji Karyawan</label>
+    		<label class="col-sm-2 control-label input-sm">Nilai Pinjam</label>
     		<div class="col-sm-3">
                 <input 
                     class="form-control input-sm money"
                     type="text" 
-                    name="naik_gaji_kary" 
-                    placeholder="Naik Gaji Karyawan" 
+                    name="nilai_pinjam" 
+                    placeholder="Nilai Pinjam" 
 					style="text-align:right"
-                    value="<?php echo (empty($contentData['naik_gaji_kary']))? set_value('naik_gaji_kary') : number_format($contentData['naik_gaji_kary']); ?>"
-                    <?php echo (empty($contentData['naik_gaji_kary']))? '' : ''; ?>" 
+                    value="<?php echo (empty($contentData['nilai_pinjam']))? set_value('nilai_pinjam') : number_format($contentData['nilai_pinjam']); ?>"
+                    <?php echo (empty($contentData['nilai_pinjam']))? '' : ''; ?>" 
                     required="true"/>
-                <?php echo form_error('naik_gaji_kary', '<label class="text-red">', '</label>'); ?>
+                <?php echo form_error('nilai_pinjam', '<label class="text-red">', '</label>'); ?>
     		</div>
-    	</div>   
+    	</div> 
 		<div class="form-group">
-    		<label class="col-sm-2 control-label input-sm">Tunjangan Karyawan</label>
+    		<label class="col-sm-2 control-label input-sm">Keterangan</label>
     		<div class="col-sm-3">
                 <input 
-                    class="form-control input-sm money"
+                    class="form-control input-sm"
                     type="text" 
-                    name="tunjangan_kary" 
-                    placeholder="Tunjangan Karyawan" 
+                    name="keterangan_pinjam" 
+                    placeholder="Keterangan" 
 					style="text-align:right"
-                    value="<?php echo (empty($contentData['tunjangan_kary']))? set_value('tunjangan_kary') : number_format($contentData['tunjangan_kary']); ?>"
-                    <?php echo (empty($contentData['tunjangan_kary']))? '' : ''; ?>" 
+                    value="<?php echo (empty($contentData['keterangan_pinjam']))? set_value('keterangan_pinjam') : $contentData['keterangan_pinjam']; ?>"
+                    <?php echo (empty($contentData['keterangan_pinjam']))? '' : ''; ?>" 
                     required="true"/>
-                <?php echo form_error('tunjangan_kary', '<label class="text-red">', '</label>'); ?>
-    		</div>
-    	</div>   
-		<div class="form-group">
-    		<label class="col-sm-2 control-label input-sm">Pph</label>
-    		<div class="col-sm-3">
-                <input 
-                    class="form-control input-sm money"
-                    type="text" 
-                    name="pph_kary" 
-                    placeholder="Pph" 
-					style="text-align:right"
-                    value="<?php echo (empty($contentData['pph_kary']))? set_value('pph_kary') : number_format($contentData['pph_kary']); ?>"
-                    <?php echo (empty($contentData['pph_kary']))? '' : ''; ?>" 
-                    required="true"/>
-                <?php echo form_error('pph_kary', '<label class="text-red">', '</label>'); ?>
+                <?php echo form_error('keterangan_pinjam', '<label class="text-red">', '</label>'); ?>
     		</div>
     	</div> 
     	<div class="form-group">

@@ -43,13 +43,12 @@ $(document).ready(function(){
 		<thead>
 			<tr>
 				<th width="2%">No.</th>
-				<th width=""> Perode Gaji</th>
+				<th width=""> Tgl Pinjam</th>
 				<th width=""> Nama Karyawan</th>
-				<th width=""> Nilai Gaji</th>
-				<th width=""> NIlai Tunjangan</th>
-				<th width=""> Nilai Lembur</th>
-				<th width=""> Nilai Pph</th>
-				<th width=""> Keterangan Gaji</th>
+				<th width=""> Nilai Pinjam</th>
+				<th width=""> Frequensi</th>
+				<th width=""> Status Pinjaman</th>
+				<th width=""> Keterangan</th>
 				<th style="width:125px;"></th>
 				
 			</tr>

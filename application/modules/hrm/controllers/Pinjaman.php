@@ -1,6 +1,6 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Penggajian  extends CI_Controller {
+class Pinjaman  extends CI_Controller {
     
 	public function __construct() {
 	   
@@ -8,13 +8,13 @@ class Penggajian  extends CI_Controller {
         
 		date_default_timezone_set('Asia/Jakarta');
 		$this->page->use_directory();
-        $this->moduleTitle = 'Penggajian';
-		$this->load->model('Penggajian_model');
+        $this->moduleTitle = 'Pinjaman';
+		$this->load->model('Pinjaman_model');
 	}
     
     private function process_grid_state(){
 		$segments = $this->uri->rsegment_array();
-		$grid_state = 'hrm/penggajian';
+		$grid_state = 'hrm/Pinjaman';
 		foreach($segments as $segment){
 			if(strrpos($segment, ':') !== FALSE){
 				$grid_state .= $segment.'/';
@@ -26,7 +26,7 @@ class Penggajian  extends CI_Controller {
 	public function index() {
 	   //$grid_state = $this->process_grid_state();
       
-	   $this->page->view('Penggajian/index', array (
+	   $this->page->view('Pinjaman/index', array (
 			'moduleTitle'      => $this->moduleTitle,
 			'moduleSubTitle'   => '',
 			'add'		=> $this->page->base_url('/add')
@@ -40,21 +40,24 @@ class Penggajian  extends CI_Controller {
     public function get_data(){
         
         $grid_state = $this->process_grid_state();
-		$list = $this->Penggajian_model->get_data();
+		$list = $this->Pinjaman_model->get_data();
 		$data = array();
 		$no = $_POST['start'];
 		foreach ($list as $grid) {
 			$no++;
 			$row = array();
-			
+			if($grid->status==0){
+				$status = 'Belum Lunas';
+			}else{
+				$status = 'Lunas';
+			}
 			$row[] = $no;
-			$row[] = tgl_indo($grid->tgl_gaji);
+			$row[] = tgl_indo($grid->tgl_pinjam);
 			$row[] = $grid->nama_kary;
-			$row[] = number_format($grid->nilai_gaji);
-			$row[] = number_format($grid->nilai_tunjangan);
-			$row[] = number_format($grid->nilai_lembur);
-			$row[] = number_format($grid->nilai_pph);
-			$row[] = $grid->keterangan_gaji;
+			$row[] = number_format($grid->nilai_pinjam);
+			$row[] = number_format($grid->frequensi);
+			$row[] = $status;
+			$row[] = $grid->keterangan_pinjam;
 			$row[] = '<div style="width:100%;text-align:center;">
                         <a 
                             class="btn btn-xs btn-flat btn-info" 
@@ -70,8 +73,8 @@ class Penggajian  extends CI_Controller {
 		}
 		$output = array(
 			"draw" 				=> $_POST['draw'],
-			"recordsTotal" 		=> $this->Penggajian_model->count_all(),
-			"recordsFiltered" 	=> $this->Penggajian_model->count_filtered(),
+			"recordsTotal" 		=> $this->Pinjaman_model->count_all(),
+			"recordsFiltered" 	=> $this->Pinjaman_model->count_filtered(),
 			"data" 				=> $data,
 		);
 		//output to json format
@@ -89,7 +92,7 @@ class Penggajian  extends CI_Controller {
 		} elseif ($this->uri->segment(3) == 'edit') {
 			$title = 'Edit ';
             if($id != ''){
-                $contentData = $this->Penggajian_model->find($id,'id');
+                $contentData = $this->Pinjaman_model->find($id,'id');
                 if(count($contentData) == 0){
                     redirect($this->page->base_url('/'));
                 }           
@@ -107,7 +110,7 @@ class Penggajian  extends CI_Controller {
             			'contentData'	   => $contentData
                         );
         
-		$this->page->view('Penggajian/form',$contect);
+		$this->page->view('Pinjaman/form',$contect);
 	}
 	
 	public function add(){
@@ -135,17 +138,15 @@ class Penggajian  extends CI_Controller {
 		  
     		$insertContent = array(
                                 'nik_kary'     	=> post('id_kary'),
-								'nilai_gaji'     => str_replace(',','',post('nilai_gaji')),
-								'nilai_tunjangan'     => str_replace(',','',post('nilai_tunjangan')),
-								'tgl_gaji'     => date('Y-m-d', strtotime(post('tgl_gaji'))),
-								'nilai_lembur'   =>str_replace(',','', post('nilai_lembur')),
-								'nilai_pph'      => str_replace(',','',post('nilai_pph')),
-								'keterangan_gaji'      => post('keterangan_gaji'),
-								'status'=> 1,
+								'nilai_pinjam'     => str_replace(',','',post('nilai_pinjam')),
+								'frequensi'     => str_replace(',','',post('frequensi')),
+								'tgl_pinjam'     => date('Y-m-d', strtotime(post('tgl_pinjam'))),
+								'keterangan_pinjam'      => post('keterangan_pinjam'),
+								'status'=> 0,
 								'created_at' => DATE('Y-m-d h:i:s'),
                    				'kd_jns_usaha'  => 'JU001'
                             );
-            $insert = $this->Penggajian_model->add($insertContent);
+            $insert = $this->Pinjaman_model->add($insertContent);
             if($insert == true){
                 redirect($this->page->base_url('/'));
             }
@@ -179,19 +180,17 @@ class Penggajian  extends CI_Controller {
 		if($this->form_validation->run()){*/
 		    
 			$updateContent = array(
-                               'nik_kary'     	=> post('id_kary'),
-								'nilai_gaji'     => str_replace(',','',post('nilai_gaji')),
-								'nilai_tunjangan'     => str_replace(',','',post('nilai_tunjangan')),
-								'tgl_gaji'     => date('Y-m-d', strtotime(post('tgl_gaji'))),
-								'nilai_lembur'   =>str_replace(',','', post('nilai_lembur')),
-								'nilai_pph'      => str_replace(',','',post('nilai_pph')),
-								'keterangan_gaji'      => post('keterangan_gaji'),
-								'status'=> 1,
+                                'nik_kary'     	=> post('id_kary'),
+								'nilai_pinjam'     => str_replace(',','',post('nilai_pinjam')),
+								'frequensi'     => str_replace(',','',post('frequensi')),
+								'tgl_pinjam'     => date('Y-m-d', strtotime(post('tgl_pinjam'))),
+								'keterangan_pinjam'      => post('keterangan_pinjam'),
+								'status'=> 0,
 								'created_at' => DATE('Y-m-d h:i:s'),
                    				'kd_jns_usaha'  => 'JU001'
 			);		
 			
-            $this->Penggajian_model->update($id,$updateContent,"id");
+            $this->Pinjaman_model->update($id,$updateContent,"id");
             
        /* }else{
             $ui_messages[] = array(
@@ -216,11 +215,11 @@ class Penggajian  extends CI_Controller {
         if(!isset($id) || $id == ''){
             redirect($this->page->base_url('/'));
         }
-        $data_row = $this->Penggajian_model->find($id,'id');
+        $data_row = $this->Pinjaman_model->find($id,'id');
         if(count($data_row) == 0){
             redirect($this->page->base_url('/'));
         }
-        $this->Penggajian_model->delete($id,'id');
+        $this->Pinjaman_model->delete($id,'id');
 		redirect($this->page->base_url("/"));
 		
 	}

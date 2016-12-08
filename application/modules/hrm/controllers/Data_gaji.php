@@ -45,10 +45,10 @@ class Data_gaji extends CI_Controller {
 			
 			$row[] = $no;
 			$row[] = $grid->nama_kary;
-			$row[] = $grid->gaji_kary;
-			$row[] = $grid->naik_gaji_kary;
-			$row[] = $grid->tunjangan_kary;
-			$row[] = $grid->pph_kary;
+			$row[] = number_format($grid->gaji_kary);
+			$row[] = number_format($grid->naik_gaji_kary);
+			$row[] = number_format($grid->tunjangan_kary);
+			$row[] = number_format($grid->pph_kary);
 			$row[] = '<div style="width:100%;text-align:center;">
                         <a 
                             class="btn btn-xs btn-flat btn-info" 

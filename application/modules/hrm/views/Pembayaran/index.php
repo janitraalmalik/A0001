@@ -43,13 +43,12 @@ $(document).ready(function(){
 		<thead>
 			<tr>
 				<th width="2%">No.</th>
-				<th width=""> Perode Gaji</th>
+				<th width=""> No Bayar</th>
 				<th width=""> Nama Karyawan</th>
-				<th width=""> Nilai Gaji</th>
-				<th width=""> NIlai Tunjangan</th>
-				<th width=""> Nilai Lembur</th>
-				<th width=""> Nilai Pph</th>
-				<th width=""> Keterangan Gaji</th>
+				<th width=""> Tgl Bayar</th>
+				<th width=""> Nilai Bayar</th>
+				<th width=""> Hutang</th>
+				<th width=""> Keterangan</th>
 				<th style="width:125px;"></th>
 				
 			</tr>

@@ -1,12 +1,12 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Penggajian_model extends MY_Model {
+class Pinjaman_model extends MY_Model {
 
-	private $table 			= 'hr_t_gaji';
-	private $column_order 	= array(null,'tgl_gaji','nilai_gaji','nilai_tunjangan','nilai_lembur','nilai_pph','keterangan_gaji',null);
-	private $column_search 	= array('tgl_gaji','nilai_gaji','nilai_tunjangan','nilai_lembur','nilai_pph','keterangan_gaji');  
-	private $order 			= array('hr_t_gaji.id' => 'desc'); 
+	private $table 			= 'hr_t_pinjam';
+	private $column_order 	= array(null,'tgl_pinjam','nama_kary','frequensi','keterangan_pinjam',null);
+	private $column_search 	= array('tgl_pinjam','nama_kary','frequensi','keterangan_pinjam');  
+	private $order 			= array('hr_t_pinjam.id' => 'desc'); 
 	
     public function __construct(){
         parent::__construct();
@@ -22,10 +22,10 @@ class Penggajian_model extends MY_Model {
 	private function _get_query() {
 	   
         $this->getWhere();
-		$this->db->select('hr_t_gaji.*,hr_m_karyawan.nama_kary');
+		$this->db->select('hr_t_pinjam.*,hr_m_karyawan.nama_kary');
 		$this->db->from($this->table);
-		 $this->db->where('hr_t_gaji.deleted_at =',null);
-	   $this->db->join('hr_m_karyawan','hr_m_karyawan.id = hr_t_gaji.nik_kary');
+		 $this->db->where('hr_t_pinjam.deleted_at =',null);
+	   $this->db->join('hr_m_karyawan','hr_m_karyawan.id = hr_t_pinjam.nik_kary');
 
 		$i = 0;
 		foreach ($this->column_search as $item) {
@@ -75,7 +75,7 @@ class Penggajian_model extends MY_Model {
 	}
     
     public function getWhere(){
-       return $this->db->where('hr_t_gaji.kd_jns_usaha','JU001'); 
+       return $this->db->where('hr_t_pinjam.kd_jns_usaha','JU001'); 
         
     }
 	
