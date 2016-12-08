@@ -63,7 +63,7 @@ function addCommas(str) {
                 <?php echo form_error('nama_kary', '<label class="text-red">', '</label>'); ?>
     		</div>
     	</div> 		
-		<div class="form-group">
+		<!--div class="form-group">
     		<label class="col-sm-2 control-label input-sm">Naik Gaji Karyawan</label>
     		<div class="col-sm-3">
                 <input 
@@ -77,7 +77,7 @@ function addCommas(str) {
                     required="true"/>
                 <?php echo form_error('naik_gaji_kary', '<label class="text-red">', '</label>'); ?>
     		</div>
-    	</div>   
+    	</div-->   
 		<div class="form-group">
     		<label class="col-sm-2 control-label input-sm">Tunjangan Karyawan</label>
     		<div class="col-sm-3">

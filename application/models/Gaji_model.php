@@ -4,8 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Gaji_model extends MY_Model {
 
 	private $table 			= 'hr_m_gaji';
-	private $column_order 	= array(null,'hr_m_karyawan.nama_kary','hr_m_gaji.gaji_kary','hr_m_gaji.naik_gaji_kary','hr_m_gaji.tunjangan_kary','hr_m_gaji.pph_kary',null);
-	private $column_search 	= array('hr_m_karyawan.nik_kary','hr_m_gaji.nama_kary','hr_m_gaji.gaji_kary','hr_m_gaji.naik_gaji_kary','hr_m_gaji.tunjangan_kary');  
+	private $column_order 	= array(null,'hr_m_karyawan.nama_kary','hr_m_gaji.gaji_kary','hr_m_gaji.tunjangan_kary','hr_m_gaji.pph_kary',null);
+	private $column_search 	= array('hr_m_karyawan.nik_kary','hr_m_gaji.nama_kary','hr_m_gaji.gaji_kary','hr_m_gaji.tunjangan_kary');  
 	private $order 			= array('hr_m_gaji.id' => 'desc'); 
 	
     public function __construct(){

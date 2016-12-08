@@ -46,7 +46,7 @@ class Data_gaji extends CI_Controller {
 			$row[] = $no;
 			$row[] = $grid->nama_kary;
 			$row[] = $grid->gaji_kary;
-			$row[] = $grid->naik_gaji_kary;
+			//$row[] = $grid->naik_gaji_kary;
 			$row[] = $grid->tunjangan_kary;
 			$row[] = $grid->pph_kary;
 			$row[] = '<div style="width:100%;text-align:center;">
@@ -130,7 +130,7 @@ class Data_gaji extends CI_Controller {
     		$insertContent = array(
                                 'id_kary'     	=> post('id_kary'),
 								'gaji_kary'     => str_replace(',','',post('gaji')),
-								'naik_gaji_kary'   =>str_replace(',','', post('naik_gaji_kary')),
+								//'naik_gaji_kary'   =>str_replace(',','', post('naik_gaji_kary')),
 								'tunjangan_kary'      => str_replace(',','',post('tunjangan_kary')),
 								'pph_kary'      => str_replace(',','',post('pph_kary')),
 								'status'=> 0,
@@ -173,7 +173,7 @@ class Data_gaji extends CI_Controller {
 			$updateContent = array(
                                'id_kary'     	=> post('id_kary'),
 								'gaji_kary'     => str_replace(',','',post('gaji')),
-								'naik_gaji_kary'   =>str_replace(',','', post('naik_gaji_kary')),
+								//'naik_gaji_kary'   =>str_replace(',','', post('naik_gaji_kary')),
 								'tunjangan_kary'      => str_replace(',','',post('tunjangan_kary')),
 								'pph_kary'      => str_replace(',','',post('pph_kary')),
 								'status'=> 0,
