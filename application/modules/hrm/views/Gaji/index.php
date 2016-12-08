@@ -45,7 +45,7 @@ $(document).ready(function(){
 				<th width="2%">No.</th>
 				<th width=""> Nama Karyawan</th>
 				<th width=""> Gaji</th>
-				<th width=""> Naik Gaji</th>
+				<!--th width=""> Naik Gaji</th-->
 				<th width=""> Tunjangan</th>
 				<th width=""> Pph</th>
 				<th style="width:125px;"></th>

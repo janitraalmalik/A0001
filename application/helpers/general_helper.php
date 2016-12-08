@@ -388,6 +388,52 @@ function getStatusPO($param, $jns_usaha) {
 
 
 
+function generateCodeInbound($jns_usaha) {
+    $CI =& get_instance();
+    
+    $dt = $CI->db->select('count as code')
+                                ->where('deleted_at =',null)
+                                ->where('kd_jns_usaha',$jns_usaha)
+                                ->where('type_nomor','inbound')
+                                ->get('m_generatenumber')->row();
+    $code  = $dt->code;
+    $codelen  = strlen($dt->code);
+    $codeResult = $code + 1;
+    
+    $nomer = str_repeat("0", 5 - $codelen) . $codeResult;	
+	return $nomer;
+}
+
+
+function saveGenerateCodeInbound($jns_usaha) {
+    $CI =& get_instance();
+    
+    $dt = $CI->db->select('count as code')
+                                ->where('deleted_at =',null)
+                                ->where('kd_jns_usaha',$jns_usaha)
+                                ->where('type_nomor','inbound')
+                                ->get('m_generatenumber')->row();
+    $code  = $dt->code;
+    $codelen  = strlen($dt->code);
+    $codeResult = $code + 1;
+    
+    $nomer = str_repeat("0", 5 - $codelen) . $codeResult;
+    
+    $data = array(
+                    'kode' => $nomer,
+                    'count' => $codeResult
+                );	
+    
+    $CI->db->where('deleted_at =',null);
+    $CI->db->where('kd_jns_usaha',$jns_usaha);                 
+    $CI->db->where('type_nomor','inbound'); 
+    $CI->db->update('m_generatenumber',$data);
+    
+	return true;
+}
+
+
+
 
 /* End of file gmf_helper.php */
 /* Location: ./application/helpers/gmf_helper.php */
