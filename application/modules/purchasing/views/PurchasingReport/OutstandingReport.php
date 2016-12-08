@@ -37,11 +37,13 @@
                       <div class="col-sm-6">    
                         <button type="submit" class="btn btn-primary">Cari</button>
                         <a 
+                            target="_BLANK"
                             href="<?php echo base_url($uri) ?>/<?php echo $linkPDF ?>?start=<?php echo (!empty($inputGet['start']))? $inputGet['start'] : date('d-m-Y')?>&end=<?php echo (!empty($inputGet['end']))? $inputGet['end'] : date('d-m-Y')?>&supplier=<?php echo (!empty($inputGet['supplier']))? $inputGet['supplier'] : 0?>" 
                             class="btn btn-success">
                             Cetak PDF
                         </a>
                         <a 
+                            target="_BLANK"
                             href="<?php echo base_url($uri) ?>/<?php echo $linkExcel;?>?start=<?php echo (!empty($inputGet['start']))? $inputGet['start'] : date('d-m-Y')?>&end=<?php echo (!empty($inputGet['end']))? $inputGet['end'] : date('d-m-Y')?>&supplier=<?php echo (!empty($inputGet['supplier']))? $inputGet['supplier'] : 0?>" 
                             class="btn btn-success">
                             Export Excel

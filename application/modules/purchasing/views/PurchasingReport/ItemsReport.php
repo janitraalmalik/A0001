@@ -26,11 +26,13 @@
                           <div class="col-sm-6">    
                             <button type="submit" class="btn btn-primary">Cari</button>
                             <a 
+                                target="_BLANK"
                                 href="<?php echo base_url($uri) ?>/<?php echo $linkPDF ?>?kdBarang=<?php echo (!empty($inputGet['kdBarang']))? $inputGet['kdBarang'] : '';?>" 
                                 class="btn btn-success">
                                 Cetak PDF
                             </a>
                             <a 
+                                target="_BLANK"
                                 href="<?php echo base_url($uri) ?>/<?php echo $linkExcel ?>?kdBarang=<?php echo (!empty($inputGet['kdBarang']))? $inputGet['kdBarang'] : '';?>"" 
                                 class="btn btn-success">
                                 Export Excel

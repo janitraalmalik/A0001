@@ -1,12 +1,12 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Inbound_model extends MY_Model {
+class Kaskecil_model extends MY_Model {
 
-	private $table 			= 'v_i_inbound_grid';
-	private $column_order 	= array('id_inbound','date_in',null,'brg_nama',null,null,null,null,null);
-	private $column_search 	= array('id_inbound','brg_nama','date_in');
-	private $order 			= array('date_in' => 'DESC');
+	private $table 			= 'hr_t_pettyclaim';
+	private $column_order 	= array(null,'petty_desc',null);
+	private $column_search 	= array('petty_desc');
+	private $order 			= array('pettycash_id' => 'desc');
     
     public function __construct(){
         parent::__construct();
@@ -16,12 +16,6 @@ class Inbound_model extends MY_Model {
         $this->_username = '';
         $this->tblName = $this->table;
         $this->tblId = 'id';
-        $roleSession = $this->session->userdata('roleSession');
-        if(isset($roleSession['roleCd'])){
-            $this->_roleCode = $roleSession['roleCd'];
-        }else{
-            $this->_roleCode = 0;
-        }
         /* end */
     }
 	
@@ -79,36 +73,10 @@ class Inbound_model extends MY_Model {
     
     public function getWhere(){
        
-       $this->db->where('deleted_by =', null);
-       return $this->db->where('kd_jns_usaha',$this->_roleCode); 
+       $this->db->where('delete_at =',null);
+       return $this->db->where('delete_at =',null); 
         
     }
-    
-   public function getPO(){
-	 $sql =   $this->db->select('po_no,po_desc')
-				->where('kd_jns_usaha',$this->_roleCode)
-				->where('status_po_id','1')
-				->get('p_t_po')
-				->result();
-	   return $sql; 
-   }
-   
-   
-   public function itemPO($poNO){
-	$sqld = "select a.kd_barang,
-						a.kd_satuan,
-						b.satuan_name,
-						a.jml_barang
-			from p_t_podetail  a
-			left join p_m_satuan b on a.kd_satuan = b.id
-			where a.po_no = '".$poNO."' ";
-	$sql = $this->db->query($sqld);
-	return $sql->result();			
-	   
-   }
-   
-   
-   
 	
 }
 /* End of file Model_users.php */

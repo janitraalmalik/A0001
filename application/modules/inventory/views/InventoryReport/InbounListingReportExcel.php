@@ -106,8 +106,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<tr class="info">
 				<th width="2%">No.</th>
 				<th width="10%"> Tanggal</th>
-				<th width="15%"> No. PO</th>
 				<th width=""> No Inbound</th>
+				<th width="15%"> No. PO</th>
+				<th width=""> No Reff Vendor</th>
 				<th width=""> Nama Barang</th>
 				<th width=""> Jumlah Qty PO</th>
 				<th width=""> Jumlah Barang Masuk</th>
@@ -133,8 +134,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <tr>
                         <td><?php echo $no;?></td>
                         <td><?php echo tgl_indo($row['date_in']);?></td>
-                        <td><?php echo '#' .$row['po_no'];?></td>
                         <td><?php echo $row['id_inbound'];?></td>
+                        <td><?php echo '#' .$row['po_no'];?></td>
+                        <td><?php echo $row['no_ref_vendor'];?></td>
                         <td><?php echo $row['brg_nama'];?></td>
                         <td class="text-right"><?php echo number_format($row['jml_brg_po']);?></td>
                         <td class="text-right"><?php echo number_format($row['jml_in']);?></td>
@@ -142,13 +144,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <td class="text-right"><?php echo number_format($row['sisa']);?></td>
                     </tr>                
                 <?php $no++; endforeach; ?>
-                <tr class="info footReport">
+                <!--tr class="info footReport">
                     <td colspan="5" style="text-align: center;"><b>Total</b></td>
                     <td class="text-right"><b><?php echo number_format($QtyPO);?></b></td>
                     <td class="text-right"><b><?php echo number_format($brgIn);?></b></td>
                     <td class="text-right"><b><?php echo number_format($refunds);?></b></td>
                     <td class="text-right"><b><?php echo number_format($totalSisa);?></b></td>
-                </tr>
+                </tr-->
             <?php endif;?>
         </tbody>
 	</table>

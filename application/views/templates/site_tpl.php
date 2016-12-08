@@ -185,7 +185,7 @@ $().ready(function(){
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
-        <li class="header"><?php echo strtoupper(@$moduleTitle); ?> NAVIGATION</li>
+        <li class="header"><?php echo strtoupper(@$this->uri->segment(1)); ?> NAVIGATION</li>
         
         <?php if($this->uri->segment(1) == 'purchasing'): ?>
         <!--li>
@@ -306,6 +306,13 @@ $().ready(function(){
 			<li><a href="<?php echo base_url('hrm/pinjaman');?>"><i class="fa fa-circle-o"></i> Pinjaman</a></li>
 			<li><a href="<?php echo base_url('hrm/pembayaran');?>"><i class="fa fa-circle-o"></i> Pembayaran</a></li>
 			<li><a href="<?php echo base_url('hrm/kas_kecil');?>"><i class="fa fa-circle-o"></i> Kas Kecil</a></li>
+
+            <li><a href="pages/forms/general.html"><i class="fa fa-circle-o"></i> Absensi</a></li>
+            <li><a href="pages/forms/general.html"><i class="fa fa-circle-o"></i> Penggajian</a></li>
+			<li><a href="pages/forms/general.html"><i class="fa fa-circle-o"></i> Pinjaman</a></li>
+			<li><a href="pages/forms/general.html"><i class="fa fa-circle-o"></i> Pembayaran</a></li>
+			<li><a href="<?php echo base_url('hrm/data_pettycash');?>"><i class="fa fa-circle-o"></i> Kas Kecil</a></li>
+
           </ul>
         </li>
         
