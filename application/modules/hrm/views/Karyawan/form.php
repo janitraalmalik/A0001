@@ -12,7 +12,7 @@
                     name="nik_kary" 
                     placeholder="NIK" 
                     value="<?php echo (empty($contentData['nik_kary']))? set_value('nik_kary') : $contentData['nik_kary']; ?>"
-                    <?php echo (empty($contentData['nik_kary']))? '' : 'readonly="true"'; ?>" 
+                    <?php echo (empty($contentData['nik_kary']))? '' : ''; ?>" 
                     required="true"/>
                 <?php echo form_error('nik_kary', '<label class="text-red">', '</label>'); ?>
     		</div>
@@ -26,7 +26,7 @@
                     name="nama_kary" 
                     placeholder="Name" 
                     value="<?php echo (empty($contentData['nama_kary']))? set_value('nama_kary') : $contentData['nama_kary']; ?>"
-                    <?php echo (empty($contentData['nama_kary']))? '' : 'readonly="true"'; ?>" 
+                    <?php echo (empty($contentData['nama_kary']))? '' : ''; ?>" 
                     required="true"/>
                 <?php echo form_error('nama_kary', '<label class="text-red">', '</label>'); ?>
     		</div>
@@ -40,7 +40,7 @@
                     name="no_ktp" 
                     placeholder="KTP" 
                     value="<?php echo (empty($contentData['ktp_kary']))? set_value('ktp_kary') : $contentData['ktp_kary']; ?>"
-                    <?php echo (empty($contentData['ktp_kary']))? '' : 'readonly="true"'; ?>" 
+                    <?php echo (empty($contentData['ktp_kary']))? '' : ''; ?>" 
                     required="true"/>
                 <?php echo form_error('nama_kary', '<label class="text-red">', '</label>'); ?>
     		</div>
@@ -54,7 +54,7 @@
                     name="tgl_lahir_kary" 
                     placeholder="Tgl Lahir" 
                     value="<?php echo (empty($contentData['tgl_lahir_kary']))? set_value('tgl_lahir_kary') : tgl_indo($contentData['tgl_lahir_kary']); ?>"
-                    <?php echo (empty($contentData['tgl_lahir_kary']))? '' : 'readonly="true"'; ?>" 
+                    <?php echo (empty($contentData['tgl_lahir_kary']))? '' : ''; ?>" 
                     required="true"/>
                 <?php echo form_error('tgl_lahir_kary', '<label class="text-red">', '</label>'); ?>
     		</div>
@@ -68,7 +68,7 @@
                     name="alamat_kary" 
                     placeholder="Alamat" 
                     value="<?php echo (empty($contentData['alamat_kary']))? set_value('alamat_kary') : $contentData['alamat_kary']; ?>"
-                    <?php echo (empty($contentData['alamat_kary']))? '' : 'readonly="true"'; ?>" 
+                    <?php echo (empty($contentData['alamat_kary']))? '' : ''; ?>" 
                     required="true"/>
                 <?php echo form_error('alamat_kary', '<label class="text-red">', '</label>'); ?>
     		</div>
@@ -95,7 +95,7 @@
                     name="telp_kary" 
                     placeholder="Name" 
                     value="<?php echo (empty($contentData['telp_kary']))? set_value('telp_kary') : $contentData['telp_kary']; ?>"
-                    <?php echo (empty($contentData['telp_kary']))? '' : 'readonly="true"'; ?>" 
+                    <?php echo (empty($contentData['telp_kary']))? '' : ''; ?>" 
                     required="true"/>
                 <?php echo form_error('telp_kary', '<label class="text-red">', '</label>'); ?>
     		</div>
@@ -155,7 +155,7 @@
                     name="tgl_masuk" 
                     placeholder="Tgl Masuk" 
                     value="<?php echo (empty($contentData['tgl_masuk_kary']))? set_value('tgl_masuk') : tgl_indo($contentData['tgl_masuk_kary']); ?>"
-                    <?php echo (empty($contentData['tgl_masuk_kary']))? '' : 'readonly="true"'; ?>" 
+                    <?php echo (empty($contentData['tgl_masuk_kary']))? '' : ''; ?>" 
                     required="true"/>
                 <?php echo form_error('tgl_masuk_kary', '<label class="text-red">', '</label>'); ?>
     		</div>
@@ -169,8 +169,8 @@
                     name="tgl_keluar" 
                     placeholder="Tgl Keluar" 
                     value="<?php echo (empty($contentData['tgl_akhir_kary']))? set_value('tgl_keluar') : tgl_indo($contentData['tgl_akhir_kary']); ?>"
-                    <?php echo (empty($contentData['tgl_akhir_kary']))? '' : 'readonly="true"'; ?>" 
-                    required="true"/>
+                    <?php echo (empty($contentData['tgl_akhir_kary']))? '' : ''; ?>" 
+                    />
                 <?php echo form_error('tgl_akhir_kary', '<label class="text-red">', '</label>'); ?>
     		</div>
     	</div> 

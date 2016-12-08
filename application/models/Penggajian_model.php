@@ -1,12 +1,12 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Karyawan_model extends MY_Model {
+class Penggajian_model extends MY_Model {
 
-	private $table 			= 'hr_m_karyawan';
-	private $column_order 	= array(null,'nik_kary','nama_kary','agama_kary','sex_kary','bagian_kary','telp_kary','alamat_kary',null);
-	private $column_search 	= array('nik_kary','nama_kary','agama_kary','sex_kary','bagian_kary','telp_kary','alamat_kary');  
-	private $order 			= array('id' => 'desc'); 
+	private $table 			= 't_hrm_gaji';
+	private $column_order 	= array(null,'hr_m_karyawan.nama_kary','hr_m_gaji.gaji_kary','hr_m_gaji.naik_gaji_kary','hr_m_gaji.tunjangan_kary','hr_m_gaji.pph_kary',null);
+	private $column_search 	= array('hr_m_karyawan.nik_kary','hr_m_gaji.nama_kary','hr_m_gaji.gaji_kary','hr_m_gaji.naik_gaji_kary','hr_m_gaji.tunjangan_kary');  
+	private $order 			= array('hr_m_gaji.id' => 'desc'); 
 	
     public function __construct(){
         parent::__construct();
@@ -22,11 +22,10 @@ class Karyawan_model extends MY_Model {
 	private function _get_query() {
 	   
         $this->getWhere();
-		$this->db->join('hr_m_bagian','hr_m_bagian.id = hr_m_karyawan.bagian_kary');
-		$this->db->join('hr_m_agama','hr_m_agama.id = hr_m_karyawan.agama_kary');
-		$this->db->join('hr_m_sex','hr_m_sex.id = hr_m_karyawan.sex_kary');
+		$this->db->select('t_hrm_gaji.*,hr_m_karyawan.nama_kary');
 		$this->db->from($this->table);
-		
+		 $this->db->where('t_hrm_gaji.deleted_at =',null);
+	   $this->db->join('hr_m_karyawan','hr_m_karyawan.id = hr_m_gaji.id_kary');
 
 		$i = 0;
 		foreach ($this->column_search as $item) {
@@ -76,9 +75,7 @@ class Karyawan_model extends MY_Model {
 	}
     
     public function getWhere(){
-       $this->db->select('hr_m_karyawan.*,hr_m_agama.nm_agama,hr_m_bagian.nm_bagian,hr_m_sex.nm_sex');
-       $this->db->where('hr_m_karyawan.deleted_at =',null);
-       return $this->db->where('hr_m_karyawan.kd_jns_usaha','JU001'); 
+       return $this->db->where('t_hrm_gaji.kd_jns_usaha','JU001'); 
         
     }
 	

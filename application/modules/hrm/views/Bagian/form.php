@@ -11,10 +11,10 @@
                     type="text" 
                     name="nm_bagian" 
                     placeholder="Divisi Name" 
-                    value="<?php echo (empty($contentData['brg_kd']))? set_value('codeBarang') : $contentData['brg_kd']; ?>"
-                    <?php echo (empty($contentData['brg_kd']))? '' : 'readonly="true"'; ?>" 
+                    value="<?php echo (empty($contentData['nm_bagian']))? set_value('nm_bagian') : $contentData['nm_bagian']; ?>"
+                    <?php echo (empty($contentData['nm_bagian']))? '' : ''; ?>" 
                     required="true"/>
-                <?php echo form_error('codeBarang', '<label class="text-red">', '</label>'); ?>
+                <?php echo form_error('nm_bagian', '<label class="text-red">', '</label>'); ?>
     		</div>
     	</div>    	
     	<div class="form-group">

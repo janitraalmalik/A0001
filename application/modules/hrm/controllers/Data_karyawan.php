@@ -47,10 +47,10 @@ class Data_karyawan extends CI_Controller {
 			$row[] = $grid->nik_kary;
 			$row[] = $grid->nama_kary;
 			$row[] = $grid->alamat_kary;
-			$row[] = $grid->bagian_kary;
+			$row[] = $grid->nm_bagian;
 			$row[] = $grid->telp_kary;
-			$row[] = $grid->agama_kary;
-			$row[] = $grid->sex_kary;
+			$row[] = $grid->nm_agama;
+			$row[] = $grid->nm_sex;
 			$row[] = '<div style="width:100%;text-align:center;">
                         <a 
                             class="btn btn-xs btn-flat btn-info" 
