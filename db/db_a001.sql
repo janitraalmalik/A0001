@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 06, 2016 at 11:40 PM
+-- Generation Time: Dec 08, 2016 at 10:33 AM
 -- Server version: 5.1.33
 -- PHP Version: 5.2.9
 
@@ -258,6 +258,46 @@ CREATE TABLE IF NOT EXISTS `hr_t_gaji` (
 
 --
 -- Dumping data for table `hr_t_gaji`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hr_t_pettyclaim`
+--
+
+CREATE TABLE IF NOT EXISTS `hr_t_pettyclaim` (
+  `pettycash_id` int(11) NOT NULL AUTO_INCREMENT,
+  `Type` varchar(15) DEFAULT NULL,
+  `claim_no` char(21) NOT NULL,
+  `acc_no` char(20) NOT NULL,
+  `acc_curr` char(3) DEFAULT NULL,
+  `acc_name` char(40) DEFAULT NULL,
+  `claim_date` date DEFAULT NULL,
+  `saldo` decimal(14,2) DEFAULT NULL,
+  `rate` decimal(8,4) DEFAULT NULL,
+  `debet` decimal(14,2) DEFAULT NULL,
+  `credit` decimal(14,2) DEFAULT NULL,
+  `petty_desc` text,
+  `status` decimal(1,0) DEFAULT NULL,
+  `user_` char(30) DEFAULT NULL,
+  `datetime` date DEFAULT NULL,
+  `status_reimburse` decimal(1,0) DEFAULT NULL,
+  `sub_claim_no` varchar(100) DEFAULT NULL,
+  `period_s` date DEFAULT NULL,
+  `period_e` date DEFAULT NULL,
+  `created_at` date DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `update_at` date DEFAULT NULL,
+  `update_by` int(11) DEFAULT NULL,
+  `delete_at` date DEFAULT NULL,
+  `delete_by` int(11) DEFAULT NULL,
+  PRIMARY KEY (`pettycash_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `hr_t_pettyclaim`
 --
 
 
