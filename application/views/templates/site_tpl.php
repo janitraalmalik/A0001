@@ -305,7 +305,7 @@ $().ready(function(){
             <li><a href="pages/forms/general.html"><i class="fa fa-circle-o"></i> Penggajian</a></li>
 			<li><a href="pages/forms/general.html"><i class="fa fa-circle-o"></i> Pinjaman</a></li>
 			<li><a href="pages/forms/general.html"><i class="fa fa-circle-o"></i> Pembayaran</a></li>
-			<li><a href="pages/forms/general.html"><i class="fa fa-circle-o"></i> Kas Kecil</a></li>
+			<li><a href="<?php echo base_url('hrm/data_pettycash');?>"><i class="fa fa-circle-o"></i> Kas Kecil</a></li>
           </ul>
         </li>
         
