@@ -4,8 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Pembayaran_model extends MY_Model {
 
 	private $table 			= 'hr_t_bayar';
-	private $column_order 	= array(null,'no_bayar','nama_kary','tgl_bayar','nilai_bayar','hutang','keterangan_bayar',null);
-	private $column_search 	= array('no_bayar','nama_kary','tgl_bayar','nilai_bayar','hutang','keterangan_bayar');  
+	private $column_order 	= array(null,'no_bayar','nama_kary','tgl_bayar','nilai_bayar','hutang','keterangan_pinjam','keterangan_bayar',null);
+	private $column_search 	= array('no_bayar','nama_kary','tgl_bayar','nilai_bayar','hutang','keterangan_pinjam','keterangan_bayar');  
 	private $order 			= array('hr_t_bayar.id' => 'desc'); 
 	
     public function __construct(){
