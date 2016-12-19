@@ -37,6 +37,11 @@ class Pembayaran  extends CI_Controller {
 			echo json_encode($this->db->query("select * from hr_m_gaji where id_kary ='$kry'")->row());
     }
 	
+	function get_bayar($id){
+		$row = $this->db->query("SELECT * FROM hr_t_bayar WHERE id_pinjam ='$id' ORDER BY  created_at DESC LIMIT 1")->row();
+		echo json_encode($row);
+	}
+	
     public function get_data(){
         
         $grid_state = $this->process_grid_state();
@@ -52,13 +57,11 @@ class Pembayaran  extends CI_Controller {
 			$row[] = $grid->nama_kary;
 			$row[] = tgl_indo($grid->tgl_bayar);
 			$row[] = number_format($grid->nilai_bayar);
-			$row[] = $grid->nilai_pinjam."-".$grid->keterangan_pinjam;
+			$row[] = number_format($grid->nilai_pinjam);
+			$row[] = $grid->ke;
+			$row[] = $grid->keterangan_pinjam;
 			$row[] = $grid->keterangan_bayar;
 			$row[] = '<div style="width:100%;text-align:center;">
-                        <a 
-                            class="btn btn-xs btn-flat btn-info" 
-                            href="'.site_url($grid_state . '/edit/' .$grid->id).'" 
-                            title="Update Data">Update</a> &nbsp;
                         <a 
                             class="btn btn-xs btn-flat btn-danger" 
                             onclick="return confirm(\'Are you sure to delete data ' . $grid->nama_kary . ' ?\')" 
@@ -90,7 +93,7 @@ class Pembayaran  extends CI_Controller {
                         'moduleTitle'      => $this->moduleTitle,
             			'moduleSubTitle'   => $title,
             			'back'		       => $grid_state,
-            			'kary'		       => $this->db->query('select * from hr_m_karyawan where deleted_at is null')->result(),
+            			'kary'		       => $this->db->query('select a.* from hr_m_karyawan a join hr_t_pinjam b on a.id = b.nik_kary where b.status = 9')->result(),
             			'action'	       => $this->page->base_url("/{$action}/{$id}"),
             			'contentData'	   => $contentData
                         );
@@ -128,7 +131,7 @@ class Pembayaran  extends CI_Controller {
 		$q = $this->db->get('hr_t_pinjam')->result();
 		$data = '<option value="">-- Choose --</option>';
 		foreach($q as $row){
-			$data.= '<option value="'.$row->id.'">'.angka($row->nilai_pinjam).' - '.$row->keterangan_pinjam.'</option>';
+			$data.= '<option value="'.$row->id.'-'.$row->nilai_pinjam.'-'.$row->frequensi.'">'.angka($row->nilai_pinjam).' - '.$row->keterangan_pinjam.'</option>';
 		}
 		echo $data;
 	}
@@ -151,19 +154,22 @@ class Pembayaran  extends CI_Controller {
 	
         
 		if($this->form_validation->run()){*/
-		  
+			$pjm = explode('-',post('id_pinjam'));
     		$insertContent = array(
-								'id_pinjam'     => post('id_pinjam'),
+								'id_pinjam'     => $pjm[0],
 								'no_bayar'     => date('Ysdimh'),
 								'nilai_bayar'     => str_replace(',','',post('nilai_bayar')),
-								'tgl_bayar'      => tgl_indo(post('tgl_bayar')),
+								'tgl_bayar'      => date('Y-m-d', strtotime(post('tgl_bayar'))),
 								'keterangan_bayar'      => post('keterangan_bayar'),
 								'status'=> 1,
+								'ke'=> post('bayar_ke'),
 								'created_at' => DATE('Y-m-d h:i:s'),
                    				'kd_jns_usaha'  => 'JU001'
                             );
             $insert = $this->Pembayaran_model->add($insertContent);
+			if(post('cicilan')==post('bayar_ke')){
 			$this->db->query("update hr_t_pinjam set status = '1' where id = '".post('id_pinjam')."'");
+			}
             if($insert == true){
                 redirect($this->page->base_url('/'));
             }
