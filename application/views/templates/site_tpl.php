@@ -326,6 +326,54 @@ $().ready(function(){
         </li>
         <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>
         <?php endif;?>
+		
+		
+		<?php if($this->uri->segment(1) == 'sales'): ?>
+        <!--li>
+          <a href="pages/widgets.html">
+            <i class="fa fa-square"></i> <span>Widgets</span>
+            <small class="label pull-right bg-green">new</small>
+          </a>
+        </li-->
+		<li class="treeview">
+          <a href="#">
+            <i class="fa fa-square"></i> <span>Master Data</span>
+            <i class="fa fa-angle-left pull-right"></i>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="<?php echo base_url('sales/data_customer');?>"><i class="fa fa-circle-o"></i> Data Customer</a></li>
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-square"></i> <span>Sales</span>
+            <i class="fa fa-angle-left pull-right"></i>
+          </a>
+          <ul class="treeview-menu">
+			<li><a href="<?php echo base_url('sales/pos_retail');?>"><i class="fa fa-circle-o"></i> Penjualan Retail</a></li>
+			<li><a href="<?php echo base_url('sales/pos_grosir');?>"><i class="fa fa-circle-o"></i> Penjualan Grosir</a></li>
+			<li><a href="<?php echo base_url('sales/daylist_trans');?>"><i class="fa fa-circle-o"></i> List Transaksi Harian</a></li>
+			<li><a href="<?php echo base_url('sales/closing_trans');?>"><i class="fa fa-circle-o"></i> Closing Transaksi</a></li>
+          </ul>
+        </li>
+        
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-square"></i> <span>Report</span>
+            <i class="fa fa-angle-left pull-right"></i>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="pages/forms/general.html"><i class="fa fa-circle-o"></i> Daily Report Transaction</a></li>
+            <li><a href="pages/forms/general.html"><i class="fa fa-circle-o"></i> Report Aging AR/ List Piutang</a></li>
+			<li><a href="pages/forms/general.html"><i class="fa fa-circle-o"></i> Report Kartu Piutang</a></li>
+          </ul>
+        </li>
+        <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>
+        <?php endif;?>
+		
+		
+		
+		
       </ul>
     </section>
     <!-- /.sidebar -->
