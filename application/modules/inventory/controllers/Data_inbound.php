@@ -120,20 +120,42 @@ class Data_inbound extends MY_Controller {
 	}
 	
 	public function simpan(){
+
             $poNo  = post('poNo');
             $noReff  = post('noReff');
             $tgltrxPO  = post('tgltrxPO');
            // die($noReff);
             $jml_inS  = post('jml_in');
             $refundS  = post('refund');
+            $sisaS  = post('sisa');
             $brg_namaS  = post('brg_nama');
            // $brg_namaS  = post('brg_nama');
+
+        //    var_dump($jml_inS);exit();
 		
+		
+		  foreach($brg_namaS AS $key=> $val1){
+                
+                $jmlin = $jml_inS[$key];  
+                
+                if($jmlin == '' || $jmlin == 0 || !isset($jmlin)){
+                    unset($brg_namaS[$key]);
+                    unset($jml_inS[$key]);
+                    unset($refundS[$key]);
+                    unset($sisaS[$key]);
+                   
+                }
+               
+            } 	
+
+          //var_dump($jml_inS);exit();  
+
 		  foreach($brg_namaS AS $key => $val){
                 
                 $brg_nama = $val;
                 $jml_in = $jml_inS[$key];
                 $refund = $refundS[$key];
+                $sisa = $sisaS[$key];
                 
                 $generateCodeInbound = generateCodeInbound($this->_roleCode);
 				//echo $val . '<br />';
@@ -144,14 +166,27 @@ class Data_inbound extends MY_Controller {
                                             'date_in' => dateTOSql($tgltrxPO),
                                             'barang_kd' => $brg_nama,
                                             'jml_in' => $jml_in,
-                                            //'refund' => $refund,
+                                            'refund' => $refund,
+                                            'sisa' => $sisa,
                                             'kd_jns_usaha'  => $this->_roleCode,
+                                            //'sudah'  => 1
                                         );
                 $this->InboundDetail_model->add($insertContentDetail);
                 saveGenerateCodeInbound($this->_roleCode);
             }
             
-           
+           foreach($sisaS AS $key1=> $val11){
+                
+                $sisah = $sisaS[$key1];  
+                
+                if($sisah ==  0){
+                  	$a  = array('status_po_id' => 2 );
+                   $this->db->where('po_no',$poNo);
+                   $this->db->update('p_t_po',$a);
+
+                }
+               
+            } 	
             
          // die();
          redirect('inventory/data_inbound/add');
@@ -170,15 +205,29 @@ class Data_inbound extends MY_Controller {
 	
 	public function showPOitem($po){
 		//$getPO = $this->Inbound_model->itemPO($po);
-		$sqld = " select a.kd_barang,
+		// $sqld = " select a.kd_barang,
+		// 				c.brg_nama,
+		// 				a.kd_satuan,
+		// 				b.satuan_name,
+		// 				a.jml_barang,
+		//             IFNULL(d.jml_in,0) masuk,
+		//             (a.jml_barang - IFNULL(d.jml_in,0)) saldo_barang
+		// 					from p_t_podetail  a
+		// 					left join p_m_satuan b on (a.kd_satuan = b.id and b.kd_jns_usaha = a.kd_jns_usaha)
+		// 					left join p_m_barang c on (c.brg_kd = a.kd_barang and c.kd_jns_usaha = a.kd_jns_usaha)
+		//           			left join i_t_inbound d on (d.po_no = a.po_no and d.barang_kd = a.kd_barang and d.kd_jns_usaha = a.kd_jns_usaha )
+		// 			where a.po_no = '".$po."' and (a.jml_barang - IFNULL(d.jml_in,0)) <> 0";	
+		$sqld = "select * from (select a.kd_barang,
 						c.brg_nama,
 						a.kd_satuan,
 						b.satuan_name,
-						a.jml_barang
-					from p_t_podetail  a
-					left join p_m_satuan b on a.kd_satuan = b.id
-					left join p_m_barang c on c.brg_kd = a.kd_barang
-					where a.po_no = '".$po."' ";
+						a.jml_barang,
+		            IFNULL((select sum(d.jml_in) from i_t_inbound d where d.po_no = a.po_no and a.kd_barang = d.barang_kd),0) masuk,
+                (a.jml_barang - IFNULL((select sum(d.jml_in) from i_t_inbound d where d.po_no = a.po_no and a.kd_barang = d.barang_kd),0)) saldo_barang
+							from p_t_podetail  a
+							left join p_m_satuan b on (a.kd_satuan = b.id and b.kd_jns_usaha = a.kd_jns_usaha)
+							left join p_m_barang c on (c.brg_kd = a.kd_barang and c.kd_jns_usaha = a.kd_jns_usaha)
+		   		where a.po_no = '".$po."') t where t.saldo_barang <> 0";
 		$sql = $this->db->query($sqld)->result();
 		
 //		var_dump($sql->kd_barang);exit();

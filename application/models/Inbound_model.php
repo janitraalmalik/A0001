@@ -88,6 +88,7 @@ class Inbound_model extends MY_Model {
 	 $sql =   $this->db->select('po_no,po_desc')
 				->where('kd_jns_usaha',$this->_roleCode)
 				->where('status_po_id','1')
+				//->where('status_received <>','2')
 				->get('p_t_po')
 				->result();
 	   return $sql; 
