@@ -48,7 +48,9 @@ $(document).ready(function(){
 				<th width=""> Tgl Bayar</th>
 				<th width=""> Nilai Bayar</th>
 				<th width=""> Hutang</th>
-				<th width=""> Keterangan</th>
+				<th width=""> Pembayaran ke</th>
+				<th width=""> Keterangan Pinjam</th>
+				<th width=""> Keterangan Bayar</th>
 				<th style="width:125px;"></th>
 				
 			</tr>

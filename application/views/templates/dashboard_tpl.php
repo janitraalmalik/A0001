@@ -117,7 +117,7 @@
         <!-- ./col -->
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
-          <a href="#" class="">
+          <a href="<?php echo base_url(); ?>sales" class="">
             <div class="small-box bg-green">
                 <div class="inner">
                   <h3>Sales</h3><br /><br />

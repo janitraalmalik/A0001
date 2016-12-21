@@ -435,5 +435,113 @@ function saveGenerateCodeInbound($jns_usaha) {
 
 
 
+function getNameCustomer($param,$jns_usaha) {
+    
+    if(empty($param)) { return false; }
+    
+    $CI 	=& get_instance();
+    
+    $result = $CI->db->query("SELECT cust_nama AS nameData FROM sa_m_customer WHERE deleted_at IS NULL AND kd_jns_usaha = '" . $jns_usaha . "' AND cust_id=" . $param)->row();
+    
+    return $result->nameData;
+}
+
+function generateCodePos($jns_usaha,$typepos) {
+    $CI =& get_instance();
+    
+    $dt = $CI->db->select('count as code')
+                                ->where('deleted_at =',null)
+                                ->where('kd_jns_usaha',$jns_usaha)
+                                ->where('type_nomor',$typepos)
+                                ->get('m_generatenumber')->row();
+    $code  = $dt->code;
+    $codeResult = $code + 1;
+	$codelen  = strlen($codeResult);
+    if($typepos=='posretail'){
+    	$nomer = "R".str_repeat("0", 5 - $codelen) . $codeResult;	
+	}else{
+		$nomer = "G".str_repeat("0", 5 - $codelen) . $codeResult;	
+	}
+	
+	return $nomer;
+}
+
+function saveGenerateCodePos($jns_usaha,$typepos) {
+    $CI =& get_instance();
+    
+    $dt = $CI->db->select('count as code')
+                                ->where('deleted_at =',null)
+                                ->where('kd_jns_usaha',$jns_usaha)
+                                ->where('type_nomor',$typepos)
+                                ->get('m_generatenumber')->row();
+    $code  = $dt->code;
+    $codeResult = $code + 1;
+	$codelen  = strlen($codeResult);
+    
+    if($typepos=='posretail'){
+    	$nomer = "R".str_repeat("0", 5 - $codelen) . $codeResult;	
+	}else{
+		$nomer = "G".str_repeat("0", 5 - $codelen) . $codeResult;	
+	}
+    
+    $data = array(
+                    'kode' => $nomer,
+                    'count' => $codeResult
+                );	
+    
+    $CI->db->where('deleted_at =',null);
+    $CI->db->where('kd_jns_usaha',$jns_usaha);                 
+    $CI->db->where('type_nomor',$typepos); 
+    $CI->db->update('m_generatenumber',$data);
+    
+	return true;
+}
+
+function generateCodeCustomer($jns_usaha) {
+    $CI =& get_instance();
+    
+    $dt = $CI->db->select('count as code')
+                                ->where('deleted_at =',null)
+                                ->where('kd_jns_usaha',$jns_usaha)
+                                ->where('type_nomor','customer')
+                                ->get('m_generatenumber')->row();
+    $code  = $dt->code;
+    $codeResult = $code + 1;
+	$codelen  = strlen($codeResult);
+
+   	$nomer = str_repeat("0", 5 - $codelen) . $codeResult;	
+	
+	return $nomer;
+}
+
+function saveGenerateCodeCustomer($jns_usaha) {
+    $CI =& get_instance();
+    
+    $dt = $CI->db->select('count as code')
+                                ->where('deleted_at =',null)
+                                ->where('kd_jns_usaha',$jns_usaha)
+                                ->where('type_nomor','customer')
+                                ->get('m_generatenumber')->row();
+    $code  = $dt->code;
+    $codeResult = $code + 1;
+	$codelen  = strlen($codeResult);
+    
+    $nomer = str_repeat("0", 5 - $codelen) . $codeResult;	
+    
+    $data = array(
+                    'kode' => $nomer,
+                    'count' => $codeResult
+                );	
+    
+    $CI->db->where('deleted_at =',null);
+    $CI->db->where('kd_jns_usaha',$jns_usaha);                 
+    $CI->db->where('type_nomor','customer'); 
+    $CI->db->update('m_generatenumber',$data);
+    
+	return true;
+}
+
+
+
 /* End of file gmf_helper.php */
 /* Location: ./application/helpers/gmf_helper.php */
