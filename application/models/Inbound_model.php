@@ -102,7 +102,8 @@ class Inbound_model extends MY_Model {
 						a.jml_barang
 			from p_t_podetail  a
 			left join p_m_satuan b on a.kd_satuan = b.id
-			where a.po_no = '".$poNO."' ";
+			where a.po_no = '".$poNO."' 
+			and kd_jns_usaha ='".$this->_roleCode."'";
 	$sql = $this->db->query($sqld);
 	return $sql->result();			
 	   

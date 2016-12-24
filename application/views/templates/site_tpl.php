@@ -242,18 +242,16 @@ $().ready(function(){
             <li><a href="<?php echo base_url('inventory/data_inbound');?>"><i class="fa fa-list text-aqua"></i> List Data Inbound</a></li>
           </ul>
         </li>
-        <!--li class="treeview">
+       <li class="treeview">
           <a href="#">
-            <i class="fa fa-arrow-up"></i> <span>Outbound</span>
+            <i class="fa fa-arrow-down"></i> <span>Outbound</span>
             <i class="fa fa-angle-left pull-right"></i>
           </a>
           <ul class="treeview-menu">
-            <li><a href="<?php echo base_url('purchasing/data_vendor');?>"><i class="fa fa-circle-o"></i> Data Vendor / Supplier</a></li>
-            <li><a href="<?php echo base_url('purchasing/data_barang');?>"><i class="fa fa-circle-o"></i> Data Items</a></li>
-            <li><a href="<?php echo base_url('purchasing/data_catbarang');?>"><i class="fa fa-circle-o"></i> Data Item Category</a></li>
-            <li><a href="<?php echo base_url('purchasing/data_satuan');?>"><i class="fa fa-circle-o"></i> Data Satuan</a></li>
+            <li><a href="<?php echo base_url('inventory/data_inbound/add');?>"><i class="fa fa-plus text-aqua"></i>Tambah Data</a></li>
+            <li><a href="<?php echo base_url('inventory/data_inbound');?>"><i class="fa fa-list text-aqua"></i> List Data Outbound</a></li>
           </ul>
-        </li-->
+        </li>
          <li class="treeview">
           <a href="#">
             <i class="fa fa-print"></i> <span>Report</span>

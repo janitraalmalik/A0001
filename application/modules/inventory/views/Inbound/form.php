@@ -333,7 +333,7 @@ $this->load->view('templates/message_handler') ?>
 
                                 //var xx = $('#sisa'+ index).val();
 
-                                alert(sisaa+refua);
+                              //  alert(sisaa+refua);
                                 $('#sisa'+ index).val(sisaSa);
 
                                 /*if (JmlIn > a){
