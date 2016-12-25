@@ -1,6 +1,6 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Data_inbound extends MY_Controller {
+class Data_Outbound extends MY_Controller {
     
 	public function __construct() {
 	   
@@ -50,7 +50,7 @@ class Data_inbound extends MY_Controller {
 			$row[] = tgl_indo($grid->date_in);
 			$row[] = $grid->po_no;
 			$row[] = $grid->brg_nama;
-			$row[] = number_format($grid->jml_in);
+			$row[] = number_format($grid->jmls_in);
 			$row[] = number_format($grid->refund);
 			$row[] = number_format($grid->sisa);
 			$row[] = '';
@@ -223,7 +223,7 @@ class Data_inbound extends MY_Controller {
 		
 	}
 	
-	public function showPOitem($po){
+	public function showPOitssssssem($po){
 		//$getPO = $this->Inbound_model->itemPO($po);
 		// $sqld = " select a.kd_barang,
 		// 				c.brg_nama,

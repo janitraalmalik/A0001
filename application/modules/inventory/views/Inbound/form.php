@@ -4,7 +4,7 @@
 $this->load->view('templates/message_handler') ?>
 
 <section class="content">
-    <?php echo form_open($action, array('class' => 'form-horizontal row-form')); ?>
+    <?php echo form_open($action, array('class' => 'cek form-horizontal row-form')); ?>
     <div class="col-sm-6">
         <div class="form-group">
     		<label class="col-sm-3 control-label input-sm">Kode</label>
@@ -26,6 +26,7 @@ $this->load->view('templates/message_handler') ?>
                     type="text" 
                     name="tgltrxPO" 
                     id="tgltrxPO" 
+                    readonly="true" 
 					required="true"/>
                 <?php echo form_error('tgltrxPO', '<label class="text-red">', '</label>'); ?>
     		</div>
@@ -69,8 +70,8 @@ $this->load->view('templates/message_handler') ?>
                         <th style="width:70px">Kuantitas</th>
                         <th style="width:80px">Satuan</th>
                         <th style="width:120px">Jumlah In</th>
-                        <!--th style="width:120px">Refund</th-->
-                        <!--th style="width:50px">PPn</th-->
+                        <th style="width:120px">Refund</th>
+                        <th style="width:120px">Sisa</th>
                         <!--th style="">&nbsp;</th-->
 			        </tr>
                 </thead>
@@ -226,35 +227,7 @@ $this->load->view('templates/message_handler') ?>
                             </tr>
                             <?php endforeach; ?>
                         <?php else:?>
-                            <!--tr class="text-data-barang">
-                            <td>
-                                <select name="dtlProduk[]" id="dtlProduk-1" class="form-control select2 dtlProduk" style="width: 100%;">
-                    				<option value=""></option>
-                                    <?php foreach($barangData as $row): ?>
-                                    <option value="<?php echo $row['brg_kd']?>"><?php echo $row['brg_nama']?></option>
-                                    <?php endforeach; ?>
-                    			</select> 
-                            </td>
-                            <td>
-                                <input type="text" name="dltKuantitas[]" id="dltKuantitas-1" class="form-control col-sm-12 numeric dltKuantitas" style="text-align: right;"/>
-                            </td>  
-                            <td>
-                                <input type="text" name="dtlNmSatuan[]" id="dtlNmSatuan-1" class="form-control col-sm-12" readonly="true"/>
-                                <input type="hidden" name="dtlIdSatuan[]" id="dtlIdSatuan-1"/>                               
-                            </td>  
-                            <td>
-                                <input type="text" name="dltHarga[]" id="dltHarga-1" class="form-control col-sm-12 numeric dltHarga" style="text-align: right;"/>
-                            </td>
-                            <td>
-                                <input type="text" name="dltTotal[]" id="dltTotal-1" class="form-control col-sm-12 numeric dltTotal" style="text-align: right;"/>
-                            </td>
-                           
-                            <td style="text-align: center; width: 10px;">
-                                <input type="hidden" name="index[]" id="index-1" value="1"/>
-                                <span style="display:none;" class="box-number-data-barang">1</span>
-                                <a class="btn btn-info" style="margin: 0!important;"><i class="fa fa-check"></i></a>
-                            </td>
-                        </tr-->
+                          
                         <?php endif;?>
               		
                     <?php endif; ?>
@@ -283,6 +256,9 @@ $this->load->view('templates/message_handler') ?>
 
 <script>
     $(document).ready(function() {
+
+
+
     //alert("");
 		$('#noReff').keyup(function(){
 						//alert($(this).val());
@@ -303,10 +279,11 @@ $this->load->view('templates/message_handler') ?>
 						var a = 
 						tr = $('<tr class="inbound">');
 						tr.append("<td><input type='hidden' name='brg_nama[]' id='brg_nama" + i + "' readonly='true' value='" +data[i].kd_barang +"'>" + data[i].brg_nama + "</td>");
-						tr.append("<td><input type='hidden' name='jml_barang[]' class='jml_barang" + i + "' id='jml_barang" + i + "' readonly='true' value='" +data[i].jml_barang +"' class='form-control numeric jml_barang'>" + data[i].jml_barang + "</td>");
+						tr.append("<td><input type='hidden' name='jml_barang[]' class='jml_barang" + i + "' id='jml_barang" + i + "' readonly='true' value='" +data[i].saldo_barang +"' class='form-control numeric jml_barang'>" + data[i].saldo_barang + "</td>");
 						tr.append("<td><input type='hidden' name='satuan_name[]' readonly='true' value='" +data[i].satuan_name +"'>" + data[i].satuan_name + "</td>");
-						tr.append("<td><input type='text' name='jml_in[]' id='jml_in" + i + "' value='' style='text-align:right' class='form-control numeric jml_in' required='true'><input type='hidden' name='poj[]' id='poj" + i + "'  ></td>");
-						//tr.append("<td><input type='text' name='refund[]' id='refund' value='' style='text-align:right' class='form-control numeric refund' required='true'></td>");
+						tr.append("<td><input type='text' name='jml_in[]' id='jml_in" + i + "' value='0' style='text-align:right' class='form-control numeric jml_in' required='true'></td>");
+						tr.append("<td><input type='text' name='refund[]' id='refund" + i + "' value='0' style='text-align:right' class='form-control numeric refund' required='true'></td>");
+                        tr.append("<td><input type='text' name='sisa[]' id='sisa" + i + "' value='" +data[i].saldo_barang +"' style='text-align:right' class='form-control numeric sisa' required='true'></td>");
 						tr.append("</tr>");
 						$('table').append(tr);
 						$( ".numeric" ).number( true , 0);
@@ -317,16 +294,58 @@ $this->load->view('templates/message_handler') ?>
 							$('.jml_in').each(function(index){
 								var index = index; 
 								//alert(index);
-								var JmlIn = parseInt($(this).val());
-								var a = $('#jml_barang' + index).val()
+                                var JmlIn = parseInt($(this).val());
+                                var refu = parseInt($('#refund'+ index).val());
+								var sis = parseInt($('#sisa'+ index).val());
+								var a = parseInt($('#jml_barang' + index).val());
+
+                                sisaS = a - JmlIn;    
+
+                                $('#sisa'+ index).val(sisaS);
+
 								//alert(a);
 								if (JmlIn > a){
 									alert("Tidak Boleh Lebih besar dari Jumlah Barang yang di PO");
-								}
+                                    $(this).val(0);
+                                    $('#refund'+ index).val(0);
+                                    $('#sisa'+ index).val(0);
+                                }
 								
 								});
 						
 						});
+
+                      $('#refund'+ i).on('keyup', function(){
+                        //alert("tes");
+                        
+                            $('.refund').each(function(index){
+                                var index = index; 
+                                //alert(index);
+                                var JmlIna = parseInt($('#jml_in'+ index).val());
+                                var refua = parseInt($(this).val());
+                                var sisaa = parseInt($('#sisa'+ index).val());
+                                var a = parseInt($('#jml_barang' + index).val());
+
+                               var sisaSa = a -(JmlIna + refua);    
+
+                               //alert(refua);
+                               //alert(sisaa);
+
+                                //var xx = $('#sisa'+ index).val();
+
+                              //  alert(sisaa+refua);
+                                $('#sisa'+ index).val(sisaSa);
+
+                                /*if (JmlIn > a){
+                                    alert("Refund Tidak Boleh Lebih besar dari Jumlah Barang yang di PO");
+                                    $(this).val(0);
+                                    $('#refund'+ index).val(0);
+                                    $('#sisa'+ index).val(0);
+                                }
+                                */
+                                });
+                        
+                        });
 					
 //					$('#jml_barang'+ i).val(); 
 					//alert(h);
