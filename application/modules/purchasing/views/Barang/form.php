@@ -41,6 +41,23 @@
                 ><?php echo (empty($contentData['brg_desc']))? set_value('descBarang') : $contentData['brg_desc'] ; ?></textarea>
     		</div>
     	</div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label input-sm">Satuan *</label>
+    		<div class="col-sm-3">
+                <select name="satuanBarang" class="form-control select2 input-sm" style="width: 100%;">
+    				<option value="0">--- Pilih ---</option>
+                    <?php foreach($contentSatuan AS $row):?>
+                        
+                        <?php $satuanbarang = $contentData['brg_satuan']; if(!empty($satuanbarang)):?>
+                            <option value="<?php echo $row['id']?>" <?php echo ($row['id'] == $contentData['brg_satuan']) ? 'selected' : '';?>><?php echo $row['satuan_kd'] . ' - ' . $row['satuan_name']?></option>
+                        <?php else: ?>
+                            <option value="<?php echo $row['id']?>" <?php echo ($row['id'] == set_value('nameBarang')) ? 'selected' : '';?>><?php echo $row['satuan_kd'] . ' - ' . $row['satuan_name']?></option>
+                        <?php endif; ?>
+                        
+                    <?php endforeach; ?>
+    			</select>
+    		</div>
+    	</div>
          <div class="form-group">
             <label class="col-sm-2 control-label input-sm">Kategori *</label>
     		<div class="col-sm-3">
