@@ -361,9 +361,9 @@ $().ready(function(){
             <i class="fa fa-angle-left pull-right"></i>
           </a>
           <ul class="treeview-menu">
-            <li><a href="pages/forms/general.html"><i class="fa fa-circle-o"></i> Daily Report Transaction</a></li>
+                        <li><a href="<?php echo base_url('sales/salesReport/salesdaily_list');?>"><i class="fa fa-circle-o"></i> Daily Report Transaction</a></li>
             <li><a href="pages/forms/general.html"><i class="fa fa-circle-o"></i> Report Aging AR/ List Piutang</a></li>
-			<li><a href="pages/forms/general.html"><i class="fa fa-circle-o"></i> Report Kartu Piutang</a></li>
+						<li><a href="<?php echo base_url('sales/salesReport/kartupiutang');?>"><i class="fa fa-circle-o"></i> Report Kartu Piutang</a></li>
           </ul>
         </li>
         <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>
