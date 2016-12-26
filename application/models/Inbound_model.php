@@ -87,7 +87,7 @@ class Inbound_model extends MY_Model {
    public function getPO(){
 	 $sql =   $this->db->select('po_no,po_desc')
 				->where('kd_jns_usaha',$this->_roleCode)
-				->where('status_po_id','1')
+				->where('status_po_id <>','3') //status PO sudah Lengkap dan HIlang di pilihan PO ketika Inbound
 				//->where('status_received <>','2')
 				->get('p_t_po')
 				->result();
