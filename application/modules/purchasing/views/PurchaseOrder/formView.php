@@ -350,8 +350,11 @@
                                             <td style="text-align: center;">        
                                                 <?php echo $rowDetail2['jml_barang'];?>
                                             </td>
-                                            <td style="text-align: center;">        
-                                                0
+                                            <td style="text-align: center;">
+                                                <?php                                                    
+                                                    $penerimaan = $this->db->select_sum('jml_in')->where('deleted_by', NULL)->where('po_no', $contentData['po_no'])->where('barang_kd',$rowDetail2['kd_barang'])->get('i_t_inbound')->row();
+                                                    echo $penerimaan->jml_in;
+                                                ?>
                                             </td>  
                                             <td style="text-align: center;">        
                                                 <?php $sisaPending = $rowDetail2['jml_barang'] - 0;?>

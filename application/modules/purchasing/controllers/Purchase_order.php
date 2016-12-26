@@ -12,7 +12,9 @@ class Purchase_order extends MY_Controller {
 		$this->load->model('PayOrder_model');                
 		$this->load->model('Barang_model');
 		$this->load->model('Satuan_model');
-		$this->load->model('Vendors_model');       
+		$this->load->model('Vendors_model');
+		$this->load->model('InboundDetail_model');   
+        
          
 	}
     
@@ -45,7 +47,6 @@ class Purchase_order extends MY_Controller {
 		$no = $_POST['start'];
 		foreach ($list as $grid) {
             $color = 'warning';
-            $color2 = 'warning';
             $linkOutstanding = '';
             if($grid->status_po_id == 1){
                 $color = 'danger';
@@ -55,13 +56,6 @@ class Purchase_order extends MY_Controller {
             }else{
                 $color = 'success';
             }
-            
-            if($grid->status_received == 1){
-                $color2 = 'danger';
-            }else{
-                $color2 = 'success';
-            }
-          
           
 			$no++;
 			$row = array();
@@ -72,7 +66,6 @@ class Purchase_order extends MY_Controller {
 			$row[] = tgl_indo($grid->po_tgl_tagihan);
 			$row[] = "<div style='text-align:right;'>" . numberFormat($grid->po_total-$grid->po_bayar) . "</div>";
 			$row[] = "<div style='text-align:right;'>" . numberFormat($grid->po_total) . "</div>";
-			$row[] = '<span class="label label-'.$color2.'">' . getStatusPO($grid->status_received,$this->_roleCode) . '</span>';
 			$row[] = '<span class="label label-'.$color.'">' . getStatusPO($grid->status_po_id,$this->_roleCode) . '</span>';
 			$row[] = '<div class="btn-group">
                           <button type="button" class="btn btn-xs btn-flat btn-info">Action</button>
@@ -238,11 +231,7 @@ class Purchase_order extends MY_Controller {
         }
         
 		if($this->form_validation->run()){
-            //echo generateCodePO($this->_roleCode);
-//            echo '<pre>';
-//            print_r($this->input->post());
-//            echo '</pre>';
-//            
+              
             $indexS  = post('index');
             $dtlProdukS  = post('dtlProduk');
             $dltKuantitasS  = post('dltKuantitas');
@@ -255,21 +244,19 @@ class Purchase_order extends MY_Controller {
             
             foreach($indexS AS $key => $val){
                 
-                $dtlProduk = $dtlProdukS[$key];
+                $dltTotal = $dltTotalS[$key];
                 
-                if($dtlProduk == '' || !isset($dtlProduk)){                   
-                    $indexS = array_splice($indexS, 0 ,$key);
-                    $dtlProdukS = array_splice($dtlProdukS, 0 ,$key);
-                    $dltKuantitasS = array_splice($dltKuantitasS, 0 ,$key);
-                    $dtlNmSatuanS = array_splice($dtlNmSatuanS, 0 ,$key);
-                    $dtlIdSatuanS = array_splice($dtlIdSatuanS, 0 ,$key);
-                    $dltHargaS = array_splice($dltHargaS, 0 ,$key);
-                    $dltTotalS = array_splice($dltTotalS, 0 ,$key);
-                    $dtlJmlPajakS = array_splice($dtlJmlPajakS, 0 ,$key);                    
-                    $dtlPajakCheckS = array_splice($dtlPajakCheckS, 0 ,$key);
-                    
+                if($dltTotal == '' || $dltTotal == 0 || !isset($dltTotal)){   
+                    unset($indexS[$key]);                   
+                    unset($dtlProdukS[$key]);                   
+                    unset($dltKuantitasS[$key]);                   
+                    unset($dtlNmSatuanS[$key]);                   
+                    unset($dtlIdSatuanS[$key]);                   
+                    unset($dltHargaS[$key]);                   
+                    unset($dltTotalS[$key]);                   
+                    unset($dtlJmlPajakS[$key]);                
+                    unset($dtlPajakCheckS[$key]);                
                 }
-               
             }
             
             $generateCodePO = generateCodePO($this->_roleCode);
@@ -278,8 +265,6 @@ class Purchase_order extends MY_Controller {
                                 'po_no' => $generateCodePO,
                                 'po_tgl'    => dateTOSql(post('tgltrxPO')),
                                 'po_tgl_tagihan'    => dateTOSql(post('tglPenagihanPO')),
-								//'po_tgl_pengeriman' => post('addressVendors'),
-								//'po_desc'   => post('phoneVendors'),
 								'kd_vendor_supplier'    => post('nameVendors'),
 								'status_po_id'  => 1,
 								'kd_syarat_pembayaran'  => '',
@@ -333,7 +318,6 @@ class Purchase_order extends MY_Controller {
 				'message' => 'Field is required.',
 			);
             $this->session->set_flashdata('ui_messages',$ui_messages);
-//            redirect('setting/users/add');       
             $this->form();
             return true;
 		}
@@ -366,22 +350,20 @@ class Purchase_order extends MY_Controller {
             
             foreach($indexS AS $key => $val){
                 
-                $dtlProduk = $dtlProdukS[$key];
-                
-                if($dtlProduk == '' || !isset($dtlProduk)){                   
-                    $indexS = array_splice($indexS, 0 ,$key);
-                    $dtlProdukS = array_splice($dtlProdukS, 0 ,$key);
-                    $dltKuantitasS = array_splice($dltKuantitasS, 0 ,$key);
-                    $dtlNmSatuanS = array_splice($dtlNmSatuanS, 0 ,$key);
-                    $dtlIdSatuanS = array_splice($dtlIdSatuanS, 0 ,$key);
-                    $dltHargaS = array_splice($dltHargaS, 0 ,$key);
-                    $dltTotalS = array_splice($dltTotalS, 0 ,$key);
-                    $dtlJmlPajakS = array_splice($dtlJmlPajakS, 0 ,$key);                    
-                    $dtlPajakCheckS = array_splice($dtlPajakCheckS, 0 ,$key);                
-                    $dltIDS = array_splice($dltIDS, 0 ,$key);
-                    
+                $dltTotal = $dltTotalS[$key];
+                if($dltTotal == '' || $dltTotal == 0 || !isset($dltTotal)){   
+                    unset($indexS[$key]);                   
+                    unset($dtlProdukS[$key]);                   
+                    unset($dltKuantitasS[$key]);                   
+                    unset($dtlNmSatuanS[$key]);                   
+                    unset($dtlIdSatuanS[$key]);                   
+                    unset($dltHargaS[$key]);                   
+                    unset($dltTotalS[$key]);                   
+                    unset($dtlJmlPajakS[$key]);                
+                    unset($dtlPajakCheckS[$key]);                
+                    unset($dltIDS[$key]);                          
                 }
-               
+                
             }
             
 			$updateContent = array(
@@ -493,17 +475,17 @@ class Purchase_order extends MY_Controller {
             
             //echo $jmlBayarS[2] . '<br />';
 
-            foreach($indexS AS $key2=> $val2){
+            foreach($indexS AS $key => $val){
                 
-                $jmlBayar = $jmlBayarS[$key2];  
+                $jmlBayar = $jmlBayarS[$key];  
                 
                 if($jmlBayar == '' || $jmlBayar == 0 || !isset($jmlBayar)){
-                    unset($indexS[$key2]);
-                    unset($noPOS[$key2]);
-                    unset($idPOS[$key2]);
-                    unset($jmlTagihanS[$key2]);
-                    unset($jmlSisaTagihanS[$key2]);
-                    unset($jmlBayarS[$key2]);         
+                    unset($indexS[$key]);
+                    unset($noPOS[$key]);
+                    unset($idPOS[$key]);
+                    unset($jmlTagihanS[$key]);
+                    unset($jmlSisaTagihanS[$key]);
+                    unset($jmlBayarS[$key]);         
                 }
                
             }
