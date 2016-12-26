@@ -84,14 +84,21 @@ class Outbound_model extends MY_Model {
         
     }
     
-   public function getPO(){
-	 $sql =   $this->db->select('po_no,po_desc')
-				->where('kd_jns_usaha',$this->_roleCode)
-				->where('status_po_id','1')
-				//->where('status_received <>','2')
-				->get('p_t_po')
-				->result();
-	   return $sql; 
+   public function getSales(){
+/*	 $sql =   $this->db->select('a.sale_no,a.cust_id,b.cudst_nama')
+				->where('a.kd_jns_usaha',$this->_roleCode)
+				->where('a.sale_type','GROSIR')
+				->where('a.status_receive <>',1)
+				->join('sa_m_customer b','a.cust_id = b.cust_id')
+				->get('sa_t_pos a')
+				->result();*/
+		$q = "select a.sale_no,a.cust_id,b.cust_nama
+			from sa_t_pos a
+			left join sa_m_customer b on b.cust_id = a.cust_id
+			where a.sale_type = 'GROSIR' 
+			  and a.status_receive is null ";
+		$sql = $this->db->query($q)->result();   
+		return $sql; 
    }
    
    
