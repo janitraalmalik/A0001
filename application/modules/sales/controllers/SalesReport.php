@@ -13,6 +13,7 @@ class SalesReport extends MY_Controller {
 		$this->load->model('Barang_model');
 		$this->load->model('Satuan_model');
 		$this->load->model('SalesKartuPiutang_model');
+		$this->load->model('SalesPiutang_model');
 		
 	}
     
@@ -219,6 +220,111 @@ class SalesReport extends MY_Controller {
 		$this->pdf->render();
 		$this->pdf->stream($fileName .".pdf",array("Attachment"=>0));
     }
+	public function piutang_list() {        
+        
+        $inputGet = '';
+        $listSales = '';
+        if($this->input->get()){
+            $startDate = $this->input->get('start');
+            $sale_type = $this->input->get('sale_type');
+            $whereSales = '';
+			
+            $whereSales .= " AND sale_tgl <= '" . dateTOSql($startDate) . "'";
+			
+            if($sale_type != "0"){
+                $whereSales .= " AND sale_type = '" . $sale_type . "'";
+            }
+			
+            $whereSales .= " ORDER BY id DESC";
+
+            $listSales = $this->SalesPiutang_model->all($whereSales);
+            $inputGet = $this->input->get();
+              
+        }
+      
+        $grid_state = $this->process_grid_state();
+        
+        $this->page->view('SalesReport/PiutangReport', array (
+	       'moduleTitle'      	=> 'Laporan Piutang',
+	       'moduleSubTitle'   	=> '',
+           'linkPDF' 			=> 'piutang_PDF',
+           'linkExcel' 			=> 'piutang_Excel',
+	       'inputGet'   		=> $inputGet,
+	       'listSales'   		=> $listSales
+		));
+    } 
+	
+	public function piutang_Excel() {    
+    
+		$inputGet = '';
+        $listPiutang = '';
+		
+        if($this->input->get()){
+            $startDate = $this->input->get('start');
+            $sale_type = $this->input->get('sale_type');
+            $whereSales = '';
+			
+			$whereSales .= " AND sale_tgl <= '" . dateTOSql($startDate) . "'";
+			
+            if($sale_type != "0"){
+                $whereSales .= " AND sale_type = '" . $sale_type . "'";
+            }
+			
+            $whereSales .= " ORDER BY id DESC";
+
+            $listPiutang = $this->SalesPiutang_model->all($whereSales);
+            $inputGet = $this->input->get();
+
+              
+        }
+              
+        $fileName = "Piutang-" . date('dmY');
+        
+        $this->load->view('SalesReport/PiutangReportExcel',array (
+	                               'moduleTitle'      => 'Laporan Piutang',
+                        	       'inputGet'   => $inputGet,
+								   'fileName'   => $fileName,
+                        	       'listPiutang'   => $listPiutang								   
+                        		  ));
+				  
+ 
+    }
+	
+	public function piutang_PDF() {        
+        $inputGet = '';
+        $listPiutang = '';
+		
+        if($this->input->get()){
+            $startDate = $this->input->get('start');
+            $sale_type = $this->input->get('sale_type');
+            $whereSales = '';
+			
+			$whereSales .= " AND sale_tgl <= '" . dateTOSql($startDate) . "'";
+			
+            if($sale_type != "0"){
+                $whereSales .= " AND sale_type = '" . $sale_type . "'";
+            }
+			
+            $whereSales .= " ORDER BY id DESC";
+
+            $listPiutang = $this->SalesPiutang_model->all($whereSales);
+            $inputGet = $this->input->post();
+ 
+
+              
+        }
+              
+        $fileName = "Piutang-" . date('dmY');
+        
+        $this->pdf->load_view('SalesReport/PiutangReportPDF',array (
+	                               'moduleTitle'      => 'Laporan Piutang',
+                        	       'inputGet'   => $inputGet,
+                        	       'listPiutang'   => $listPiutang
+                        		  ));
+        $this->pdf->set_paper('A4', 'landscape');
+		$this->pdf->render();
+		$this->pdf->stream($fileName .".pdf",array("Attachment"=>0));
+    }	
     
     
     
