@@ -29,7 +29,7 @@ class Data_outbound extends MY_Controller {
     
 	public function index() {
 	   //$grid_state = $this->process_grid_state();
-      //die("tes");
+      die("tes");
 	   $this->page->view('Outbound/index', array (
 			'moduleTitle'      => $this->moduleTitle,
 			'moduleSubTitle'   => '',
@@ -40,7 +40,7 @@ class Data_outbound extends MY_Controller {
     public function get_data(){
         
         $grid_state = $this->process_grid_state();
-		$list = $this->Outbound_model->get_data();
+		$list = $this->OUtbound_model->get_data();
 		$data = array();
 		$no = $_POST['start'];
 		foreach ($list as $grid) {
@@ -51,7 +51,7 @@ class Data_outbound extends MY_Controller {
 			$row[] = tgl_indo($grid->date_out);
 			$row[] = $grid->no_trx_sales;
 			$row[] = $grid->brg_nama;
-			$row[] = number_format($grid->jml_in);
+			$row[] = number_format($grid->jmls_in);
 			//$row[] = number_format($grid->refund);
 			//$row[] = number_format($grid->sisa);
 			$row[] = '';
@@ -76,8 +76,8 @@ class Data_outbound extends MY_Controller {
 		}
 		$output = array(
 			"draw" 				=> $_POST['draw'],
-			"recordsTotal" 		=> $this->Outbound_model->count_all(),
-			"recordsFiltered" 	=> $this->Outbound_model->count_filtered(),
+			"recordsTotal" 		=> $this->Inbound_model->count_all(),
+			"recordsFiltered" 	=> $this->Inbound_model->count_filtered(),
 			"data" 				=> $data,
 		);
 		//output to json format
@@ -117,7 +117,7 @@ class Data_outbound extends MY_Controller {
             			'getPO'			   => $getPO			
                         );
         
-		$this->page->view('Outbound/' . $viewTPL ,$contect);
+		$this->page->view('Inbound/' . $viewTPL ,$contect);
 	}
 	
 	public function simpan(){
