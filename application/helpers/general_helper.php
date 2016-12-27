@@ -433,6 +433,51 @@ function saveGenerateCodeInbound($jns_usaha) {
 }
 
 
+function generateCodeOutbound($jns_usaha) {
+    $CI =& get_instance();
+    
+    $dt = $CI->db->select('count as code')
+                                ->where('deleted_at =',null)
+                                ->where('kd_jns_usaha',$jns_usaha)
+                                ->where('type_nomor','outbound')
+                                ->get('m_generatenumber')->row();
+    $code  = $dt->code;
+    $codelen  = strlen($dt->code);
+    $codeResult = $code + 1;
+    
+    $nomer = str_repeat("0", 5 - $codelen) . $codeResult;   
+    return $nomer;
+}
+
+
+function saveGenerateCodeOutbound($jns_usaha) {
+    $CI =& get_instance();
+    
+    $dt = $CI->db->select('count as code')
+                                ->where('deleted_at =',null)
+                                ->where('kd_jns_usaha',$jns_usaha)
+                                ->where('type_nomor','outbound')
+                                ->get('m_generatenumber')->row();
+    $code  = $dt->code;
+    $codelen  = strlen($dt->code);
+    $codeResult = $code + 1;
+    
+    $nomer = str_repeat("0", 5 - $codelen) . $codeResult;
+    
+    $data = array(
+                    'kode' => $nomer,
+                    'count' => $codeResult
+                );  
+    
+    $CI->db->where('deleted_at =',null);
+    $CI->db->where('kd_jns_usaha',$jns_usaha);                 
+    $CI->db->where('type_nomor','outbound'); 
+    $CI->db->update('m_generatenumber',$data);
+    
+    return true;
+}
+
+
 
 
 function getNameCustomer($param,$jns_usaha) {

@@ -46,7 +46,7 @@ $this->load->view('templates/message_handler') ?>
     	<div class="form-group">
     		<label class="col-sm-3 control-label input-sm">No Trx Sales *</label>
     		<div class="col-sm-9">
-                <select name="poNo" id="noPO" class="form-control select2" style="width: 100%;" >
+                <select name="poNo" id="noPO" class="form-control select2" style="width: 100%;" required="true">
 						<option value=""></option>
                         <?php
 							
@@ -123,8 +123,8 @@ $this->load->view('templates/message_handler') ?>
 					for (var i = 0; i < data.length; i++) {
 						var a = 
 						tr = $('<tr class="inbound">');
-						tr.append("<td><input type='text' name='brg_nama[]' id='brg_nama" + i + "' readonly='true' value='" +data[i].brg_kd +"'>" + data[i].brg_kd + "</td>");
-						tr.append("<td><input type='hidden' name='jml_barang[]' class='jml_barang" + i + "' id='jml_barang" + i + "' readonly='true' value='" +data[i].qty +"' class='form-control numeric jml_barang' align='center'>" + data[i].qty + "</td>");
+						tr.append("<td><input type='hidden' name='cust_id[]' id='cust_id" + i + "' readonly='true' value='" +data[i].cust_id +"'><input type='hidden' name='brg_nama[]' id='brg_nama" + i + "' readonly='true' value='" +data[i].brg_kd +"'>" + data[i].brg_nama + "</td>");
+						tr.append("<td><input type='hidden' name='jml_barang[]' class='jml_barang" + i + "' id='jml_barang" + i + "' readonly='true' value='" +data[i].saldo_barang +"' class='form-control numeric jml_barang' align='center'>" + data[i].saldo_barang + "</td>");
 						tr.append("<td><input type='hidden' name='satuan_name[]' readonly='true' value='" +data[i].satuan_name +"'>" + data[i].satuan_name + "</td>");
 						tr.append("<td><input type='text' name='jml_in[]' id='jml_in" + i + "' value='0' style='text-align:right' class='form-control numeric jml_in' required='true'></td>");
 						tr.append("<td><input type='text' name='refund[]' id='refund" + i + "' value='0' style='text-align:right' class='form-control numeric refund' required='true'></td>");

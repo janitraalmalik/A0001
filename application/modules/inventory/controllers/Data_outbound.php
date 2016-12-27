@@ -123,7 +123,7 @@ class Data_outbound extends MY_Controller {
 	public function simpan(){
 	//	die("tes");
             $poNo  = post('poNo');
-//            $noReff  = post('noReff');
+            $cust_idS  = post('cust_id');
             $tgltrxPO  = post('tgltrxPO');
            // die($noReff);
             $jml_inS  = post('jml_in');
@@ -157,19 +157,22 @@ class Data_outbound extends MY_Controller {
                 $jml_in = str_replace(',', '', $jml_inS[$key]);
                 $refund = str_replace(',', '', $refundS[$key]);
                 $sisa = str_replace(',', '', $sisaS[$key]);
+                $cust_id = $cust_idS[$key];
+
                 
-                //$generateCodeInbound = generateCodeInbound($this->_roleCode);
+                $generateCodeOutbound = generateCodeOutbound($this->_roleCode);
 				//echo $val . '<br />';
 				$insertContentDetail = array(
-											//'id_inbound'	=> $generateCodeInbound,
+											'id_outbound'	=> $generateCodeOutbound,
                                             'no_trx_sales' => $poNo,
-                                            //'no_ref_vendor' => $noReff,
+                                            'cust_id' => $cust_id,
                                             'date_out' => dateTOSql($tgltrxPO),
                                             'barang_kd' => $brg_nama,
                                             'jml_in' => $jml_in,
                                             'refund' => $refund,
                                             'sisa' => $sisa,
                                             'out_type' => 'GROSIR',
+                                            'flag_id' => 1,
                                             'kd_jns_usaha'  => $this->_roleCode
                                             //'sudah'  => 1
                                         );
@@ -179,7 +182,13 @@ class Data_outbound extends MY_Controller {
     //             echo "</pre>";
 
                 $this->OutboundDetail_model->add($insertContentDetail);
-                //saveGenerateCodeInbound($this->_roleCode);
+                saveGenerateCodeOutbound($this->_roleCode);
+
+                if ($sisa == 0){
+                		$a  = array('status_receive' => 1 );
+	                    $this->db->where('sale_no',$poNo);
+	                    $this->db->update('sa_t_pos',$a);
+                }
 
                 //$last 		= $this->InboundDetail_model->getLastStock($brg_nama);
 
@@ -261,6 +270,7 @@ class Data_outbound extends MY_Controller {
 				  a.brg_kd,
 				  b.brg_nama,
 				  a.qty,
+				  c.cust_id,
 				  a.satuan_kd,
 				  e.satuan_name,
 				  IFNULL((select sum(d.jml_in) from i_t_outbound d where d.no_trx_sales = a.sale_no and a.brg_kd = d.barang_kd),0) masuk,

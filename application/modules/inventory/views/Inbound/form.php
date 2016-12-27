@@ -39,6 +39,7 @@ $this->load->view('templates/message_handler') ?>
                     type="text" 
                     name="noReff" 
                     id="noReff" 
+                    placeholder="No Referensi Vendor / No Surat Jalan" 
 					required="true"/>
                 <?php echo form_error('tgltrxPO', '<label class="text-red">', '</label>'); ?>
     		</div><label class="col-sm-5 control-label input-sm"><font size="1.5" color="red">* Jika Tidak ada di isi angka 0</font> </label>

@@ -96,7 +96,7 @@ class Data_inbound extends MY_Controller {
             if($id != ''){
                 $contentData = $this->Barang_model->find($id,'id');
                 if(count($contentData) == 0){
-                    redirect($this->page->base_url('/'));0
+                    redirect($this->page->base_url('/'));
                 }           
             }
 		} 
@@ -113,10 +113,60 @@ class Data_inbound extends MY_Controller {
             			'action'	       => $this->page->base_url("/{$action}/{$id}"),
             			'contentData'	   => $contentData,
             			'barangData'	   => $barangData,
-            			'getPO'			   => $getPO			
+            			'getPO'			   => $getPO,
+            			//'adda'			   => $this->page->base_url("/tambah"),			
                         );
         
 		$this->page->view('Inbound/' . $viewTPL ,$contect);
+	}
+
+	public function tambah($action = 'insert',  $id = ''){
+		//die("tes");
+		$grid_state = $this->process_grid_state();
+		$title = '';
+        $contentData = '';
+		
+        $contentData = $this->Inbound_model->get_item();
+
+		$contecto = array(
+                        'ui_messages'      => $this->session->flashdata('ui_messages'),
+                        'moduleTitle'      => $this->moduleTitle,
+            			'moduleSubTitle'   => $title,
+            			'back'		       => $grid_state,
+            			'contentData'	   => $contentData,
+            			'action'	       => $this->page->base_url("/{$action}/{$id}"),
+            			//'adda'			   => $this->page->base_url("/tambah"),			
+                        );
+		$this->page->view('Inbound/formadd', $contecto);		
+	}
+
+	public function insert(){		
+		$generateCodeInbound = generateCodeInbound($this->_roleCode);
+    		$insertContent = array(
+    							'id_inbound'  => $generateCodeInbound,	
+                                'date_in'     => dateTOSql(post('tgltrxInbound')),
+                                'barang_kd'   => post('barang_kd'),
+								'jml_in'	  => post('qty'),
+								'refund'	  => 0,
+								'sisa'		  => 0,
+								'kd_jns_usaha'  => $this->_roleCode,
+                            );
+            $insert = $this->InboundDetail_model->add($insertContent);
+         	saveGenerateCodeInbound($this->_roleCode);
+
+         	$last 		= $this->InboundDetail_model->getLastStock(post('barang_kd'));
+
+                $lastStok 	= $last->stok + post('qty'); 
+                //var_dump($lastStok);
+
+	            #Update Stok    
+                $sto = array(
+                	'stok' => $lastStok
+                	);
+                 $this->db->where('brg_kd',post('barang_kd'));
+                 $this->db->update('p_m_barang',$sto);
+
+        redirect($this->page->base_url());
 	}
 	
 	public function simpan(){
@@ -179,18 +229,28 @@ class Data_inbound extends MY_Controller {
                 $lastStok 	= $last->stok + $jml_in; 
                 //var_dump($lastStok);
 
+                #Update Status receive
+                if ($sisa == 0){
+                		$a  = array('status_po_id' => 2 );
+	                    $this->db->where('po_no',$poNo);
+	                    $this->db->update('p_t_po',$a);
+	                }
+
+	            #Update Stok    
                 $sto = array(
                 	'stok' => $lastStok
                 	);
                  $this->db->where('brg_kd',$brg_nama);
                  $this->db->update('p_m_barang',$sto);
+            
+
             }
             
             $lastInboundPOValue		= $this->InboundDetail_model->getLastInboundValue($poNo)->jml_in;
             $lastPOdetailValue 		= $this->InboundDetail_model->getLastPOdetailValue($poNo)->jml_barang;
 
 	            if($lastInboundPOValue == $lastPOdetailValue){
-	            		$a  = array('status_po_id' => 2 );
+	            		$a  = array('status_po_id' => 3 );
 	                   $this->db->where('po_no',$poNo);
 	                   $this->db->update('p_t_po',$a);
 
@@ -269,51 +329,6 @@ class Data_inbound extends MY_Controller {
 	
 	public function edit($id){
 		$this->form('update', $id);
-	}
-	
-	public function insert(){	
-		print_r("<pre>");
-		print_r($this->input->post());
-		
-		print_r("</pre>");
-		die;
-		
-		//die('disini');
-			
-		if ( ! $this->input->post()) redirect('my404'); 
-	   	
-        
-		$this->form_validation->set_rules('codeBarang', 'Code', 'required');
-		$this->form_validation->set_rules('nameBarang', 'Name', 'required');
-		$this->form_validation->set_rules('catBarang', 'Category', 'required');
-        
-		if($this->form_validation->run()){
-		  
-    		$insertContent = array(
-                                'brg_kd'     => post('codeBarang'),
-                                'brg_nama'   => post('nameBarang'),
-								'brg_desc'   => post('descBarang'),
-								'cat_barang_id'   => post('catBarang'),
-								'kd_jns_usaha'  => 'JU001',
-                            );
-            $insert = $this->Barang_model->add($insertContent);
-            if($insert == true){
-                redirect($this->page->base_url('/'));
-            }
-                            
-		}else{
-  		
-			$ui_messages[] = array(
-				'severity' => 'ERROR',
-				'title' => '',
-				'message' => 'Field is required.',
-			);
-            $this->session->set_flashdata('ui_messages',$ui_messages);
-//            redirect('setting/users/add');       
-            $this->form();
-            return true;
-		}
-        redirect($this->page->base_url());
 	}
 	
 	public function update($id){		
