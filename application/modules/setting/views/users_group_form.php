@@ -1,6 +1,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
  	
+    $('body').addClass('sidebar-collapse');
 	$('.parent').change(function(){
 		var id = $(this).attr('id');
 		$('.child-'+id).prop('checked', $(this).prop('checked'));		
