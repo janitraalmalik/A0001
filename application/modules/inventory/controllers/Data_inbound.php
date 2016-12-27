@@ -53,24 +53,13 @@ class Data_inbound extends MY_Controller {
 			$row[] = number_format($grid->jml_in);
 			$row[] = number_format($grid->refund);
 			$row[] = number_format($grid->sisa);
-			$row[] = '';
-			/*  <a 
-                            class="btn btn-xs btn-flat btn-info" 
-                            href="'.site_url($grid_state . '/edit/' .$grid->id_inbound).'" 
-                            title="Update Data">Update</a> &nbsp; */
-			/*
+			
 			$row[] = '<div style="width:100%;text-align:center;">
                         <a 
                             class="btn btn-xs btn-flat btn-info" 
-                            href="#" 
+                            href="'.site_url($grid_state . '/edit/' .$grid->id_inbound).'" 
                             title="Update Data">Update</a> &nbsp;
-                        <a 
-                            class="btn btn-xs btn-flat btn-danger" 
-                            onclick="return confirm(\'Are you sure to delete data ' . $grid->brg_nama . ' ?\')" 
-                            href="'.site_url($grid_state . '/delete/'.$grid->id_inbound).'" 
-                            title="Delete Data">Delete</a>
-                    </div>';
-               */     
+                    </div>'; 
 			$data[] = $row;
 		}
 		$output = array(
@@ -121,70 +110,62 @@ class Data_inbound extends MY_Controller {
 	
 	public function simpan(){
 
-            $poNo  = post('poNo');
-            $noReff  = post('noReff');
-            $tgltrxPO  = post('tgltrxPO');
-           // die($noReff);
-            $jml_inS  = post('jml_in');
-            $refundS  = post('refund');
-            $sisaS  = post('sisa');
-            $brg_namaS  = post('brg_nama');
-           // $brg_namaS  = post('brg_nama');
-
-        //    var_dump($jml_inS);exit();
+        $poNo  = post('poNo');
+        $noReff  = post('noReff');
+        $tgltrxPO  = post('tgltrxPO');
+        $jml_inS  = post('jml_in');
+        $refundS  = post('refund');
+        $sisaS  = post('sisa');
+        $brg_namaS  = post('brg_nama');		
 		
-		
-		  foreach($brg_namaS AS $key=> $val1){
-                
-                $jmlin = $jml_inS[$key];  
-                
-                if($jmlin == '' || $jmlin == 0 || !isset($jmlin)){
-                    unset($brg_namaS[$key]);
-                    unset($jml_inS[$key]);
-                    unset($refundS[$key]);
-                    unset($sisaS[$key]);
-                   
-                }
+        foreach($brg_namaS AS $key=> $val1){
+            
+            $jmlin = $jml_inS[$key];  
+            
+            if($jmlin == '' || $jmlin == 0 || !isset($jmlin)){
+                unset($brg_namaS[$key]);
+                unset($jml_inS[$key]);
+                unset($refundS[$key]);
+                unset($sisaS[$key]);
                
-            } 	
-
-          //var_dump($jml_inS);exit();  
-
-		  foreach($brg_namaS AS $key => $val){
-                
-                $brg_nama = $val;
-                $jml_in = $jml_inS[$key];
-                $refund = $refundS[$key];
-                $sisa = $sisaS[$key];
-                
-                $generateCodeInbound = generateCodeInbound($this->_roleCode);
-				//echo $val . '<br />';
-				$insertContentDetail = array(
-											'id_inbound'	=> $generateCodeInbound,
-                                            'po_no' => $poNo,
-                                            'no_ref_vendor' => $noReff,
-                                            'date_in' => dateTOSql($tgltrxPO),
-                                            'barang_kd' => $brg_nama,
-                                            'jml_in' => $jml_in,
-                                            'refund' => $refund,
-                                            'sisa' => $sisa,
-                                            'kd_jns_usaha'  => $this->_roleCode,
-                                            //'sudah'  => 1
-                                        );
-                $this->InboundDetail_model->add($insertContentDetail);
-                saveGenerateCodeInbound($this->_roleCode);
-
-                $last 		= $this->InboundDetail_model->getLastStock($brg_nama);
-
-                $lastStok 	= $last->stok + $jml_in; 
-                //var_dump($lastStok);
-
-                $sto = array(
-                	'stok' => $lastStok
-                	);
-                 $this->db->where('brg_kd',$brg_nama);
-                 $this->db->update('p_m_barang',$sto);
             }
+           
+        } 	
+
+        foreach($brg_namaS AS $key => $val){
+            
+            $brg_nama = $val;
+            $jml_in = $jml_inS[$key];
+            $refund = $refundS[$key];
+            $sisa = $sisaS[$key];
+            
+            $generateCodeInbound = generateCodeInbound($this->_roleCode);
+        	//echo $val . '<br />';
+        	$insertContentDetail = array(
+        								'id_inbound'	=> $generateCodeInbound,
+                                        'po_no' => $poNo,
+                                        'no_ref_vendor' => $noReff,
+                                        'date_in' => dateTOSql($tgltrxPO),
+                                        'barang_kd' => $brg_nama,
+                                        'jml_in' => $jml_in,
+                                        'refund' => $refund,
+                                        'sisa' => $sisa,
+                                        'kd_jns_usaha'  => $this->_roleCode,
+                                        //'sudah'  => 1
+                                    );
+            $this->InboundDetail_model->add($insertContentDetail);
+            saveGenerateCodeInbound($this->_roleCode);
+        
+            $last 		= $this->InboundDetail_model->getLastStock($brg_nama);
+        
+            $lastStok 	= $last->stok + $jml_in;
+        
+            $sto = array(
+            	'stok' => $lastStok
+            	);
+             $this->db->where('brg_kd',$brg_nama);
+             $this->db->update('p_m_barang',$sto);
+        }
             
             $lastInboundPOValue		= $this->InboundDetail_model->getLastInboundValue($poNo)->jml_in;
             $lastPOdetailValue 		= $this->InboundDetail_model->getLastPOdetailValue($poNo)->jml_barang;
@@ -224,19 +205,7 @@ class Data_inbound extends MY_Controller {
 	}
 	
 	public function showPOitem($po){
-		//$getPO = $this->Inbound_model->itemPO($po);
-		// $sqld = " select a.kd_barang,
-		// 				c.brg_nama,
-		// 				a.kd_satuan,
-		// 				b.satuan_name,
-		// 				a.jml_barang,
-		//             IFNULL(d.jml_in,0) masuk,
-		//             (a.jml_barang - IFNULL(d.jml_in,0)) saldo_barang
-		// 					from p_t_podetail  a
-		// 					left join p_m_satuan b on (a.kd_satuan = b.id and b.kd_jns_usaha = a.kd_jns_usaha)
-		// 					left join p_m_barang c on (c.brg_kd = a.kd_barang and c.kd_jns_usaha = a.kd_jns_usaha)
-		//           			left join i_t_inbound d on (d.po_no = a.po_no and d.barang_kd = a.kd_barang and d.kd_jns_usaha = a.kd_jns_usaha )
-		// 			where a.po_no = '".$po."' and (a.jml_barang - IFNULL(d.jml_in,0)) <> 0";	
+			
 		$sqld = "select * from (select a.kd_barang,
 						c.brg_nama,
 						a.kd_satuan,
@@ -249,20 +218,7 @@ class Data_inbound extends MY_Controller {
 							left join p_m_barang c on (c.brg_kd = a.kd_barang and c.kd_jns_usaha = a.kd_jns_usaha)
 		   		where a.po_no = '".$po."' and a.kd_jns_usaha = '".$this->_roleCode."') t where t.saldo_barang <> 0";
 		$sql = $this->db->query($sqld)->result();
-		
-
-
-//		var_dump($sql->kd_barang);exit();
-	/*	
-		$data_arr = array(
-					    'kd_barang'		=> $getPO['kd_barang'],
-						'kd_satuan'		=> $getPO['kd_satuan'],
-						'satuan_name'	=> $getPO['satuan_name'],
-						'jml_barang'	=> $getPO['jml_barang']
-					);
-		*/
-		//var_dump($getPO);exit();
-					
+							
 		die(json_encode($sql));
 		
 	}
@@ -271,51 +227,7 @@ class Data_inbound extends MY_Controller {
 		$this->form('update', $id);
 	}
 	
-	public function insert(){	
-		print_r("<pre>");
-		print_r($this->input->post());
 		
-		print_r("</pre>");
-		die;
-		
-		//die('disini');
-			
-		if ( ! $this->input->post()) redirect('my404'); 
-	   	
-        
-		$this->form_validation->set_rules('codeBarang', 'Code', 'required');
-		$this->form_validation->set_rules('nameBarang', 'Name', 'required');
-		$this->form_validation->set_rules('catBarang', 'Category', 'required');
-        
-		if($this->form_validation->run()){
-		  
-    		$insertContent = array(
-                                'brg_kd'     => post('codeBarang'),
-                                'brg_nama'   => post('nameBarang'),
-								'brg_desc'   => post('descBarang'),
-								'cat_barang_id'   => post('catBarang'),
-								'kd_jns_usaha'  => 'JU001',
-                            );
-            $insert = $this->Barang_model->add($insertContent);
-            if($insert == true){
-                redirect($this->page->base_url('/'));
-            }
-                            
-		}else{
-  		
-			$ui_messages[] = array(
-				'severity' => 'ERROR',
-				'title' => '',
-				'message' => 'Field is required.',
-			);
-            $this->session->set_flashdata('ui_messages',$ui_messages);
-//            redirect('setting/users/add');       
-            $this->form();
-            return true;
-		}
-        redirect($this->page->base_url());
-	}
-	
 	public function update($id){		
 		if ( ! $this->input->post()) redirect('my404'); 
 

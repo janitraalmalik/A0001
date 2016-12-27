@@ -1,6 +1,5 @@
 
 <?php 
-//var_dump($getPO);exit();
 $this->load->view('templates/message_handler') ?>
 
 <section class="content">
