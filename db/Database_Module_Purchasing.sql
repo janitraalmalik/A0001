@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2016-12-16 11:34:45
+Date: 2016-12-25 19:03:09
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -22,6 +22,7 @@ DROP TABLE IF EXISTS `p_m_barang`;
 CREATE TABLE `p_m_barang` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `brg_kd` varchar(255) DEFAULT NULL,
+  `brg_satuan` int(11) DEFAULT NULL,
   `brg_nama` varchar(255) DEFAULT NULL,
   `brg_desc` varchar(255) DEFAULT NULL,
   `cat_barang_id` int(11) DEFAULT NULL,
@@ -33,14 +34,15 @@ CREATE TABLE `p_m_barang` (
   `deleted_at` datetime DEFAULT NULL,
   `deleted_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of p_m_barang
 -- ----------------------------
-INSERT INTO `p_m_barang` VALUES ('1', '0001', 'Product A', 'Product A', '7', 'JU001', '2016-11-25 10:05:11', null, null, null, null, null);
-INSERT INTO `p_m_barang` VALUES ('2', 'OK', 'kkajjsk Update', 'jsjsjsj', '1', 'JU001', '2016-11-27 12:55:40', null, '2016-11-27 12:55:53', null, '2016-11-27 12:56:01', '0');
-INSERT INTO `p_m_barang` VALUES ('3', '0002', 'Test Gain', 'Test', '1', 'JU001', '2016-11-28 23:14:15', '0', null, null, null, null);
+INSERT INTO `p_m_barang` VALUES ('1', '0001', '1', 'Product A', 'Product A', '7', 'JU001', '2016-11-25 10:05:11', null, '2016-12-25 18:11:52', '1', null, null);
+INSERT INTO `p_m_barang` VALUES ('2', 'OK', null, 'kkajjsk Update', 'jsjsjsj', '1', 'JU001', '2016-11-27 12:55:40', null, '2016-11-27 12:55:53', null, '2016-11-27 12:56:01', '0');
+INSERT INTO `p_m_barang` VALUES ('3', '0002', '1', 'Test Gain', 'Test', '1', 'JU001', '2016-11-28 23:14:15', '0', '2016-12-25 18:12:01', '1', null, null);
+INSERT INTO `p_m_barang` VALUES ('4', 'saasd', '1', 'Product 1', 'Product 1', '1', 'JU001', '2016-12-25 18:05:18', '1', '2016-12-25 18:11:29', '1', null, null);
 
 -- ----------------------------
 -- Table structure for p_m_cat_barang
@@ -97,14 +99,6 @@ CREATE TABLE `p_m_satuan` (
 -- Records of p_m_satuan
 -- ----------------------------
 INSERT INTO `p_m_satuan` VALUES ('1', 'PCS', 'PCS', null, 'PCS', 'JU001', '2016-11-23 00:39:46', null, null, null, null, null);
-INSERT INTO `p_m_satuan` VALUES ('2', 'OKK', 'OKK', null, 'OKK', 'JU001', '2016-11-23 09:32:46', null, '2016-11-23 09:40:05', null, '2016-11-23 09:40:43', '0');
-INSERT INTO `p_m_satuan` VALUES ('3', 'asdas', 'asdasdasdasd Update', null, 'asdads', 'JU001', '2016-11-27 12:19:39', null, '2016-11-27 12:19:50', null, null, null);
-INSERT INTO `p_m_satuan` VALUES ('4', '0001', 'test', null, 'test\r\n', 'JU001', '2016-11-28 23:15:26', '0', null, null, null, null);
-INSERT INTO `p_m_satuan` VALUES ('5', 'asdas', 'asdasd', null, 'asdasda', 'JU001', '2016-11-28 23:23:05', '1', null, null, null, null);
-INSERT INTO `p_m_satuan` VALUES ('6', 'asdas', 'asdasdas', null, 'asdasdasd ', 'JU001', '2016-11-28 23:23:34', '1', null, null, null, null);
-INSERT INTO `p_m_satuan` VALUES ('7', 'Test ', 'okokokok', null, '', 'JU001', '2016-11-28 23:23:54', '1', null, null, null, null);
-INSERT INTO `p_m_satuan` VALUES ('8', 'OKKKK', 'jjjajajaj', null, 'hahahahah', 'JU001', '2016-11-28 23:24:35', '1', null, null, null, null);
-INSERT INTO `p_m_satuan` VALUES ('9', 'Test ', 'Test Malik', null, 'Test Malik', 'JU001', '2016-11-28 23:29:10', '1', null, null, null, null);
 
 -- ----------------------------
 -- Table structure for p_m_status
@@ -122,13 +116,14 @@ CREATE TABLE `p_m_status` (
   `deleted_at` datetime DEFAULT NULL,
   `deleted_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of p_m_status
 -- ----------------------------
-INSERT INTO `p_m_status` VALUES ('1', 'Outstanding', 'Outstanding', 'JU001', '2016-11-20 15:56:36', null, null, null, null, null);
-INSERT INTO `p_m_status` VALUES ('2', 'Closed', 'Closed', 'JU001', '2016-11-20 15:56:52', null, null, null, null, null);
+INSERT INTO `p_m_status` VALUES ('1', 'Belum Dibayar', 'Belum Dibayar', 'JU001', '2016-11-20 15:56:36', '1', null, null, null, null);
+INSERT INTO `p_m_status` VALUES ('2', 'Telah Dibayar', 'Telah Dibayar', 'JU001', '2016-11-20 15:56:52', '1', null, null, null, null);
+INSERT INTO `p_m_status` VALUES ('3', 'Closed', 'Closed', 'JU001', '2016-11-20 15:56:52', '1', null, null, null, null);
 
 -- ----------------------------
 -- Table structure for p_m_vendor_supplier
@@ -181,7 +176,7 @@ CREATE TABLE `p_t_po` (
   `deleted_at` datetime DEFAULT NULL,
   `deleted_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of p_t_po
@@ -189,6 +184,8 @@ CREATE TABLE `p_t_po` (
 INSERT INTO `p_t_po` VALUES ('1', '00001', '2016-12-05', '2016-12-19', null, '00001', '1', '', '195000000.00', '19500000.00', '214500000.00', '100000000.00', 'JU001', '2016-12-05 15:39:49', '1', '2016-12-05 15:41:29', '1', null, null);
 INSERT INTO `p_t_po` VALUES ('2', '00002', '2016-12-05', '2016-12-19', null, '00001', '2', '', '57200000.00', '5720000.00', '62920000.00', '62920000.00', 'JU001', '2016-12-05 15:40:37', '1', '2016-12-05 16:11:46', '1', null, null);
 INSERT INTO `p_t_po` VALUES ('3', '00003', '2016-12-05', '2016-12-19', null, '00001', '1', '', '10000000.00', '0.00', '10000000.00', '5000000.00', 'JU001', '2016-12-05 15:41:01', '1', '2016-12-05 15:51:17', '1', null, null);
+INSERT INTO `p_t_po` VALUES ('4', '00004', '2016-12-26', '2017-01-09', null, '00001', '1', '', '2000000.00', '100000.00', '2100000.00', null, 'JU001', '2016-12-25 14:56:26', '1', null, null, null, null);
+INSERT INTO `p_t_po` VALUES ('5', '00005', '2016-12-26', '2017-01-09', null, '00001', '2', '', '2200000.00', '0.00', '2200000.00', '2200000.00', 'JU001', '2016-12-25 15:00:31', '1', '2016-12-25 16:03:18', '1', null, null);
 
 -- ----------------------------
 -- Table structure for p_t_po_pembayaran
@@ -209,7 +206,7 @@ CREATE TABLE `p_t_po_pembayaran` (
   `deleted_at` datetime DEFAULT NULL,
   `deleted_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of p_t_po_pembayaran
@@ -220,6 +217,8 @@ INSERT INTO `p_t_po_pembayaran` VALUES ('3', '00003', '00002', '2016-12-05 00:00
 INSERT INTO `p_t_po_pembayaran` VALUES ('4', '00004', '00002', '2016-12-05 00:00:00', '00001', '17000000.00', 'JU001', '2016-12-05 16:11:20', '1', null, null, null, null);
 INSERT INTO `p_t_po_pembayaran` VALUES ('5', '00005', '00002', '2016-12-05 00:00:00', '00001', '5920000.00', 'JU001', '2016-12-05 16:11:37', '1', null, null, null, null);
 INSERT INTO `p_t_po_pembayaran` VALUES ('6', '00006', '00002', '2016-12-05 00:00:00', '00001', '10000000.00', 'JU001', '2016-12-05 16:11:46', '1', null, null, null, null);
+INSERT INTO `p_t_po_pembayaran` VALUES ('7', '00007', '00005', '2016-12-25 00:00:00', '00001', '1100000.00', 'JU001', '2016-12-25 15:03:45', '1', null, null, null, null);
+INSERT INTO `p_t_po_pembayaran` VALUES ('8', '00008', '00005', '2016-12-25 00:00:00', '00001', '1100000.00', 'JU001', '2016-12-25 16:03:18', '1', null, null, null, null);
 
 -- ----------------------------
 -- Table structure for p_t_podetail
@@ -243,7 +242,7 @@ CREATE TABLE `p_t_podetail` (
   `deleted_at` datetime DEFAULT NULL,
   `deleted_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of p_t_podetail
@@ -255,3 +254,8 @@ INSERT INTO `p_t_podetail` VALUES ('4', '00002', '0001', '1', '50', '10000.00', 
 INSERT INTO `p_t_podetail` VALUES ('5', '00002', '0002', '2', '100', '7000.00', '1', '1', '2', 'JU001', '2016-12-05 15:40:38', '1', null, null, null, null);
 INSERT INTO `p_t_podetail` VALUES ('6', '00002', '0001', '1', '800', '70000.00', '1', '1', '3', 'JU001', '2016-12-05 15:40:38', '1', null, null, null, null);
 INSERT INTO `p_t_podetail` VALUES ('7', '00003', '0001', '1', '100', '100000.00', '0', '1', '1', 'JU001', '2016-12-05 15:41:01', '1', null, null, null, null);
+INSERT INTO `p_t_podetail` VALUES ('8', '00004', '0001', '1', '50', '20000.00', '1', '1', '1', 'JU001', '2016-12-25 14:56:26', '1', null, null, null, null);
+INSERT INTO `p_t_podetail` VALUES ('9', '00004', '0002', '2', '0', '0.00', '0', '1', '2', 'JU001', '2016-12-25 14:56:26', '1', null, null, null, null);
+INSERT INTO `p_t_podetail` VALUES ('10', '00004', '0002', '2', '100', '10000.00', '0', '1', '3', 'JU001', '2016-12-25 14:56:26', '1', null, null, null, null);
+INSERT INTO `p_t_podetail` VALUES ('11', '00005', '0001', '1', '20', '10000.00', '0', '1', '1', 'JU001', '2016-12-25 15:00:31', '1', null, null, null, null);
+INSERT INTO `p_t_podetail` VALUES ('12', '00005', '0002', '2', '100', '20000.00', '0', '1', '2', 'JU001', '2016-12-25 15:00:32', '1', null, null, null, null);

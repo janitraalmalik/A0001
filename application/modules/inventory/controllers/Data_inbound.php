@@ -96,7 +96,7 @@ class Data_inbound extends MY_Controller {
             if($id != ''){
                 $contentData = $this->Barang_model->find($id,'id');
                 if(count($contentData) == 0){
-                    redirect($this->page->base_url('/'));
+                    redirect($this->page->base_url('/'));0
                 }           
             }
 		} 
@@ -153,9 +153,9 @@ class Data_inbound extends MY_Controller {
 		  foreach($brg_namaS AS $key => $val){
                 
                 $brg_nama = $val;
-                $jml_in = $jml_inS[$key];
-                $refund = $refundS[$key];
-                $sisa = $sisaS[$key];
+                $jml_in = str_replace(',', '', $jml_inS[$key]);
+                $refund = str_replace(',', '', $refundS[$key]);
+                $sisa = str_replace(',', '', $sisaS[$key]);
                 
                 $generateCodeInbound = generateCodeInbound($this->_roleCode);
 				//echo $val . '<br />';

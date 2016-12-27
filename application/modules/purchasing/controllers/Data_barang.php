@@ -10,6 +10,7 @@ class Data_barang extends MY_Controller {
 		$this->page->use_directory();
         $this->moduleTitle = 'Data Items';
 		$this->load->model('Barang_model');
+		$this->load->model('Satuan_model');
 	}
     
     private function process_grid_state(){
@@ -24,7 +25,6 @@ class Data_barang extends MY_Controller {
 	}
     
 	public function index() {
-	   //$grid_state = $this->process_grid_state();
       
 	   $this->page->view('Barang/index', array (
 			'moduleTitle'      => $this->moduleTitle,
@@ -75,8 +75,9 @@ class Data_barang extends MY_Controller {
         $grid_state = $this->process_grid_state();
 		$title = '';
         $contentData = '';
+        $contentSatuan = '';
 		if($this->uri->segment(3) == 'add'){ 
-			$title = 'Add ';
+			$title = 'Add ';        
 		} elseif ($this->uri->segment(3) == 'edit') {
 			$title = 'Edit ';
             if($id != ''){
@@ -86,6 +87,7 @@ class Data_barang extends MY_Controller {
                 }           
             }
 		} 
+        $contentSatuan = $this->Satuan_model->all();    
         
         
         $contect = array(
@@ -94,7 +96,8 @@ class Data_barang extends MY_Controller {
             			'moduleSubTitle'   => $title,
             			'back'		       => $grid_state,
             			'action'	       => $this->page->base_url("/{$action}/{$id}"),
-            			'contentData'	   => $contentData
+            			'contentData'	   => $contentData,
+                        'contentSatuan'    => $contentSatuan
                         );
         
 		$this->page->view('Barang/form',$contect);
@@ -110,7 +113,6 @@ class Data_barang extends MY_Controller {
 	
 	public function insert(){		
 		if ( ! $this->input->post()) redirect('my404'); 
-	   	
         
 		$this->form_validation->set_rules('codeBarang', 'Code', 'required');
 		$this->form_validation->set_rules('nameBarang', 'Name', 'required');
@@ -122,6 +124,7 @@ class Data_barang extends MY_Controller {
                                 'brg_kd'     => post('codeBarang'),
                                 'brg_nama'   => post('nameBarang'),
 								'brg_desc'   => post('descBarang'),
+                                'brg_satuan' => post('satuanBarang'),
 								'cat_barang_id'   => post('catBarang'),
 								'kd_jns_usaha'  => $this->_roleCode,
                             );
@@ -137,8 +140,7 @@ class Data_barang extends MY_Controller {
 				'title' => '',
 				'message' => 'Field is required.',
 			);
-            $this->session->set_flashdata('ui_messages',$ui_messages);
-//            redirect('setting/users/add');       
+            $this->session->set_flashdata('ui_messages',$ui_messages);       
             $this->form();
             return true;
 		}
@@ -158,6 +160,7 @@ class Data_barang extends MY_Controller {
                                 'brg_kd'     => post('codeBarang'),
                                 'brg_nama'   => post('nameBarang'),
 								'brg_desc'   => post('descBarang'),
+                                'brg_satuan' => post('satuanBarang'),
 								'cat_barang_id'   => post('catBarang'),
                                 'kd_jns_usaha'  => $this->_roleCode,
 			);		
@@ -172,7 +175,6 @@ class Data_barang extends MY_Controller {
 			);
             
             $this->session->set_flashdata('ui_messages',$ui_messages);
-//            redirect('setting/users/add');       
             $this->form($id);
             return true;
 		}
@@ -180,6 +182,24 @@ class Data_barang extends MY_Controller {
 		redirect($this->page->base_url());
                 
 	}
+    
+    public function detail($id){
+		if ($this->agent->referrer() == '') redirect('my404');
+        
+        if(!isset($id) || $id == ''){
+            $message_code = '003'; //Not Found Data
+            die(json_encode($message_code));
+        }
+        
+        $dataBarang = $this->Barang_model->find($id,"brg_kd");
+        $data_row = $this->Satuan_model->find($dataBarang['brg_satuan'],'id');
+        $data_arr = array(
+                            'id'=> $data_row['id'],
+                            'kode'=> $data_row['satuan_kd'],
+                            'nama'=> $data_row['satuan_name']
+                        );
+        die(json_encode($data_arr));
+    }
 	
 	public function delete($id){
 		if ($this->agent->referrer() == '') redirect('my404');

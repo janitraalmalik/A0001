@@ -1,6 +1,6 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Data_satuan extends MY_Controller {
+class data_harga extends MY_Controller {
     
 	public function __construct() {
 	   
@@ -8,13 +8,13 @@ class Data_satuan extends MY_Controller {
         
 		date_default_timezone_set('Asia/Jakarta');
 		$this->page->use_directory();
-        $this->moduleTitle = 'Data Items';
-		$this->load->model('Satuan_model');
+        $this->moduleTitle = 'Data Harga';
+		$this->load->model('Harga_model');
 	}
     
     private function process_grid_state(){
 		$segments = $this->uri->rsegment_array();
-		$grid_state = 'purchasing/data_satuan';
+		$grid_state = 'sales/data_customer';
 		foreach($segments as $segment){
 			if(strrpos($segment, ':') !== FALSE){
 				$grid_state .= $segment.'/';
@@ -26,7 +26,7 @@ class Data_satuan extends MY_Controller {
 	public function index() {
 	   //$grid_state = $this->process_grid_state();
       
-	   $this->page->view('Satuan/index', array (
+	   $this->page->view('Harga/index', array (
 			'moduleTitle'      => $this->moduleTitle,
 			'moduleSubTitle'   => '',
 			'add'		=> $this->page->base_url('/add')
@@ -36,30 +36,48 @@ class Data_satuan extends MY_Controller {
     public function get_data(){
         
         $grid_state = $this->process_grid_state();
-		$list = $this->Satuan_model->get_data();
+		$list = $list = $this->Harga_model->get_data();
+		//var_dump($list);exit;
 		$data = array();
 		$no = $_POST['start'];
-		foreach ($list as $grid) {			
+		foreach ($list as $grid) {
 			$no++;
 			$row = array();
+			
 			$row[] = $no;
-			$row[] = $grid->satuan_kd;
-			$row[] = $grid->satuan_name;
+			$row[] = $grid->brg_kd;
+			$row[] = $grid->brg_nama;
+			$row[] = 'Rp. '.number_format($grid->harga_grosir);
+			$row[] = 'Rp. '.number_format($grid->harga_retail);
 			$row[] = '<div style="width:100%;text-align:center;">
-                        <a class="btn btn-xs btn-flat btn-info" href="'.site_url($grid_state . '/edit/' .$grid->id).'" title="Update Data">Update</a> &nbsp;
-                        <a class="btn btn-xs btn-flat btn-danger" onclick="return confirm(\'Are you sure to delete data ' . $grid->satuan_name . ' ?\')" href="'.site_url($grid_state . '/delete/'.$grid->id).'" title="Delete Data">Delete</a>
+                        <a  onclick="sync(\''.$grid->id.'\',\''.$grid->harga_grosir.'\',\''.$grid->harga_retail.'\')"
+                            class="btn btn-xs btn-flat btn-info" 
+                            href="#myModal" data-toggle="modal" 
+							dataID="'.$grid->id.'" 
+							h_grosir="'.$grid->harga_grosir.'" 
+							h_retail="'.$grid->harga_retail.'" 
+                            title="Update Data">Update Harga</a> &nbsp;
                     </div>';
 			$data[] = $row;
 		}
 		$output = array(
 			"draw" 				=> $_POST['draw'],
-			"recordsTotal" 		=> $this->Satuan_model->count_all(),
-			"recordsFiltered" 	=> $this->Satuan_model->count_filtered(),
+			"recordsTotal" 		=> $this->Harga_model->count_all(),
+			"recordsFiltered" 	=> $this->Harga_model->count_filtered(),
 			"data" 				=> $data,
 		);
 		//output to json format
 		echo json_encode($output);
 	}       
+	
+	function update_harga(){
+		$data = array(
+		'harga_grosir' => $this->input->post('h_grosir'),
+		'harga_retail' => $this->input->post('h_retail')
+		);
+		$this->db->where('id',$this->input->post('id'));
+		$this->db->update('p_m_barang',$data);
+	}
     
     private function form($action = 'insert', $id = ''){
 		if ($this->agent->referrer() == '') redirect($this->page->base_url());
@@ -69,10 +87,11 @@ class Data_satuan extends MY_Controller {
         $contentData = '';
 		if($this->uri->segment(3) == 'add'){ 
 			$title = 'Add ';
+			
 		} elseif ($this->uri->segment(3) == 'edit') {
 			$title = 'Edit ';
             if($id != ''){
-                $contentData = $this->Satuan_model->find($id,'id');
+                $contentData = $this->Harga_model->find($id,'id');
                 if(count($contentData) == 0){
                     redirect($this->page->base_url('/'));
                 }           
@@ -86,10 +105,10 @@ class Data_satuan extends MY_Controller {
             			'moduleSubTitle'   => $title,
             			'back'		       => $grid_state,
             			'action'	       => $this->page->base_url("/{$action}/{$id}"),
-            			'contentData'	   => $contentData,
+            			'contentData'	   => $contentData
                         );
         
-		$this->page->view('Satuan/form',$contect);
+		$this->page->view('Customer/form',$contect);
 	}
 	
 	public function add(){
@@ -102,20 +121,30 @@ class Data_satuan extends MY_Controller {
 	
 	public function insert(){		
 		if ( ! $this->input->post()) redirect('my404'); 
-	   	
+	   
         
-		$this->form_validation->set_rules('codeSatuan', 'Code', 'required');
-        $this->form_validation->set_rules('nameSatuan', 'Name', 'required');
+		$this->form_validation->set_rules('cust_nama', 'Nama Customer', 'required');
+		$this->form_validation->set_rules('cust_hp', 'Telp', 'required');
+		$this->form_validation->set_rules('cust_alamat', 'Alamat', 'required');
+		$this->form_validation->set_rules('cust_status', 'Status', 'required');
+	
         
 		if($this->form_validation->run()){
 		  
+			$generateCodeCustomer = generateCodeCustomer($this->_roleCode);
+			
     		$insertContent = array(
-                                'satuan_kd'     => post('codeSatuan'),
-                                'satuan_name'   => post('nameSatuan'),
-								'satuan_desc'   => post('descSatuan'),
-								'kd_jns_usaha'  => $this->_roleCode,
+                                'cust_id'     	=> $generateCodeCustomer,
+								'cust_nama'     => post('cust_nama'),
+								'cust_hp'       => post('cust_hp'),
+								'cust_alamat'   => post('cust_alamat'),
+								'cust_status'   => post('cust_status'),
+                   				'kd_jns_usaha'  => $this->_roleCode
                             );
-            $insert = $this->Satuan_model->add($insertContent);
+            $insert = $this->Harga_model->add($insertContent);
+			
+			saveGenerateCodeCustomer($this->_roleCode);
+			
             if($insert == true){
                 redirect($this->page->base_url('/'));
             }
@@ -138,19 +167,23 @@ class Data_satuan extends MY_Controller {
 	public function update($id){		
 		if ( ! $this->input->post()) redirect('my404'); 
 
-        $this->form_validation->set_rules('codeSatuan', 'Code', 'required');
-        $this->form_validation->set_rules('nameSatuan', 'Name', 'required');
+		$this->form_validation->set_rules('cust_nama', 'Nama Customer', 'required');
+		$this->form_validation->set_rules('cust_hp', 'Telp', 'required');
+		$this->form_validation->set_rules('cust_alamat', 'Alamat', 'required');
+		$this->form_validation->set_rules('cust_status', 'Status', 'required');
         
 		if($this->form_validation->run()){
 		    
 			$updateContent = array(
-                    'satuan_kd'     => post('codeSatuan'),
-                    'satuan_name'   => post('nameSatuan'),
-        			'satuan_desc'   => post('descSatuan'),
-        			'kd_jns_usaha'  => $this->_roleCode,
+                                
+								'cust_nama'     => post('cust_nama'),
+								'cust_hp'   	=> post('cust_hp'),
+								'cust_alamat'   => post('cust_alamat'),
+								'cust_status'   => post('cust_status'),
+                   				'kd_jns_usaha'  => $this->_roleCode
 			);		
 			
-            $this->Satuan_model->update($id,$updateContent,"id");
+            $this->Harga_model->update($id,$updateContent,"id");
             
         }else{
             $ui_messages[] = array(
@@ -168,23 +201,6 @@ class Data_satuan extends MY_Controller {
 		redirect($this->page->base_url());
                 
 	}
-    
-    public function detail($id){
-		if ($this->agent->referrer() == '') redirect('my404');
-        
-        if(!isset($id) || $id == ''){
-            $message_code = '003'; //Not Found Data
-            die(json_encode($message_code));
-        }
-        $data_row = $this->Satuan_model->find($id,'brg_kd');
-        
-        $data_arr = array(
-                            'id'=> $data_row['id'],
-                            'kode'=> $data_row['satuan_kd'],
-                            'nama'=> $data_row['satuan_name']
-                        );
-        die(json_encode($data_arr));
-    }
 	
 	public function delete($id){
 		if ($this->agent->referrer() == '') redirect('my404');
@@ -192,11 +208,11 @@ class Data_satuan extends MY_Controller {
         if(!isset($id) || $id == ''){
             redirect($this->page->base_url('/'));
         }
-        $data_row = $this->Satuan_model->find($id,'id');
+        $data_row = $this->Harga_model->find($id,'id');
         if(count($data_row) == 0){
             redirect($this->page->base_url('/'));
         }
-        $this->Satuan_model->delete($id,'id');
+        $this->Harga_model->delete($id,'id');
 		redirect($this->page->base_url("/"));
 		
 	}

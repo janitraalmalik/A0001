@@ -1,17 +1,19 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Inbound_model extends MY_Model {
+class SalesPembayaran_model extends MY_Model {
 
-	private $table 			= 'v_i_inbound_grid';
-	private $column_order 	= array('id_inbound','date_in',null,'brg_nama',null,null,null,null,null);
-	private $column_search 	= array('id_inbound','brg_nama','date_in');  
-	private $order 			= array('date_in' => 'desc'); 
-    
+	private $table 			= 'sa_t_pos_pembayaran';
+	private $column_order 	= array(null,'pembayaran_no','sale_no','tgl_bayar','cust_id','pembayaran_total',null);
+	private $column_search 	= array('pembayaran_no','sale_no','tgl_bayar','cust_id','pembayaran_total');  
+	private $order 			= array('id' => 'desc'); 
+
+	
     public function __construct(){
         parent::__construct();
         $this->load->database();
         /* updated by same */
+
         $this->_user_id = 0;
         $this->_username = '';
         $this->tblName = $this->table;
@@ -23,6 +25,10 @@ class Inbound_model extends MY_Model {
             $this->_roleCode = 0;
         }
         /* end */
+    }
+
+    function set_variable($saletype) {
+        $this->saletype = $saletype;
     }
 	
 	private function _get_query() {
@@ -55,8 +61,8 @@ class Inbound_model extends MY_Model {
 			$this->db->order_by(key($order), $order[key($order)]);
 		}
 	}
-	
-	public function get_data() {
+    
+    public function get_data() {
 		$this->_get_query();
 		if($_POST['length'] != -1)
 		$this->db->limit($_POST['length'], $_POST['start']);
@@ -64,7 +70,7 @@ class Inbound_model extends MY_Model {
 		
 		return $query->result();
 	}
-
+	
 	public function count_filtered() {
 		$this->_get_query();
 		$query = $this->db->get();
@@ -72,45 +78,18 @@ class Inbound_model extends MY_Model {
 	}
 
 	public function count_all() {
-		$this->getWhere();
-        $this->db->from($this->table);
+        $this->getWhere();
+		$this->db->from($this->table);
 		return $this->db->count_all_results();
 	}
     
     public function getWhere(){
        
-       $this->db->where('deleted_by =',null);
+       $this->db->where('deleted_at =',null);
+       $this->db->where('sale_type',$this->saletype);
        return $this->db->where('kd_jns_usaha',$this->_roleCode); 
         
     }
-    
-   public function getPO(){
-	 $sql =   $this->db->select('po_no,po_desc')
-				->where('kd_jns_usaha',$this->_roleCode)
-				->where('status_po_id <>','3') //status PO sudah Lengkap dan HIlang di pilihan PO ketika Inbound
-				//->where('status_received <>','2')
-				->get('p_t_po')
-				->result();
-	   return $sql; 
-   }
-   
-   
-   public function itemPO($poNO){
-	$sqld = "select a.kd_barang,
-						a.kd_satuan,
-						b.satuan_name,
-						a.jml_barang
-			from p_t_podetail  a
-			left join p_m_satuan b on a.kd_satuan = b.id
-			where a.po_no = '".$poNO."' 
-			and kd_jns_usaha ='".$this->_roleCode."'";
-	$sql = $this->db->query($sqld);
-	return $sql->result();			
-	   
-   }
-   
-   
-   
 	
 }
 /* End of file Model_users.php */

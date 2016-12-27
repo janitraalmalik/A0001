@@ -37,6 +37,10 @@ class Pos_retail extends MY_Controller {
 			'add'		=> $this->page->base_url('/add')
 		));
     } 
+	
+	function get_detail($barcode){
+		echo json_encode($this->db->query("select * from p_m_barang where brg_kd = '$barcode'")->row());
+	}
     
     public function get_data(){
         $this->SalesPos_model->set_variable($this->saletype);

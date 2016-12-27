@@ -15,7 +15,8 @@ $(document).ready(function() {
                     var barcode = chars.join("");
                     console.log("Barcode Scanned: " + barcode);
                     // assign value to some input (or do whatever you want)
-                    alert( 'Your Prosuct Code Is : ' + barcode);
+                    alert( 'Your Product Code Is : ' + barcode);
+                    
                 }
                 chars = [];
                 pressed = false;
