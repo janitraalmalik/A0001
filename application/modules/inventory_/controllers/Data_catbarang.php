@@ -1,6 +1,6 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Data_gaji extends CI_Controller {
+class Data_catbarang extends CI_Controller {
     
 	public function __construct() {
 	   
@@ -8,13 +8,13 @@ class Data_gaji extends CI_Controller {
         
 		date_default_timezone_set('Asia/Jakarta');
 		$this->page->use_directory();
-        $this->moduleTitle = 'Data Gaji';
-		$this->load->model('Gaji_model');
+        $this->moduleTitle = 'Data Item Category';
+		$this->load->model('CatBarang_model');
 	}
     
     private function process_grid_state(){
 		$segments = $this->uri->rsegment_array();
-		$grid_state = 'hrm/data_gaji';
+		$grid_state = 'purchasing/data_catbarang';
 		foreach($segments as $segment){
 			if(strrpos($segment, ':') !== FALSE){
 				$grid_state .= $segment.'/';
@@ -26,7 +26,7 @@ class Data_gaji extends CI_Controller {
 	public function index() {
 	   //$grid_state = $this->process_grid_state();
       
-	   $this->page->view('Gaji/index', array (
+	   $this->page->view('CatBarang/index', array (
 			'moduleTitle'      => $this->moduleTitle,
 			'moduleSubTitle'   => '',
 			'add'		=> $this->page->base_url('/add')
@@ -36,36 +36,25 @@ class Data_gaji extends CI_Controller {
     public function get_data(){
         
         $grid_state = $this->process_grid_state();
-		$list = $this->Gaji_model->get_data();
+		$list = $this->CatBarang_model->get_data();
 		$data = array();
 		$no = $_POST['start'];
-		foreach ($list as $grid) {
+		foreach ($list as $grid) {			
 			$no++;
 			$row = array();
-			
 			$row[] = $no;
-			$row[] = $grid->nama_kary;
-			$row[] = number_format($grid->gaji_kary);
-			//$row[] = number_format($grid->naik_gaji_kary);
-			$row[] = number_format($grid->tunjangan_kary);
-			$row[] = number_format($grid->pph_kary);
+			$row[] = $grid->cat_brg_nama;
+			$row[] = getNameCategory($grid->cat_brg_parent);
 			$row[] = '<div style="width:100%;text-align:center;">
-                        <a 
-                            class="btn btn-xs btn-flat btn-info" 
-                            href="'.site_url($grid_state . '/edit/' .$grid->id).'" 
-                            title="Update Data">Update</a> &nbsp;
-                        <a 
-                            class="btn btn-xs btn-flat btn-danger" 
-                            onclick="return confirm(\'Are you sure to delete data ' . $grid->nama_kary . ' ?\')" 
-                            href="'.site_url($grid_state . '/delete/'.$grid->id).'" 
-                            title="Delete Data">Delete</a>
+                        <a class="btn btn-xs btn-flat btn-info" href="'.site_url($grid_state . '/edit/' .$grid->id).'" title="Update Data">Update</a> &nbsp;
+                        <a class="btn btn-xs btn-flat btn-danger" onclick="return confirm(\'Are you sure to delete data ' . $grid->cat_brg_nama . ' ?\')" href="'.site_url($grid_state . '/delete/'.$grid->id).'" title="Delete Data">Delete</a>
                     </div>';
 			$data[] = $row;
 		}
 		$output = array(
 			"draw" 				=> $_POST['draw'],
-			"recordsTotal" 		=> $this->Gaji_model->count_all(),
-			"recordsFiltered" 	=> $this->Gaji_model->count_filtered(),
+			"recordsTotal" 		=> $this->CatBarang_model->count_all(),
+			"recordsFiltered" 	=> $this->CatBarang_model->count_filtered(),
 			"data" 				=> $data,
 		);
 		//output to json format
@@ -83,7 +72,7 @@ class Data_gaji extends CI_Controller {
 		} elseif ($this->uri->segment(3) == 'edit') {
 			$title = 'Edit ';
             if($id != ''){
-                $contentData = $this->Gaji_model->find($id,'id');
+                $contentData = $this->CatBarang_model->find($id,'id');
                 if(count($contentData) == 0){
                     redirect($this->page->base_url('/'));
                 }           
@@ -96,12 +85,11 @@ class Data_gaji extends CI_Controller {
                         'moduleTitle'      => $this->moduleTitle,
             			'moduleSubTitle'   => $title,
             			'back'		       => $grid_state,
-            			'kary'		       => $this->db->query('select * from hr_m_karyawan where deleted_at is null')->result(),
             			'action'	       => $this->page->base_url("/{$action}/{$id}"),
             			'contentData'	   => $contentData
                         );
         
-		$this->page->view('Gaji/form',$contect);
+		$this->page->view('CatBarang/form',$contect);
 	}
 	
 	public function add(){
@@ -114,35 +102,24 @@ class Data_gaji extends CI_Controller {
 	
 	public function insert(){		
 		if ( ! $this->input->post()) redirect('my404'); 
-	   
+	   	
         
-		/*$this->form_validation->set_rules('nik_kary', 'NIK', 'required');
-		$this->form_validation->set_rules('nama_kary', 'Nama Gaji', 'required');
-		$this->form_validation->set_rules('alamat_kary', 'Alamat', 'required');
-		$this->form_validation->set_rules('bagian_kary', 'Divisi', 'required');
-		$this->form_validation->set_rules('telp_kary', 'Telp', 'required');
-		$this->form_validation->set_rules('agama_kary', 'Agama', 'required');
-		$this->form_validation->set_rules('sex_kary', 'Jenis Kelamin', 'required');
-	
+		$this->form_validation->set_rules('nameCatBarang', 'Name', 'required');
         
-		if($this->form_validation->run()){*/
+		if($this->form_validation->run()){
 		  
     		$insertContent = array(
-                                'id_kary'     	=> post('id_kary'),
-								'gaji_kary'     => str_replace(',','',post('gaji')),
-								//'naik_gaji_kary'   =>str_replace(',','', post('naik_gaji_kary')),
-								'tunjangan_kary'      => str_replace(',','',post('tunjangan_kary')),
-								'pph_kary'      => str_replace(',','',post('pph_kary')),
-								'status'=> 0,
-								'created_at' => DATE('Y-m-d h:i:s'),
-                   				'kd_jns_usaha'  => 'JU001'
+                                'cat_brg_nama'     => post('nameCatBarang'),
+                                'cat_brg_desc'   => post('descCatBarang'),
+								'cat_brg_parent'   => post('parentCatBarang'),
+								'kd_jns_usaha'  => 'JU001',
                             );
-            $insert = $this->Gaji_model->add($insertContent);
+            $insert = $this->CatBarang_model->add($insertContent);
             if($insert == true){
                 redirect($this->page->base_url('/'));
             }
                             
-		/*}else{
+		}else{
   		
 			$ui_messages[] = array(
 				'severity' => 'ERROR',
@@ -153,37 +130,27 @@ class Data_gaji extends CI_Controller {
 //            redirect('setting/users/add');       
             $this->form();
             return true;
-		}*/
+		}
         redirect($this->page->base_url());
 	}
 	
 	public function update($id){		
 		if ( ! $this->input->post()) redirect('my404'); 
 
-      /*  $this->form_validation->set_rules('nik_kary', 'NIK', 'required');
-		$this->form_validation->set_rules('nama_kary', 'Nama Gaji', 'required');
-		$this->form_validation->set_rules('alamat_kary', 'Alamat', 'required');
-		$this->form_validation->set_rules('bagian_kary', 'Divisi', 'required');
-		$this->form_validation->set_rules('telp_kary', 'Telp', 'required');
-		$this->form_validation->set_rules('agama_kary', 'Agama', 'required');
-		$this->form_validation->set_rules('sex_kary', 'Jenis Kelamin', 'required');
+        $this->form_validation->set_rules('nameCatBarang', 'Name', 'required');
         
-		if($this->form_validation->run()){*/
+		if($this->form_validation->run()){
 		    
 			$updateContent = array(
-                               'id_kary'     	=> post('id_kary'),
-								'gaji_kary'     => str_replace(',','',post('gaji')),
-								//'naik_gaji_kary'   =>str_replace(',','', post('naik_gaji_kary')),
-								'tunjangan_kary'      => str_replace(',','',post('tunjangan_kary')),
-								'pph_kary'      => str_replace(',','',post('pph_kary')),
-								'status'=> 0,
-								'created_at' => DATE('Y-m-d h:i:s'),
-                   				'kd_jns_usaha'  => 'JU001'
+                    'cat_brg_nama'     => post('nameCatBarang'),
+                    'cat_brg_desc'   => post('descCatBarang'),
+					'cat_brg_parent'   => post('parentCatBarang'),
+					'kd_jns_usaha'  => 'JU001',
 			);		
 			
-            $this->Gaji_model->update($id,$updateContent,"id");
+            $this->CatBarang_model->update($id,$updateContent,"id");
             
-       /* }else{
+        }else{
             $ui_messages[] = array(
 				'severity' => 'ERROR',
 				'title' => '',
@@ -194,7 +161,7 @@ class Data_gaji extends CI_Controller {
 //            redirect('setting/users/add');       
             $this->form($id);
             return true;
-		}*/
+		}
 			
 		redirect($this->page->base_url());
                 
@@ -206,14 +173,34 @@ class Data_gaji extends CI_Controller {
         if(!isset($id) || $id == ''){
             redirect($this->page->base_url('/'));
         }
-        $data_row = $this->Gaji_model->find($id,'id');
+        $data_row = $this->CatBarang_model->find($id,'id');
         if(count($data_row) == 0){
             redirect($this->page->base_url('/'));
         }
-        $this->Gaji_model->delete($id,'id');
+        $this->CatBarang_model->delete($id,'id');
 		redirect($this->page->base_url("/"));
 		
 	}
+    
+    function display_children($parent, $level) { 
+        
+        $where = " AND cat_brg_parent = " . $parent ."";
+        $data_row = $this->CatBarang_model->all($where);
+       
+        $dataReturn = array();
+        foreach($data_row as $row){
+            
+            $dataReturn[] = array('id' => $row['id'], 'name'=> str_repeat(' ',$level) . $row['cat_brg_nama'] );
+            $this->display_children($row['id'], $level+1);
+            
+        } 
+        
+        return $dataReturn;
+    
+    } 
+    
+    
+
     
     
 }

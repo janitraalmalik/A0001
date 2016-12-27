@@ -1,6 +1,10 @@
+<?php 
+    $module = $this->uri->segment(1);
+    $submodule = $this->uri->segment(2); 
+    $uri = $module . '/' . $submodule; 
+?>
 <script type="text/javascript">
-$(document).ready(function(){	
-    $('body').addClass('sidebar-collapse');
+$(document).ready(function(){	  
 	$('#datatables').dataTable({
 		"paging": true,
         "lengthChange": false,
@@ -15,7 +19,7 @@ $(document).ready(function(){
 
 		// Load data for the table's content from an Ajax source
 		"ajax": {
-			"url"	: "<?php echo site_url('setting/users/ajax_get_users'); ?>",
+			"url"	: "<?php echo site_url('/'.$uri.'/get_data'); ?>",
 			"type"	: "POST"
 		},
 
@@ -30,21 +34,19 @@ $(document).ready(function(){
 });
 </script>
 
-<div class="actions">
-	<a href="<?php echo $add; ?>" class="btn btn-flat bg-light-blue color-palette btn-sm"><span class="fa fa-plus"></span>&nbsp;&nbsp;Add New</a>
-</div>
-
-<div class="block-table table-sorting clearfix"><!-- block-fluid table-sorting clearfix -->
-	<table cellpadding="0" cellspacing="0" class="table table-bordered table-striped tabel" id="datatables">
+<section class="content">
+    <div class="actions">
+    	<a href="<?php echo $add; ?>" class="btn btn-flat bg-light-blue color-palette btn-sm"><span class="fa fa-plus"></span>&nbsp;&nbsp;Add New</a>
+    </div>
+    
+	<table id="datatables" class="table table-bordered table-hover">
 		<thead>
 			<tr>
-				<th width="10%">No.</th>
-				<th width="30%">Username</th>
-				<th width="40%">Name</th>
-				<th width="40%">Group</th>
-				<th width="10%">Blockage</th>
-				<th width="10%">Action</th>
+				<th width="2%">No.</th>
+				<th width=""> Name</th>
+				<th width=""> Parent</th>
+				<th style="width:125px;"></th>
 			</tr>
 		</thead>
 	</table>
-</div>
+</section>

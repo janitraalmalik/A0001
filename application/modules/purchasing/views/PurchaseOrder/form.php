@@ -46,25 +46,18 @@
                 ><?php echo (empty($vendorDataRow['vend_alamat']))? set_value('addressVendors') : $vendorDataRow['vend_alamat'] ; ?></textarea>
     		</div>
     	</div>
-        <div class="form-group">
-    		<label class="col-sm-3 control-label input-sm">Tanggal Transaksi</label>
-            <div class="col-sm-9">
+         <div class="form-group">
+            <label class="col-sm-3 control-label input-sm">Keterangan </label>
+    		<div class="col-sm-9">
                 <input 
-                    class="form-control input-sm datepicker"
+                    class="form-control input-sm"
                     type="text" 
-                    name="tgltrxPO" 
-                    id="tgltrxPO" 
-                <?php if(empty($contentData['po_tgl']) || $contentData['po_tgl'] == ''): ?>
-                        <?php  $tgltrxPO = set_value('tgltrxPO'); if(empty($tgltrxPO) || $tgltrxPO == ''): ?>
-                            value="<?php echo replaceIsWeekend(date('d-m-Y'));?>"
-                        <?php else: ?>
-                            value="<?php echo set_value('tgltrxPO');?>"
-                        <?php endif; ?>
-                <?php else: ?>
-                    value="<?php echo tgl_indo($contentData['po_tgl']);?>"
-                <?php endif; ?> 
+                    name="descPO" 
+                    id="descPO"
+                    placeholder="Keterangan" 
+                    value="<?php echo (empty($contentData['po_desc']))? set_value('descPO') : $contentData['po_desc']; ?>" 
                     required="true"/>
-                <?php echo form_error('tgltrxPO', '<label class="text-red">', '</label>'); ?>
+                <?php echo form_error('descPO', '<label class="text-red">', '</label>'); ?>
     		</div>
     	</div>
     </div>
@@ -122,6 +115,27 @@
                     <?php endif; ?>  
                     required="true"/>
                 <?php echo form_error('tglPenagihanPO', '<label class="text-red">', '</label>'); ?>
+    		</div>
+    	</div>
+        <div class="form-group">
+    		<label class="col-sm-3 control-label input-sm">Tanggal Transaksi</label>
+            <div class="col-sm-9">
+                <input 
+                    class="form-control input-sm datepicker"
+                    type="text" 
+                    name="tgltrxPO" 
+                    id="tgltrxPO" 
+                <?php if(empty($contentData['po_tgl']) || $contentData['po_tgl'] == ''): ?>
+                        <?php  $tgltrxPO = set_value('tgltrxPO'); if(empty($tgltrxPO) || $tgltrxPO == ''): ?>
+                            value="<?php echo replaceIsWeekend(date('d-m-Y'));?>"
+                        <?php else: ?>
+                            value="<?php echo set_value('tgltrxPO');?>"
+                        <?php endif; ?>
+                <?php else: ?>
+                    value="<?php echo tgl_indo($contentData['po_tgl']);?>"
+                <?php endif; ?> 
+                    required="true"/>
+                <?php echo form_error('tgltrxPO', '<label class="text-red">', '</label>'); ?>
     		</div>
     	</div>
     </div>
@@ -393,12 +407,6 @@
 <script>
     $(document).ready(function() {
         
-        //$('#tgltrxPO').datepicker({
-//                showButtonPanel: true,
-//                format: 'dd-mm-yyyy',
-//                daysOfWeekDisabled: [0, 6]
-//        }).datepicker("setDate", new Date());
-//        
         $( "#nameVendors" ).change(function() {
             var nameVendors = $(this).val();
             if (nameVendors != '') {
@@ -442,19 +450,34 @@
             $('#dtlProduk-' + n + '').populate();
             $(".select2").select2();
             $( ".numeric" ).number( true , 0);
-            $( ".dtlProduk" ).change(function() {
+            $( '#dtlProduk-' + n ).change(function() {
                 var dtlProdukVal = $(this).val();
                 var dtlProdukID = $(this).attr('id');
                 var splitVal = dtlProdukID.split('-');
                 var indexRow = splitVal[1];
-                $.getJSON('<?php echo base_url('purchasing/data_satuan/detail');?>/' + dtlProdukVal, function (data) {
+                $.getJSON('<?php echo base_url('purchasing/data_barang/detail');?>/' + dtlProdukVal, function (data) {
                     if (data == '003') { alert('Data Not Found!'); } 
                     else { 
                         $("#dtlIdSatuan-" + indexRow ).val(data.id);
                         $("#dtlNmSatuan-" + indexRow ).val(data.nama);                   
                     }
-                });
+                });  
+                //var dataExist = false;                
+//                $('.dtlProduk').each(function(){
+//                    var dtlProdukVal2 = $('.dtlProduk').val();
+//                    if(dtlProdukVal == dtlProdukVal2){     
+//                        dataExist = true;                        
+//                        alert(dtlProdukVal2 + '-' + dtlProdukVal + '-' + indexRow);
+//                        $(".dtlIdSatuan-" + indexRow ).val('value');
+//                        $(".dtlNmSatuan-" + indexRow ).val('value');
+//                        $('#dtlProduk-' + indexRow ).select2("val", "");  
+//                        return false;   
+//                    }
+//                });
+//                
+                
             });
+            
             calculate();
             hitungPajak();
             box_html.fadeIn('slow');
@@ -472,12 +495,12 @@
             return true;
         });
         
-        $( ".dtlProduk" ).change(function() {
+        $( "#dtlProduk-1" ).change(function() {
             var dtlProdukVal = $(this).val();
             var dtlProdukID = $(this).attr('id');
             var splitVal = dtlProdukID.split('-');
             var indexRow = splitVal[1];
-            $.getJSON('<?php echo base_url('purchasing/data_satuan/detail');?>/' + dtlProdukVal, function (data) {
+            $.getJSON('<?php echo base_url('purchasing/data_barang/detail');?>/' + dtlProdukVal, function (data) {
                 if (data == '003') { alert('Data Not Found!'); } 
                 else { 
                     $("#dtlIdSatuan-" + indexRow ).val(data.id);

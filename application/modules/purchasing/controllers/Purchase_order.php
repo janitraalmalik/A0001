@@ -263,6 +263,7 @@ class Purchase_order extends MY_Controller {
            
     		$insertContent = array(
                                 'po_no' => $generateCodePO,
+                                'po_desc' => post('descPO'),
                                 'po_tgl'    => dateTOSql(post('tgltrxPO')),
                                 'po_tgl_tagihan'    => dateTOSql(post('tglPenagihanPO')),
 								'kd_vendor_supplier'    => post('nameVendors'),
@@ -367,6 +368,7 @@ class Purchase_order extends MY_Controller {
             }
             
 			$updateContent = array(
+                                'po_desc' => post('descPO'),
                                 'po_tgl'    => dateTOSql(post('tgltrxPO')),
                                 'po_tgl_tagihan'    => dateTOSql(post('tglPenagihanPO')),
 								'kd_vendor_supplier'    => post('nameVendors'),

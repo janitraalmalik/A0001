@@ -2,7 +2,7 @@
 
 <script type="text/javascript">
 $().ready(function(){
-	
+    $('body').addClass('sidebar-collapse');
 });
 </script>
 

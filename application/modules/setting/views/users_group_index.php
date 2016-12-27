@@ -1,5 +1,6 @@
 <script type="text/javascript">
-$(document).ready(function(){	  
+$(document).ready(function(){
+    $('body').addClass('sidebar-collapse');	  
 	$('#datatables').dataTable({
 		"scrollY"			: "342px",
         "scrollCollapse"	: true,
