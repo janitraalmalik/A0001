@@ -38,6 +38,20 @@
                 <?php echo form_error('tgltrxPOS', '<label class="text-red">', '</label>'); ?>
     		</div>
     	</div>
+		
+		<div class="form-group">
+    		<label class="col-sm-3 control-label input-sm">Kode Barang</label>
+            <div class="col-sm-9">
+                <input 
+                    class="form-control input-sm"
+                    type="text" 
+                    name="itemcode" 
+                    id="itemcode" 
+					placeholder="Item Code"
+                    required="true"/>
+                <?php echo form_error('itemcode', '<label class="text-red">', '</label>'); ?>
+    		</div>
+    	</div>
     </div>
    
 
@@ -166,7 +180,7 @@
                                     $subTotPOS = $subTotPOS + $dltTotal;
                                     $TotPOS = $subTotPOS + $TotPajak;
                                 ?>
-                                <tr class="text-data-barang">
+                                <tr class="text-data-barang" style="display:none !important">
                                 <td>
                                     <select name="dtlProduk[]" id="dtlProduk-<?php echo $value;?>" class="form-control select2 dtlProduk" style="width: 100%;">
                         				<option value=""></option>
@@ -210,7 +224,7 @@
                             </tr>
                             <?php endforeach; ?>
                         <?php else:?>
-                            <tr class="text-data-barang">
+                            <tr class="text-data-barang" style="display:none">
                             <td>
                                 <select name="dtlProduk[]" id="dtlProduk-1" class="form-control select2 dtlProduk" style="width: 100%;" required="true">
                     				<option value=""></option>
@@ -248,7 +262,7 @@
                     <?php endif; ?>
                 </tbody>
             </table>
-            <a class="btn btn-info pull-right add-box" class=""><i class="fa fa-plus"></i> Tambah Data</a>
+            <!--a class="btn btn-info pull-right add-box" class=""><i class="fa fa-plus"></i> Tambah Data</a-->
             <br />
             <br />
           </div>
@@ -335,7 +349,123 @@
 
 <script>
     $(document).ready(function() {
-        
+		$('#itemcode').keypress(function(x){
+			if(x.keyCode==13){
+				var barcode = $(this).val();
+				$.getJSON('<?php echo base_url();?>sales/pos_retail/get_detail/'+barcode,function(data){
+				var n = $('.box-number-data-barang').length + 1;
+				$(".dtlProduk").each(function(){
+				var v = $(this).val();
+				if(v!=barcode && data.brg_kd!=''){
+					var box_html = $('<tr class="text-data-barang">' +
+											'<td><input type="text" name="produkNM[]" id="produkNM-' + n + '" class="form-control col-sm-12" style="text-align: left;" value="'+data.brg_nama+'"/><input type="hidden" name="dtlProduk[]" id="dtlProduk-' + n + '" class="form-control col-sm-12 dtlProduk" style="text-align: left;" value="'+data.brg_kd+'"/></td>' +
+											'<td><input type="text" name="dltKuantitas[]" id="dltKuantitas-' + n + '" class="form-control col-sm-12 numeric dltKuantitas" style="text-align: right;" value="1"/></td>' +
+											'<td>' +
+												'<input type="text" name="dtlNmSatuan[]" id="dtlNmSatuan-' + n + '" class="form-control col-sm-12" readonly="true"/>' +
+												'<input type="hidden" name="dtlIdSatuan[]" id="dtlIdSatuan-' + n + '" value="'+data.s+'"/>' +
+											'</td>' +
+											'<td><input type="text" name="dltHarga[]" id="dltHarga-' + n + '" class="form-control col-sm-12 numeric dltHarga" style="text-align: right;" value="'+data.harga_retail+'"/></td>' +
+											'<td><input type="text" name="dltTotal[]" id="dltTotal-' + n + '" class="form-control col-sm-12 numeric dltTotal" style="text-align: right;" value="'+1*data.harga_retail+'"/></td>' +
+											'<td style="text-align: center;width: 10px;">' +
+												'<input type="checkbox" name="dtlPajak[]" id="dtlPajak-' + n + '" class="dtlPajak" value="1"/>' +
+												'<input type="hidden" name="dtlPajakCheck[]" id="dtlPajakCheck-' + n + '"/>'+
+												'<input type="hidden" name="dtlJmlPajak[]" class="dtlJmlPajak" id="dtlJmlPajak-' + n + '"/>' +
+											'</td>' + 
+											'<td style="text-align: center;width: 10px;"><input type="hidden" name="index[]" id="index-' + n + '" value="' + n + '"/><span style="display:none;" class="box-number-data-barang">' + n + 
+											'</span><a class="remove-box btn btn-danger"><i class="fa fa-remove"></i></a></td>' +  
+											'</tr>');
+																																													 
+						box_html.hide();
+						$('.my-data-barang tr.text-data-barang:last').after(box_html);
+						$('#dtlProduk-' + n + '').populate();
+						$(".select2").select2();
+						$( ".numeric" ).number( true , 0);
+						//$( ".dtlProduk" ).change(function() {
+							var dtlProdukVal = $(this).val();
+							var dtlProdukID = $(this).attr('id');
+							var splitVal = dtlProdukID.split('-');
+							var indexRow = splitVal[1];
+							$.getJSON('<?php echo base_url('purchasing/data_satuan/detail');?>/' + data.cat_barang_id, function (data) {
+								if (data == '003') { alert('Data Not Found!'); } 
+								else { 
+									$("#dtlIdSatuan-" + n ).val(data.id);
+									$("#dtlNmSatuan-" + n ).val(data.nama);                   
+								}
+							});
+						//});
+						calculate();
+						hitungPajak();
+						box_html.fadeIn('slow');
+				}else{
+					
+				}
+				});
+				});
+				$('#itemcode').val('');
+			}
+		});
+        var pressed = false; 
+		var chars = []; 
+		$(window).keypress(function(e) {
+			if (e.which >= 48 && e.which <= 57) {
+				chars.push(String.fromCharCode(e.which));
+			}
+			console.log(e.which + ":" + chars.join("|"));
+			if (pressed == false) {
+				setTimeout(function(){
+					if (chars.length >= 10) {
+						var barcode = chars.join("");
+						//console.log("Barcode Scanned: " + barcode);
+						// assign value to some input (or do whatever you want)
+					$.getJSON('<?php echo base_url();?>sales/pos_retail/get_detail/'+barcode,function(data){
+						var n = $('.box-number-data-barang').length + 1;
+						var box_html = $('<tr class="text-data-barang">' +
+											'<td><input type="text" name="dtlProduk[]" id="dtlProduk-' + n + '" class="form-control col-sm-12 dtlProduk" style="text-align: right;" value="'+barcode+'"/></td>' +
+											'<td><input type="text" name="dltKuantitas[]" id="dltKuantitas-' + n + '" class="form-control col-sm-12 numeric dltKuantitas" style="text-align: right;"/></td>' +
+											'<td>' +
+												'<input type="text" name="dtlNmSatuan[]" id="dtlNmSatuan-' + n + '" class="form-control col-sm-12" readonly="true"/>' +
+												'<input type="hidden" name="dtlIdSatuan[]" id="dtlIdSatuan-' + n + '"/>' +
+											'</td>' +
+											'<td><input type="text" name="dltHarga[]" id="dltHarga-' + n + '" class="form-control col-sm-12 numeric dltHarga" style="text-align: right;"/></td>' +
+											'<td><input type="text" name="dltTotal[]" id="dltTotal-' + n + '" class="form-control col-sm-12 numeric dltTotal" style="text-align: right;"/></td>' +
+											'<td style="text-align: center;width: 10px;">' +
+												'<input type="checkbox" name="dtlPajak[]" id="dtlPajak-' + n + '" class="dtlPajak" value="1"/>' +
+												'<input type="hidden" name="dtlPajakCheck[]" id="dtlPajakCheck-' + n + '"/>'+
+												'<input type="hidden" name="dtlJmlPajak[]" class="dtlJmlPajak" id="dtlJmlPajak-' + n + '"/>' +
+											'</td>' + 
+											'<td style="text-align: center;width: 10px;"><input type="hidden" name="index[]" id="index-' + n + '" value="' + n + '"/><span style="display:none;" class="box-number-data-barang">' + n + 
+											'</span><a class="remove-box btn btn-danger"><i class="fa fa-remove"></i></a></td>' +  
+											'</tr>');
+																																													 
+						box_html.hide();
+						$('.my-data-barang tr.text-data-barang:last').after(box_html);
+						$('#dtlProduk-' + n + '').populate();
+						$(".select2").select2();
+						$( ".numeric" ).number( true , 0);
+						$( ".dtlProduk" ).change(function() {
+							var dtlProdukVal = $(this).val();
+							var dtlProdukID = $(this).attr('id');
+							var splitVal = dtlProdukID.split('-');
+							var indexRow = splitVal[1];
+							$.getJSON('<?php echo base_url('purchasing/data_satuan/detail');?>/' + dtlProdukVal, function (data) {
+								if (data == '003') { alert('Data Not Found!'); } 
+								else { 
+									$("#dtlIdSatuan-" + indexRow ).val(data.id);
+									$("#dtlNmSatuan-" + indexRow ).val(data.nama);                   
+								}
+							});
+						});
+						calculate();
+						hitungPajak();
+						box_html.fadeIn('slow');
+					});
+					}
+					chars = [];
+					pressed = false;
+				},500);
+			}
+			pressed = true;
+		});
         //$('#tgltrxPO').datepicker({
 //                showButtonPanel: true,
 //                format: 'dd-mm-yyyy',

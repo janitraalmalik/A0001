@@ -23,7 +23,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
+<<<<<<< HEAD
 $config['base_url'] = 'http://localhost/A0001';
+=======
+$config['base_url'] = 'http://localhost/ATK';
+>>>>>>> cbeff4b3205a4bb57ed06b5d6b58d76b99a6878a
 
 /*
 |--------------------------------------------------------------------------
