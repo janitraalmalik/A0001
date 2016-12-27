@@ -1,7 +1,6 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
-
-class Data_outbound extends MY_Controller {
+class Data_inbound extends MY_Controller {
     
 	public function __construct() {
 	   
@@ -9,16 +8,16 @@ class Data_outbound extends MY_Controller {
         
 		date_default_timezone_set('Asia/Jakarta');
 		$this->page->use_directory();
-        $this->moduleTitle = 'Data Outbound';
+        $this->moduleTitle = 'Data Inbound';
                       
-		$this->load->model('OutboundDetail_model');
+		$this->load->model('InboundDetail_model');
 		$this->load->model('Barang_model');
-		$this->load->model('Outbound_model');
-	}
+		$this->load->model('Inbound_model');
+			}
     
     private function process_grid_state(){
 		$segments = $this->uri->rsegment_array();
-		$grid_state = 'inventory/data_outbound';
+		$grid_state = 'inventory/data_inbound';
 		foreach($segments as $segment){
 			if(strrpos($segment, ':') !== FALSE){
 				$grid_state .= $segment.'/';
@@ -29,8 +28,8 @@ class Data_outbound extends MY_Controller {
     
 	public function index() {
 	   //$grid_state = $this->process_grid_state();
-      die("tes");
-	   $this->page->view('Outbound/index', array (
+      
+	   $this->page->view('Inbound/index', array (
 			'moduleTitle'      => $this->moduleTitle,
 			'moduleSubTitle'   => '',
 			'add'		=> $this->page->base_url('/add')
@@ -40,20 +39,20 @@ class Data_outbound extends MY_Controller {
     public function get_data(){
         
         $grid_state = $this->process_grid_state();
-		$list = $this->OUtbound_model->get_data();
+		$list = $this->Inbound_model->get_data();
 		$data = array();
 		$no = $_POST['start'];
 		foreach ($list as $grid) {
 			$no++;
 			$row = array();
 			$row[] = $no;
-			$row[] = $grid->id_outbound;
-			$row[] = tgl_indo($grid->date_out);
-			$row[] = $grid->no_trx_sales;
+			$row[] = $grid->id_inbound;
+			$row[] = tgl_indo($grid->date_in);
+			$row[] = $grid->po_no;
 			$row[] = $grid->brg_nama;
-			$row[] = number_format($grid->jmls_in);
-			//$row[] = number_format($grid->refund);
-			//$row[] = number_format($grid->sisa);
+			$row[] = number_format($grid->jml_in);
+			$row[] = number_format($grid->refund);
+			$row[] = number_format($grid->sisa);
 			$row[] = '';
 			/*  <a 
                             class="btn btn-xs btn-flat btn-info" 
@@ -102,7 +101,7 @@ class Data_outbound extends MY_Controller {
             }
 		} 
         
-        $getPO = $this->Outbound_model->getPO();
+        $getPO = $this->Inbound_model->getPO();
         $barangData = $this->Barang_model->all();
         //var_dump($getPO);exit();
         
@@ -121,94 +120,33 @@ class Data_outbound extends MY_Controller {
 	}
 	
 	public function simpan(){
-
             $poNo  = post('poNo');
             $noReff  = post('noReff');
             $tgltrxPO  = post('tgltrxPO');
            // die($noReff);
             $jml_inS  = post('jml_in');
             $refundS  = post('refund');
-            $sisaS  = post('sisa');
             $brg_namaS  = post('brg_nama');
            // $brg_namaS  = post('brg_nama');
-
-        //    var_dump($jml_inS);exit();
 		
-		
-		  foreach($brg_namaS AS $key=> $val1){
-                
-                $jmlin = $jml_inS[$key];  
-                
-                if($jmlin == '' || $jmlin == 0 || !isset($jmlin)){
-                    unset($brg_namaS[$key]);
-                    unset($jml_inS[$key]);
-                    unset($refundS[$key]);
-                    unset($sisaS[$key]);
-                   
-                }
-               
-            } 	
-
-          //var_dump($jml_inS);exit();  
-
 		  foreach($brg_namaS AS $key => $val){
                 
                 $brg_nama = $val;
                 $jml_in = $jml_inS[$key];
                 $refund = $refundS[$key];
-                $sisa = $sisaS[$key];
                 
-                $generateCodeInbound = generateCodeInbound($this->_roleCode);
 				//echo $val . '<br />';
 				$insertContentDetail = array(
-											'id_inbound'	=> $generateCodeInbound,
                                             'po_no' => $poNo,
                                             'no_ref_vendor' => $noReff,
                                             'date_in' => dateTOSql($tgltrxPO),
                                             'barang_kd' => $brg_nama,
                                             'jml_in' => $jml_in,
-                                            'refund' => $refund,
-                                            'sisa' => $sisa,
+                                            //'refund' => $refund,
                                             'kd_jns_usaha'  => $this->_roleCode,
-                                            //'sudah'  => 1
                                         );
                 $this->InboundDetail_model->add($insertContentDetail);
-                saveGenerateCodeInbound($this->_roleCode);
-
-                $last 		= $this->InboundDetail_model->getLastStock($brg_nama);
-
-                $lastStok 	= $last->stok + $jml_in; 
-                //var_dump($lastStok);
-
-                $sto = array(
-                	'stok' => $lastStok
-                	);
-                 $this->db->where('brg_kd',$brg_nama);
-                 $this->db->update('p_m_barang',$sto);
             }
-            
-            $lastInboundPOValue		= $this->InboundDetail_model->getLastInboundValue($poNo)->jml_in;
-            $lastPOdetailValue 		= $this->InboundDetail_model->getLastPOdetailValue($poNo)->jml_barang;
-
-	            if($lastInboundPOValue == $lastPOdetailValue){
-	            		$a  = array('status_po_id' => 2 );
-	                   $this->db->where('po_no',$poNo);
-	                   $this->db->update('p_t_po',$a);
-
-	            }
-         /*  foreach($sisaS AS $key1=> $val11){
-                
-                $sisah = $sisaS[$key1];  
-                
-                if($sisah ==  0){
-                  	$a  = array('status_po_id' => 2 );
-                   $this->db->where('po_no',$poNo);
-                   $this->db->update('p_t_po',$a);
-
-                }
-               
-            } */	
-            
          // die();
          redirect('inventory/data_inbound/add');
 		
@@ -224,35 +162,19 @@ class Data_outbound extends MY_Controller {
 		
 	}
 	
-	public function showPOitssssssem($po){
+	public function showPOitem($po){
 		//$getPO = $this->Inbound_model->itemPO($po);
-		// $sqld = " select a.kd_barang,
-		// 				c.brg_nama,
-		// 				a.kd_satuan,
-		// 				b.satuan_name,
-		// 				a.jml_barang,
-		//             IFNULL(d.jml_in,0) masuk,
-		//             (a.jml_barang - IFNULL(d.jml_in,0)) saldo_barang
-		// 					from p_t_podetail  a
-		// 					left join p_m_satuan b on (a.kd_satuan = b.id and b.kd_jns_usaha = a.kd_jns_usaha)
-		// 					left join p_m_barang c on (c.brg_kd = a.kd_barang and c.kd_jns_usaha = a.kd_jns_usaha)
-		//           			left join i_t_inbound d on (d.po_no = a.po_no and d.barang_kd = a.kd_barang and d.kd_jns_usaha = a.kd_jns_usaha )
-		// 			where a.po_no = '".$po."' and (a.jml_barang - IFNULL(d.jml_in,0)) <> 0";	
-		$sqld = "select * from (select a.kd_barang,
+		$sqld = " select a.kd_barang,
 						c.brg_nama,
 						a.kd_satuan,
 						b.satuan_name,
-						a.jml_barang,
-		            IFNULL((select sum(d.jml_in) from i_t_inbound d where d.po_no = a.po_no and a.kd_barang = d.barang_kd),0) masuk,
-                (a.jml_barang - IFNULL((select sum(d.jml_in) from i_t_inbound d where d.po_no = a.po_no and a.kd_barang = d.barang_kd),0)) saldo_barang
-							from p_t_podetail  a
-							left join p_m_satuan b on (a.kd_satuan = b.id and b.kd_jns_usaha = a.kd_jns_usaha)
-							left join p_m_barang c on (c.brg_kd = a.kd_barang and c.kd_jns_usaha = a.kd_jns_usaha)
-		   		where a.po_no = '".$po."' and a.kd_jns_usaha = '".$this->_roleCode."') t where t.saldo_barang <> 0";
+						a.jml_barang
+					from p_t_podetail  a
+					left join p_m_satuan b on a.kd_satuan = b.id
+					left join p_m_barang c on c.id = a.kd_barang
+					where a.po_no = '".$po."' ";
 		$sql = $this->db->query($sqld)->result();
 		
-
-
 //		var_dump($sql->kd_barang);exit();
 	/*	
 		$data_arr = array(

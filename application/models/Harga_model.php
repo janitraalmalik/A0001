@@ -1,34 +1,30 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class SalesPembayaran_model extends MY_Model {
+class Harga_model extends MY_Model {
 
-	private $table 			= 'sa_t_pos_pembayaran';
-	private $column_order 	= array(null,'pembayaran_no','sale_no','tgl_bayar','cust_id','pembayaran_total',null);
-	private $column_search 	= array('pembayaran_no','sale_no','tgl_bayar','cust_id','pembayaran_total');  
+	private $table 			= 'p_m_barang';
+	private $column_order 	= array(null,'brg_kd','brg_nama','harga_grs','harga_rtl',null);
+	private $column_search 	= array('brg_kd','brg_nama','harga','harga_grs','harga_rtl');  
 	private $order 			= array('id' => 'desc'); 
-
 	
     public function __construct(){
         parent::__construct();
         $this->load->database();
         /* updated by same */
-
         $this->_user_id = 0;
         $this->_username = '';
         $this->tblName = $this->table;
         $this->tblId = 'id';
+		
         $roleSession = $this->session->userdata('roleSession');
         if(isset($roleSession['roleCd'])){
             $this->_roleCode = $roleSession['roleCd'];
         }else{
             $this->_roleCode = 0;
         }
+		
         /* end */
-    }
-
-    function set_variable($saletype) {
-        $this->saletype = $saletype;
     }
 	
 	private function _get_query() {
@@ -61,8 +57,8 @@ class SalesPembayaran_model extends MY_Model {
 			$this->db->order_by(key($order), $order[key($order)]);
 		}
 	}
-    
-    public function get_data() {
+	
+	public function get_data() {
 		$this->_get_query();
 		if($_POST['length'] != -1)
 		$this->db->limit($_POST['length'], $_POST['start']);
@@ -70,7 +66,7 @@ class SalesPembayaran_model extends MY_Model {
 		
 		return $query->result();
 	}
-	
+
 	public function count_filtered() {
 		$this->_get_query();
 		$query = $this->db->get();
@@ -78,15 +74,14 @@ class SalesPembayaran_model extends MY_Model {
 	}
 
 	public function count_all() {
-        $this->getWhere();
-		$this->db->from($this->table);
+		$this->getWhere();
+        $this->db->from($this->table);
 		return $this->db->count_all_results();
 	}
     
     public function getWhere(){
        
        $this->db->where('deleted_at =',null);
-       $this->db->where('sale_type',$this->saletype);
        return $this->db->where('kd_jns_usaha',$this->_roleCode); 
         
     }

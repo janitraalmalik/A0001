@@ -1,4 +1,5 @@
 <?php
+
       header("Content-type: application/vnd-ms-excel");
       header("Content-Disposition: attachment; filename=" . $fileName . ".xls");
         
@@ -102,41 +103,78 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <div id="container">
 	<h2 class="text-center" style="margin: 0!important;"><b><?php echo $this->_roleName ?></b></h2>
-    <h4 class="text-center" style="margin: 0!important;">Periode : <?php echo (!empty($inputGet['start']))? $inputGet['start'] : date('d-m-Y')?> - <?php echo (!empty($inputGet['end']))? $inputGet['end'] : date('d-m-Y')?></h4>
     <h4 class="text-center" style="margin: 0!important;"><?php echo $moduleTitle; ?></h4>
-    <h4 class="text-center" style="margin-top: 0!important;"><?php if($inputGet['sale_type']!="0"){echo $inputGet['sale_type'];}else{echo 'RETAIL & GROSIR';} ?></h4>
-	<table id="datatables" class="gridtable" style="font-size: 12px;" width=520>
+    <h4 class="text-center" style="margin: 0!important;">As off : <?php echo (!empty($_GET['start']))? $_GET['start'] : date('d-m-Y')?></h4>
+
+	<table id="datatables" class="gridtable" style="font-size: 11px;" width=800>
 		<thead>
 			<tr class="info">
 				<th width="2%">No.</th>
-				<th width="10%"> Sales No</th>
-				<th width="15%"> Date</th>
-				<th width="15%"> Type</th>
-				<th width="15%"> Total</th>
+				<th width="7%"> Customer Name</th>
+				<th width="5%"> Type</th>
+				<th width="5%"> Date</th>
+				<th width="5%"> HP</th>
+				<th width="5%"> Total AR</th>
+				<th width="5%"> Payment</th>
+				<th width="5%"> %</th>
+				<th width="5%"> 0-30 days</th>				
+				<th width="5%"> 31-60 days</th>	
+				<th width="5%"> 61- 90 days</th>	
+				<th width="5%"> > 90 days</th>	
+				<th width="5%"> Total Outstanding</th>
 			</tr>
 		</thead>
         <tbody>
-            <?php if(isset($listSales)):?>
-                <?php 
-                    $totalSale = 0;
-                ?>
-                <?php $no=1; foreach($listSales as $row): ?>
-                    <?php 
-                        $totalSale = $totalSale+$row['sale_total'];
-                    ?>
+            <?php if(isset($listPiutang)):?>
+                <?php $no=1; 
+				
+					$totalSale='';
+					$totalPay='';
+					$total30day='';
+					$total60day='';
+					$total90day='';
+					$totalm90day='';
+					$totaloutstanding='';
+					
+					foreach($listPiutang as $row):
+					
+						$totalSale = $totalSale+$row['sale_total'];
+						$totalPay  = $totalPay+$row['total_bayar'];
+						$total30day  = $total30day+$row['30days'];
+						$total60day  = $total60day+$row['60days'];
+						$total90day  = $total90day+$row['90days'];
+						$totalm90day  = $totalm90day+$row['>90days'];
+						$totaloutstanding = $totaloutstanding+$row['outstanding'];						
+				?>
+                    
                     <tr>
                         <td><?php echo $no;?></td>
-                        <td><?php echo $row['sale_no'];?></td>
-                        <td><?php echo tgl_indo($row['sale_tgl']);?></td>
+                        <td><?php echo $row['cust_nama'];?></td>
                         <td><?php echo $row['sale_type'];?></td>
+                        <td><?php echo tgl_indo($row['sale_tgl']);?></td>
+						<td><?php echo $row['cust_hp'];?></td>					
                         <td class="text-right"><?php echo number_format($row['sale_total']);?></td>
+                        <td class="text-right"><?php echo number_format($row['total_bayar']);?></td>
+                        <td class="text-right"><?php echo ($row['persentase']);?></td>
+						<td class="text-right"><?php echo number_format($row['30days']);?></td>
+						<td class="text-right"><?php echo number_format($row['60days']);?></td>
+						<td class="text-right"><?php echo number_format($row['90days']);?></td>
+						<td class="text-right"><?php echo number_format($row['>90days']);?></td>
+						<td class="text-right"><?php echo number_format($row['outstanding']);?></td>
                     </tr>                
                 <?php $no++; endforeach; ?>
-                <tr class="info footReport">
-                    <td colspan="4" style="text-align: center;"><b>Total</b></td>
+				<tr class="info footReport">
+                    <td colspan="5" style="text-align: center;"><b>Total</b></td>
                     <td class="text-right"><b><?php echo number_format($totalSale);?></b></td>
+					<td class="text-right"><b><?php echo number_format($totalPay);?></b></td>
+					<td class="text-right"><b></b></td>
+					<td class="text-right"><b><?php echo number_format($total30day);?></b></td>
+					<td class="text-right"><b><?php echo number_format($total60day);?></b></td>
+					<td class="text-right"><b><?php echo number_format($total90day);?></b></td>
+					<td class="text-right"><b><?php echo number_format($totalm90day);?></b></td>
+					<td class="text-right"><b><?php echo number_format($totaloutstanding);?></b></td>
                 </tr>
-            <?php endif;?>
+                <?php endif;?>
         </tbody>
 	</table>
 </div>

@@ -82,7 +82,7 @@ $(document).ready(function() {
     		<div class="col-sm-offset-2 col-sm-6">
                 <input type="hidden" name="id" value="<?php echo (isset($contentData->id))? $contentData->id : ''; ?>"/>
     			<button type="submit" class="btn btn-flat btn-primary color-palette btn-sm"><span class="fa fa-save"></span> &nbsp;Simpan </button>
-    			<a class="btn btn-flat bg-olive color-palette btn-sm" href="<?php echo $back; ?>"><span class="fa  fa-arrow-left"></span>&nbsp;&nbsp;Simpan</a>
+    			<a class="btn btn-flat bg-olive color-palette btn-sm" href="<?php echo $back; ?>"><span class="fa  fa-arrow-left"></span>&nbsp;&nbsp;Kembali</a>
     		</div>
     	</div>
         

@@ -93,7 +93,7 @@ class Pembayaran  extends CI_Controller {
                         'moduleTitle'      => $this->moduleTitle,
             			'moduleSubTitle'   => $title,
             			'back'		       => $grid_state,
-            			'kary'		       => $this->db->query('select a.* from hr_m_karyawan a join hr_t_pinjam b on a.id = b.nik_kary where b.status = 9')->result(),
+            			'kary'		       => $this->db->query('select a.* from hr_m_karyawan a join hr_t_pinjam b on a.id = b.nik_kary where b.status = 0')->result(),
             			'action'	       => $this->page->base_url("/{$action}/{$id}"),
             			'contentData'	   => $contentData
                         );

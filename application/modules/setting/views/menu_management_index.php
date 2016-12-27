@@ -1,5 +1,6 @@
 <script type="text/javascript">
-$().ready(function(){	  
+$().ready(function(){
+    $('body').addClass('sidebar-collapse');	  
 	$('#datatables').dataTable({
         "paging": true,
         "lengthChange": false,

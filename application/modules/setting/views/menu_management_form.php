@@ -2,6 +2,7 @@
 
 <script type="text/javascript">
 $().ready(function(){
+    $('body').addClass('sidebar-collapse');
 	$('[name=id_menu_induk]').select2({width : '75%'});
 });
 </script>

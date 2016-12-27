@@ -1,12 +1,12 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class SalesPembayaran_model extends MY_Model {
+class SalesPiutang_model extends MY_Model {
 
-	private $table 			= 'sa_t_pos_pembayaran';
-	private $column_order 	= array(null,'pembayaran_no','sale_no','tgl_bayar','cust_id','pembayaran_total',null);
-	private $column_search 	= array('pembayaran_no','sale_no','tgl_bayar','cust_id','pembayaran_total');  
-	private $order 			= array('id' => 'desc'); 
+	private $table 			= 'v_sa_t_pos_piutang';
+	private $column_order 	= array(null,'pembayaran_no','sale_no','sale_tgl','cust_nama','tgl_bayar','sale_type','sale_total','total_bayar','30days','outstanding',null);
+	private $column_search 	= array('pembayaran_no','sale_no','sale_tgl','cust_nama','tgl_bayar','sale_type','sale_total','total_bayar','30days','outstanding');  
+	private $order 			= array('id' => 'desc');
 
 	
     public function __construct(){
@@ -27,10 +27,7 @@ class SalesPembayaran_model extends MY_Model {
         /* end */
     }
 
-    function set_variable($saletype) {
-        $this->saletype = $saletype;
-    }
-	
+
 	private function _get_query() {
 	   
         $this->getWhere();
@@ -86,7 +83,6 @@ class SalesPembayaran_model extends MY_Model {
     public function getWhere(){
        
        $this->db->where('deleted_at =',null);
-       $this->db->where('sale_type',$this->saletype);
        return $this->db->where('kd_jns_usaha',$this->_roleCode); 
         
     }
