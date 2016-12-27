@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class OutboundDetail_model extends MY_Model {
 
-	private $table 			= 'i_t_inbound'; 
+	private $table 			= 'i_t_outbound'; 
 	
     public function __construct(){
         parent::__construct();

@@ -28,8 +28,13 @@ class Data_inbound extends MY_Controller {
     
 	public function index() {
 	   //$grid_state = $this->process_grid_state();
+<<<<<<< HEAD:application/modules/inventory_/controllers/Data_inbound.php
       
 	   $this->page->view('Inbound/index', array (
+=======
+      die("tes");
+	   $this->page->view('Outbound/index', array (
+>>>>>>> a57d3e217b7f1fd153501e3fe953bf0cdf1bd1d3:application/modules/inventory/controllers/Data_outbound.php
 			'moduleTitle'      => $this->moduleTitle,
 			'moduleSubTitle'   => '',
 			'add'		=> $this->page->base_url('/add')
@@ -39,7 +44,11 @@ class Data_inbound extends MY_Controller {
     public function get_data(){
         
         $grid_state = $this->process_grid_state();
+<<<<<<< HEAD:application/modules/inventory_/controllers/Data_inbound.php
 		$list = $this->Inbound_model->get_data();
+=======
+		$list = $this->OUtbound_model->get_data();
+>>>>>>> a57d3e217b7f1fd153501e3fe953bf0cdf1bd1d3:application/modules/inventory/controllers/Data_outbound.php
 		$data = array();
 		$no = $_POST['start'];
 		foreach ($list as $grid) {
@@ -50,9 +59,15 @@ class Data_inbound extends MY_Controller {
 			$row[] = tgl_indo($grid->date_in);
 			$row[] = $grid->po_no;
 			$row[] = $grid->brg_nama;
+<<<<<<< HEAD:application/modules/inventory_/controllers/Data_inbound.php
 			$row[] = number_format($grid->jml_in);
 			$row[] = number_format($grid->refund);
 			$row[] = number_format($grid->sisa);
+=======
+			$row[] = number_format($grid->jmls_in);
+			//$row[] = number_format($grid->refund);
+			//$row[] = number_format($grid->sisa);
+>>>>>>> a57d3e217b7f1fd153501e3fe953bf0cdf1bd1d3:application/modules/inventory/controllers/Data_outbound.php
 			$row[] = '';
 			/*  <a 
                             class="btn btn-xs btn-flat btn-info" 
@@ -101,7 +116,11 @@ class Data_inbound extends MY_Controller {
             }
 		} 
         
+<<<<<<< HEAD:application/modules/inventory_/controllers/Data_inbound.php
         $getPO = $this->Inbound_model->getPO();
+=======
+        $getSales = $this->Outbound_model->getSales();
+>>>>>>> a57d3e217b7f1fd153501e3fe953bf0cdf1bd1d3:application/modules/inventory/controllers/Data_outbound.php
         $barangData = $this->Barang_model->all();
         //var_dump($getPO);exit();
         
@@ -113,15 +132,19 @@ class Data_inbound extends MY_Controller {
             			'action'	       => $this->page->base_url("/{$action}/{$id}"),
             			'contentData'	   => $contentData,
             			'barangData'	   => $barangData,
-            			'getPO'			   => $getPO			
+            			'getSales'			   => $getSales			
                         );
         
 		$this->page->view('Inbound/' . $viewTPL ,$contect);
 	}
 	
 	public function simpan(){
+<<<<<<< HEAD:application/modules/inventory_/controllers/Data_inbound.php
+=======
+	//	die("tes");
+>>>>>>> a57d3e217b7f1fd153501e3fe953bf0cdf1bd1d3:application/modules/inventory/controllers/Data_outbound.php
             $poNo  = post('poNo');
-            $noReff  = post('noReff');
+//            $noReff  = post('noReff');
             $tgltrxPO  = post('tgltrxPO');
            // die($noReff);
             $jml_inS  = post('jml_in');
@@ -132,6 +155,7 @@ class Data_inbound extends MY_Controller {
 		  foreach($brg_namaS AS $key => $val){
                 
                 $brg_nama = $val;
+<<<<<<< HEAD:application/modules/inventory_/controllers/Data_inbound.php
                 $jml_in = $jml_inS[$key];
                 $refund = $refundS[$key];
                 
@@ -147,8 +171,71 @@ class Data_inbound extends MY_Controller {
                                         );
                 $this->InboundDetail_model->add($insertContentDetail);
             }
+=======
+                $jml_in = str_replace(',', '', $jml_inS[$key]);
+                $refund = str_replace(',', '', $refundS[$key]);
+                $sisa = str_replace(',', '', $sisaS[$key]);
+                
+                //$generateCodeInbound = generateCodeInbound($this->_roleCode);
+				//echo $val . '<br />';
+				$insertContentDetail = array(
+											//'id_inbound'	=> $generateCodeInbound,
+                                            'no_trx_sales' => $poNo,
+                                            //'no_ref_vendor' => $noReff,
+                                            'date_out' => dateTOSql($tgltrxPO),
+                                            'barang_kd' => $brg_nama,
+                                            'jml_in' => $jml_in,
+                                            'refund' => $refund,
+                                            'sisa' => $sisa,
+                                            'out_type' => 'GROSIR',
+                                            'kd_jns_usaha'  => $this->_roleCode
+                                            //'sudah'  => 1
+                                        );
+
+				// echo "<pre>";
+				// var_dump($insertContentDetail);exit();
+    //             echo "</pre>";
+
+                $this->OutboundDetail_model->add($insertContentDetail);
+                //saveGenerateCodeInbound($this->_roleCode);
+
+                //$last 		= $this->InboundDetail_model->getLastStock($brg_nama);
+
+                //$lastStok 	= $last->stok + $jml_in; 
+                //var_dump($lastStok);
+
+                //$sto = array(
+               // 	'stok' => $lastStok
+               // 	);
+                 //$this->db->where('brg_kd',$brg_nama);
+                 //$this->db->update('p_m_barang',$sto);
+            }
+            
+            // $lastInboundPOValue		= $this->InboundDetail_model->getLastInboundValue($poNo)->jml_in;
+            // $lastPOdetailValue 		= $this->InboundDetail_model->getLastPOdetailValue($poNo)->jml_barang;
+
+	           //  if($lastInboundPOValue == $lastPOdetailValue){
+	           //  		$a  = array('status_po_id' => 2 );
+	           //         $this->db->where('po_no',$poNo);
+	           //         $this->db->update('p_t_po',$a);
+
+	           //  }
+         /*  foreach($sisaS AS $key1=> $val11){
+                
+                $sisah = $sisaS[$key1];  
+                
+                if($sisah ==  0){
+                  	$a  = array('status_po_id' => 2 );
+                   $this->db->where('po_no',$poNo);
+                   $this->db->update('p_t_po',$a);
+
+                }
+               
+            } */	
+            
+>>>>>>> a57d3e217b7f1fd153501e3fe953bf0cdf1bd1d3:application/modules/inventory/controllers/Data_outbound.php
          // die();
-         redirect('inventory/data_inbound/add');
+         redirect('inventory/data_outbound/add');
 		
 	}
 	
@@ -162,6 +249,7 @@ class Data_inbound extends MY_Controller {
 		
 	}
 	
+<<<<<<< HEAD:application/modules/inventory_/controllers/Data_inbound.php
 	public function showPOitem($po){
 		//$getPO = $this->Inbound_model->itemPO($po);
 		$sqld = " select a.kd_barang,
@@ -173,6 +261,49 @@ class Data_inbound extends MY_Controller {
 					left join p_m_satuan b on a.kd_satuan = b.id
 					left join p_m_barang c on c.id = a.kd_barang
 					where a.po_no = '".$po."' ";
+=======
+	public function showSalesitem($sale){
+		//$getPO = $this->Inbound_model->itemPO($po);
+		// $sqld = " select a.kd_barang,
+		// 				c.brg_nama,
+		// 				a.kd_satuan,
+		// 				b.satuan_name,
+		// 				a.jml_barang,
+		//             IFNULL(d.jml_in,0) masuk,
+		//             (a.jml_barang - IFNULL(d.jml_in,0)) saldo_barang
+		// 					from p_t_podetail  a
+		// 					left join p_m_satuan b on (a.kd_satuan = b.id and b.kd_jns_usaha = a.kd_jns_usaha)
+		// 					left join p_m_barang c on (c.brg_kd = a.kd_barang and c.kd_jns_usaha = a.kd_jns_usaha)
+		//           			left join i_t_inbound d on (d.po_no = a.po_no and d.barang_kd = a.kd_barang and d.kd_jns_usaha = a.kd_jns_usaha )
+		// 			where a.po_no = '".$po."' and (a.jml_barang - IFNULL(d.jml_in,0)) <> 0";	
+		/*$sqld = "select * from (select 
+						a.kd_barang,
+						c.brg_nama,
+						a.kd_satuan,
+						b.satuan_name,
+						a.jml_barang,
+		            IFNULL((select sum(d.jml_in) from i_t_inbound d where d.po_no = a.po_no and a.kd_barang = d.barang_kd),0) masuk,
+                (a.jml_barang - IFNULL((select sum(d.jml_in) from i_t_inbound d where d.po_no = a.po_no and a.kd_barang = d.barang_kd),0)) saldo_barang
+							from p_t_podetail  a
+							left join p_m_satuan b on (a.kd_satuan = b.id and b.kd_jns_usaha = a.kd_jns_usaha)
+							left join p_m_barang c on (c.brg_kd = a.kd_barang and c.kd_jns_usaha = a.kd_jns_usaha)
+		   		where a.po_no = '".$po."' and a.kd_jns_usaha = '".$this->_roleCode."') t where t.saldo_barang <> 0";
+		*/
+		$sqld = "select
+				  a.brg_kd,
+				  b.brg_nama,
+				  a.qty,
+				  a.satuan_kd,
+				  e.satuan_name,
+				  IFNULL((select sum(d.jml_in) from i_t_outbound d where d.no_trx_sales = a.sale_no and a.brg_kd = d.barang_kd),0) masuk,
+				  (a.qty - IFNULL((select sum(d.jml_in) from i_t_outbound d where d.no_trx_sales = a.sale_no and a.brg_kd = d.barang_kd),0)) saldo_barang
+				From sa_t_posdetail a
+				left join sa_t_pos c on (c.sale_no = a.sale_no)
+				left join p_m_barang b on (a.brg_kd = b.brg_kd AND c.kd_jns_usaha = b.kd_jns_usaha)
+				left join p_m_satuan e on (a.satuan_kd = e.id)
+				where a.sale_no = '".$sale."' AND c.kd_jns_usaha = '".$this->_roleCode."'";   		
+		   		
+>>>>>>> a57d3e217b7f1fd153501e3fe953bf0cdf1bd1d3:application/modules/inventory/controllers/Data_outbound.php
 		$sql = $this->db->query($sqld)->result();
 		
 //		var_dump($sql->kd_barang);exit();

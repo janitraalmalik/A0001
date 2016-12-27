@@ -22,10 +22,10 @@ $this->load->view('templates/message_handler') ?>
             <div class="col-sm-9">
                 <input 
                     class="form-control input-sm datepicker"
-                    type="text" 
+                    type="date" 
                     name="tgltrxPO" 
                     id="tgltrxPO" 
-                    readonly="true" 
+                    value="<?= date("d-m-Y"); ?>"
 					required="true"/>
                 <?php echo form_error('tgltrxPO', '<label class="text-red">', '</label>'); ?>
     		</div>
@@ -58,19 +58,27 @@ $this->load->view('templates/message_handler') ?>
        
     </div>
     <div class="col-sm-12">
-        <div class="row" style="width: 1080px;margin-left: -50px;">
+        <!--div class="row" style="width: 1080px;margin-left: -50px;"-->
+        <div class="row" style="margin-left: -50px;">
           <div class="col-sm-12 data-barang" style="margin-bottom: 50px;">     
             <br />
             <br />
             <table class="table table-bordered table-hover">
                 <thead>
                     <tr class="info">
-                        <th style="width:250px">Produk</th>
+                        <!--th style="width:250px">Produk</th>
                         <th style="width:70px">Kuantitas</th>
                         <th style="width:80px">Satuan</th>
                         <th style="width:120px">Jumlah In</th>
                         <th style="width:120px">Refund</th>
-                        <th style="width:120px">Sisa</th>
+                        <th style="width:120px">Sisa</th-->
+                        
+                        <th >Produk</th>
+                        <th >Kuantitas</th>
+                        <th >Satuan</th>
+                        <th >Jumlah In</th>
+                        <th >Refund</th>
+                        <th >Sisa</th>
                         <!--th style="">&nbsp;</th-->
 			        </tr>
                 </thead>
