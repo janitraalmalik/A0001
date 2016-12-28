@@ -94,7 +94,14 @@ class Inbound_model extends MY_Model {
 	   return $sql; 
    }
    
-   
+   public function get_item(){
+	 $sql =   $this->db->select('brg_kd,brg_nama')
+				->where('kd_jns_usaha',$this->_roleCode)
+				->get('p_m_barang')
+				->result();
+	   return $sql; 
+   }
+
    public function itemPO($poNO){
 	$sqld = "select a.kd_barang,
 						a.kd_satuan,

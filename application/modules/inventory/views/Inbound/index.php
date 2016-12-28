@@ -35,9 +35,9 @@ $(document).ready(function(){
 </script>
 
 <section class="content">
-    <!--div class="actions">
-    	<a href="<?php echo $add; ?>" class="btn btn-flat bg-light-blue color-palette btn-sm"><span class="fa fa-plus"></span>&nbsp;&nbsp;Add New</a>
-    </div-->
+    <div class="actions">
+    	<a href="<?php echo base_url("inventory/data_inbound/tambah"); ?>" class="btn btn-flat bg-light-blue color-palette btn-sm"><span class="fa fa-plus"></span>&nbsp;&nbsp;Add New</a>
+    </div>
     
 	<table id="datatables" class="table table-bordered table-hover">
 		<thead>
