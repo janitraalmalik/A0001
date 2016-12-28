@@ -162,8 +162,11 @@ class Pembayaran_pos  extends CI_Controller {
 								'nilai_bayar'     => str_replace(',','',post('nilai_bayar')),
 								'tgl_bayar'      => date('Y-m-d', strtotime(post('tgl_bayar')))
                             );
+							
             $insert = $this->Pembayaran_pos_model->add($insertContent);
-		
+			$sb = $this->db->query("select sale_bayar from sa_t_pos where sale_no = '".post('sale_no')."'")->row()->sale_bayar;
+			$new = str_replace(',','',post('nilai_bayar'))+$sb;
+			$this->db->query("update sa_t_pos set sale_bayar = ".$new." where sale_no = '".post('sale_no')."'");
                             
 		/*}else{
   		
