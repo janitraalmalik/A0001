@@ -351,7 +351,7 @@ $().ready(function(){
           <ul class="treeview-menu">
 			<li><a href="<?php echo base_url('sales/pos_retail');?>"><i class="fa fa-circle-o"></i> Penjualan Retail</a></li>
 			<li><a href="<?php echo base_url('sales/pos_grosir');?>"><i class="fa fa-circle-o"></i> Penjualan Grosir</a></li>
-			<li><a href="<?php echo base_url('sales/pos_grosir');?>"><i class="fa fa-circle-o"></i> Pembayaran Pembelian</a></li>
+			<li><a href="<?php echo base_url('sales/pembayaran_pos');?>"><i class="fa fa-circle-o"></i> Pembayaran Pembelian</a></li>
 			<li><a href="<?php echo base_url('sales/daylist_trans');?>"><i class="fa fa-circle-o"></i> List Transaksi Harian</a></li>
 			<li><a href="<?php echo base_url('sales/closing_trans');?>"><i class="fa fa-circle-o"></i> Closing Transaksi</a></li>
           </ul>
