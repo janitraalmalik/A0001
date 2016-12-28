@@ -195,55 +195,7 @@ class Data_inbound extends MY_Controller {
                     unset($sisaS[$key]);
                    
                 }
-               
-<<<<<<< HEAD
-            }
-           
-        } 	
 
-        foreach($brg_namaS AS $key => $val){
-            
-            $brg_nama = $val;
-            $jml_in = $jml_inS[$key];
-            $refund = $refundS[$key];
-            $sisa = $sisaS[$key];
-            
-            $generateCodeInbound = generateCodeInbound($this->_roleCode);
-        	//echo $val . '<br />';
-        	$insertContentDetail = array(
-        								'id_inbound'	=> $generateCodeInbound,
-                                        'po_no' => $poNo,
-                                        'no_ref_vendor' => $noReff,
-                                        'date_in' => dateTOSql($tgltrxPO),
-                                        'barang_kd' => $brg_nama,
-                                        'jml_in' => $jml_in,
-                                        'refund' => $refund,
-                                        'sisa' => $sisa,
-                                        'kd_jns_usaha'  => $this->_roleCode,
-                                        //'sudah'  => 1
-                                    );
-            $this->InboundDetail_model->add($insertContentDetail);
-            saveGenerateCodeInbound($this->_roleCode);
-        
-            $last 		= $this->InboundDetail_model->getLastStock($brg_nama);
-        
-            $lastStok 	= $last->stok + $jml_in;
-        
-            $sto = array(
-            	'stok' => $lastStok
-            	);
-             $this->db->where('brg_kd',$brg_nama);
-             $this->db->update('p_m_barang',$sto);
-        }
-        
-        $lastInboundPOValue		= $this->InboundDetail_model->getLastInboundValue($poNo)->jml_in;
-        $lastPOdetailValue 		= $this->InboundDetail_model->getLastPOdetailValue($poNo)->jml_barang;
-
-        if($lastInboundPOValue == $lastPOdetailValue){
-        		$a  = array('status_po_id' => 2 );
-               $this->db->where('po_no',$poNo);
-               $this->db->update('p_t_po',$a);
-=======
             } 	
 
           //var_dump($jml_inS);exit();  
@@ -301,7 +253,6 @@ class Data_inbound extends MY_Controller {
 	            		$a  = array('status_po_id' => 3 );
 	                   $this->db->where('po_no',$poNo);
 	                   $this->db->update('p_t_po',$a);
->>>>>>> a108ef7ed0a841f1310ef294dab92d9f5e7a708a
 
         }
 

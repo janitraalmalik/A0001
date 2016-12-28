@@ -12,7 +12,7 @@
                     type="text" 
                     name="codePOS" 
                     placeholder="" 
-                    value="<?php echo (empty($contentData['sale_no']))? set_value('nameCode') : $contentData['sale_no']; ?>" 
+                    value="<?php echo (empty($contentData['sale_no']))? set_value('codePOS') : $contentData['sale_no']; ?>" 
                     readonly="true"/>
     		</div>
     	</div>
@@ -404,7 +404,7 @@
                 var dtlProdukID = $(this).attr('id');
                 var splitVal = dtlProdukID.split('-');
                 var indexRow = splitVal[1];
-                $.getJSON('<?php echo base_url('purchasing/data_satuan/detail');?>/' + dtlProdukVal, function (data) {
+                $.getJSON('<?php echo base_url('purchasing/data_barang/detail');?>/' + dtlProdukVal, function (data) {
                     if (data == '003') { alert('Data Not Found!'); } 
                     else { 
                         $("#dtlIdSatuan-" + indexRow ).val(data.id);
@@ -434,7 +434,7 @@
             var dtlProdukID = $(this).attr('id');
             var splitVal = dtlProdukID.split('-');
             var indexRow = splitVal[1];
-            $.getJSON('<?php echo base_url('purchasing/data_satuan/detail');?>/' + dtlProdukVal, function (data) {
+            $.getJSON('<?php echo base_url('purchasing/data_barang/detail');?>/' + dtlProdukVal, function (data) {
                 if (data == '003') { alert('Data Not Found!'); } 
                 else { 
                     $("#dtlIdSatuan-" + indexRow ).val(data.id);

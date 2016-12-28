@@ -22,7 +22,7 @@ $this->load->view('templates/message_handler') ?>
             <div class="col-sm-9">
                 <input 
                     class="form-control input-sm datepicker"
-                    type="date" 
+                    type="text" 
                     name="tgltrxPO" 
                     id="tgltrxPO" 
                     value="<?= date("d-m-Y"); ?>"

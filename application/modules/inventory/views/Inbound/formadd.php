@@ -23,7 +23,7 @@
             <div class="col-sm-3">
                 <input 
                     class="form-control input-sm datepicker"
-                    type="date" 
+                    type="text" 
                     name="tgltrxInbound" 
                     id="tgltrxInbound" 
                     value="<?= date("d-m-Y"); ?>"
