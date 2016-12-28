@@ -48,7 +48,8 @@
                     name="itemcode" 
                     id="itemcode" 
 					placeholder="Item Code"
-                    required="true"/>
+					required="true"
+                   />
                 <?php echo form_error('itemcode', '<label class="text-red">', '</label>'); ?>
     		</div>
     	</div>
@@ -226,7 +227,8 @@
                         <?php else:?>
                             <tr class="text-data-barang" style="display:none">
                             <td>
-                                <select name="dtlProduk[]" id="dtlProduk-1" class="form-control select2 dtlProduk" style="width: 100%;" required="true">
+                                <select name="dtlProduk[]" id="dtlProduk-1" class="form-control select2 dtlProduk" style="width: 100%;" 
+								
                     				<option value=""></option>
                                     <?php foreach($barangData as $row): ?>
                                     <option value="<?php echo $row['brg_kd']?>"><?php echo $row['brg_nama']?></option>
@@ -241,10 +243,12 @@
                                 <input type="hidden" name="dtlIdSatuan[]" id="dtlIdSatuan-1"/>                               
                             </td>  
                             <td>
-                                <input type="text" name="dltHarga[]" id="dltHarga-1" class="form-control col-sm-12 numeric dltHarga" style="text-align: right;" required="true"/>
+                                <input type="text" name="dltHarga[]" id="dltHarga-1" class="form-control col-sm-12 numeric dltHarga" style="text-align: right;"
+								/>
                             </td>
                             <td>
-                                <input type="text" name="dltTotal[]" id="dltTotal-1" class="form-control col-sm-12 numeric dltTotal" style="text-align: right;" required="true"/>
+                                <input type="text" name="dltTotal[]" id="dltTotal-1" class="form-control col-sm-12 numeric dltTotal" style="text-align: right;" 
+								/>
                             </td>
                             <td style="text-align: center; width: 10px;">
                                 <input type="checkbox" name="dtlPajak[]" id="dtlPajak-1" class="dtlPajak"/>
@@ -350,14 +354,13 @@
 <script>
     $(document).ready(function() {
 		$('#itemcode').keypress(function(x){
-			if(x.keyCode==13){
+			if(x.keyCode==13){ 
 				var barcode = $(this).val();
 				$.getJSON('<?php echo base_url();?>sales/pos_retail/get_detail/'+barcode,function(data){
 				var n = $('.box-number-data-barang').length + 1;
-				$(".dtlProduk").each(function(){
+				//$(".dtlProduk").each(function(){
 				var v = $(this).val();
-				if(v!=barcode && data.brg_kd!=''){
-					var box_html = $('<tr class="text-data-barang">' +
+					var box_html = '<tr class="text-data-barang">' +
 											'<td><input type="text" name="produkNM[]" id="produkNM-' + n + '" class="form-control col-sm-12" style="text-align: left;" value="'+data.brg_nama+'"/><input type="hidden" name="dtlProduk[]" id="dtlProduk-' + n + '" class="form-control col-sm-12 dtlProduk" style="text-align: left;" value="'+data.brg_kd+'"/></td>' +
 											'<td><input type="text" name="dltKuantitas[]" id="dltKuantitas-' + n + '" class="form-control col-sm-12 numeric dltKuantitas" style="text-align: right;" value="1"/></td>' +
 											'<td>' +
@@ -373,9 +376,9 @@
 											'</td>' + 
 											'<td style="text-align: center;width: 10px;"><input type="hidden" name="index[]" id="index-' + n + '" value="' + n + '"/><span style="display:none;" class="box-number-data-barang">' + n + 
 											'</span><a class="remove-box btn btn-danger"><i class="fa fa-remove"></i></a></td>' +  
-											'</tr>');
+											'</tr>';
 																																													 
-						box_html.hide();
+						.hide();
 						$('.my-data-barang tr.text-data-barang:last').after(box_html);
 						$('#dtlProduk-' + n + '').populate();
 						$(".select2").select2();
@@ -396,10 +399,8 @@
 						calculate();
 						hitungPajak();
 						box_html.fadeIn('slow');
-				}else{
-					
-				}
-				});
+				
+				//});
 				});
 				$('#itemcode').val('');
 			}
