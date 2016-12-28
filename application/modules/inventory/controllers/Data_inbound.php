@@ -85,7 +85,7 @@ class Data_inbound extends MY_Controller {
             if($id != ''){
                 $contentData = $this->Barang_model->find($id,'id');
                 if(count($contentData) == 0){
-                    redirect($this->page->base_url('/'));0
+                    redirect($this->page->base_url('/'));
                 }           
             }
 		} 
@@ -128,47 +128,6 @@ class Data_inbound extends MY_Controller {
                 unset($refundS[$key]);
                 unset($sisaS[$key]);
                
-<<<<<<< HEAD
-=======
-            } 	
-
-          //var_dump($jml_inS);exit();  
-
-		  foreach($brg_namaS AS $key => $val){
-                
-                $brg_nama = $val;
-                $jml_in = str_replace(',', '', $jml_inS[$key]);
-                $refund = str_replace(',', '', $refundS[$key]);
-                $sisa = str_replace(',', '', $sisaS[$key]);
-                
-                $generateCodeInbound = generateCodeInbound($this->_roleCode);
-				//echo $val . '<br />';
-				$insertContentDetail = array(
-											'id_inbound'	=> $generateCodeInbound,
-                                            'po_no' => $poNo,
-                                            'no_ref_vendor' => $noReff,
-                                            'date_in' => dateTOSql($tgltrxPO),
-                                            'barang_kd' => $brg_nama,
-                                            'jml_in' => $jml_in,
-                                            'refund' => $refund,
-                                            'sisa' => $sisa,
-                                            'kd_jns_usaha'  => $this->_roleCode,
-                                            //'sudah'  => 1
-                                        );
-                $this->InboundDetail_model->add($insertContentDetail);
-                saveGenerateCodeInbound($this->_roleCode);
-
-                $last 		= $this->InboundDetail_model->getLastStock($brg_nama);
-
-                $lastStok 	= $last->stok + $jml_in; 
-                //var_dump($lastStok);
-
-                $sto = array(
-                	'stok' => $lastStok
-                	);
-                 $this->db->where('brg_kd',$brg_nama);
-                 $this->db->update('p_m_barang',$sto);
->>>>>>> a57d3e217b7f1fd153501e3fe953bf0cdf1bd1d3
             }
            
         } 	
@@ -207,30 +166,17 @@ class Data_inbound extends MY_Controller {
              $this->db->where('brg_kd',$brg_nama);
              $this->db->update('p_m_barang',$sto);
         }
-            
-            $lastInboundPOValue		= $this->InboundDetail_model->getLastInboundValue($poNo)->jml_in;
-            $lastPOdetailValue 		= $this->InboundDetail_model->getLastPOdetailValue($poNo)->jml_barang;
+        
+        $lastInboundPOValue		= $this->InboundDetail_model->getLastInboundValue($poNo)->jml_in;
+        $lastPOdetailValue 		= $this->InboundDetail_model->getLastPOdetailValue($poNo)->jml_barang;
 
-	            if($lastInboundPOValue == $lastPOdetailValue){
-	            		$a  = array('status_po_id' => 2 );
-	                   $this->db->where('po_no',$poNo);
-	                   $this->db->update('p_t_po',$a);
+        if($lastInboundPOValue == $lastPOdetailValue){
+        		$a  = array('status_po_id' => 2 );
+               $this->db->where('po_no',$poNo);
+               $this->db->update('p_t_po',$a);
 
-	            }
-         /*  foreach($sisaS AS $key1=> $val11){
-                
-                $sisah = $sisaS[$key1];  
-                
-                if($sisah ==  0){
-                  	$a  = array('status_po_id' => 2 );
-                   $this->db->where('po_no',$poNo);
-                   $this->db->update('p_t_po',$a);
+        }
 
-                }
-               
-            } */	
-            
-         // die();
          redirect('inventory/data_inbound/add');
 		
 	}
