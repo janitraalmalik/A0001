@@ -77,13 +77,13 @@ class Purchase_order extends MY_Controller {
                             <li><a  
                                 href="'.site_url($grid_state . '/view/' .$grid->id).'" 
                                 title="Lihat Data">Lihat</a></li>
+                            <li><a  
+                                href="'.site_url($grid_state . '/edit/' .$grid->id).'" 
+                                title="Ubah Data">Ubah</a></li>
                             <li><a 
                                 target="_BLANK" 
                                 href="'.site_url($grid_state . '/cetak/' .$grid->id).'" 
-                                title="Cetak PO">Cetak</a></li>
-                            <!--li><a  
-                                href="'.site_url($grid_state . '/edit/' .$grid->id).'" 
-                                title="Ubah Data">Ubah</a></li-->
+                                title="Cetak PO">Cetak</a></li>                            
                             ' . $linkOutstanding . '
                             <li><a 
                                 onclick="return confirm(\'Apa Anda Yakin Untuk Menghapus Data ' . $grid->po_no . ' ?\')" 
@@ -235,7 +235,7 @@ class Purchase_order extends MY_Controller {
             $indexS  = post('index');
             $dtlProdukS  = post('dtlProduk');
             $dltKuantitasS  = post('dltKuantitas');
-            $dtlNmSatuanS  = post('dtlNmSatuan');
+            //$dtlNmSatuanS  = post('dtlNmSatuan');
             $dtlIdSatuanS  = post('dtlIdSatuan');
             $dltHargaS  = post('dltHarga');
             $dltTotalS  = post('dltTotal');
@@ -250,7 +250,7 @@ class Purchase_order extends MY_Controller {
                     unset($indexS[$key]);                   
                     unset($dtlProdukS[$key]);                   
                     unset($dltKuantitasS[$key]);                   
-                    unset($dtlNmSatuanS[$key]);                   
+                    //unset($dtlNmSatuanS[$key]);                   
                     unset($dtlIdSatuanS[$key]);                   
                     unset($dltHargaS[$key]);                   
                     unset($dltTotalS[$key]);                   
@@ -285,7 +285,7 @@ class Purchase_order extends MY_Controller {
                 
                 $dtlProduk = $dtlProdukS[$key2];
                 $dltKuantitas = str_replace(',', '', $dltKuantitasS[$key2]);
-                $dtlNmSatuan = $dtlNmSatuanS[$key2];
+                //$dtlNmSatuan = $dtlNmSatuanS[$key2];
                 $dtlIdSatuan = $dtlIdSatuanS[$key2];
                 $dltHarga = str_replace(',', '', $dltHargaS[$key2]);
                 $dltTotal = str_replace(',', '', $dltTotalS[$key2]);
@@ -338,7 +338,7 @@ class Purchase_order extends MY_Controller {
             $indexS  = post('index');
             $dtlProdukS  = post('dtlProduk');
             $dltKuantitasS  = post('dltKuantitas');
-            $dtlNmSatuanS  = post('dtlNmSatuan');
+            //$dtlNmSatuanS  = post('dtlNmSatuan');
             $dtlIdSatuanS  = post('dtlIdSatuan');
             $dltHargaS  = post('dltHarga');
             $dltTotalS  = post('dltTotal');
@@ -356,7 +356,7 @@ class Purchase_order extends MY_Controller {
                     unset($indexS[$key]);                   
                     unset($dtlProdukS[$key]);                   
                     unset($dltKuantitasS[$key]);                   
-                    unset($dtlNmSatuanS[$key]);                   
+                    //unset($dtlNmSatuanS[$key]);                   
                     unset($dtlIdSatuanS[$key]);                   
                     unset($dltHargaS[$key]);                   
                     unset($dltTotalS[$key]);                   
@@ -387,7 +387,7 @@ class Purchase_order extends MY_Controller {
                 
                 $dtlProduk = $dtlProdukS[$key2];
                 $dltKuantitas = str_replace(',', '', $dltKuantitasS[$key2]);
-                $dtlNmSatuan = $dtlNmSatuanS[$key2];
+                //$dtlNmSatuan = $dtlNmSatuanS[$key2];
                 $dtlIdSatuan = $dtlIdSatuanS[$key2];
                 $dltHarga = str_replace(',', '', $dltHargaS[$key2]);
                 $dltTotal = str_replace(',', '', $dltTotalS[$key2]);

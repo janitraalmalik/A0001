@@ -148,8 +148,8 @@
                 <thead>
                     <tr class="info">
                         <th style="width:250px">Produk</th>
-                        <th style="width:70px">Kuantitas</th>
-                        <th style="width:80px">Satuan</th>
+                        <th style="width:50px">Kuantitas</th>
+                        <th style="width:150px">Satuan</th>
                         <th style="width:120px">Harga Satuan</th>
                         <th style="width:120px">Jumlah</th>
                         <th style="width:50px">PPn</th>
@@ -210,8 +210,14 @@
                             <input type="text" name="dltKuantitas[]" id="dltKuantitas-<?php echo $value;?>" class="form-control col-sm-12 numeric dltKuantitas" style="text-align: right;"  value="<?php echo $dltKuantitas;?>"/>
                         </td>  
                         <td>
-                            <input type="text" name="dtlNmSatuan[]" id="dtlNmSatuan-<?php echo $value;?>" class="form-control col-sm-12" value="<?php echo $dtlNmSatuan; ?>" readonly="true"/>
-                            <input type="hidden" name="dtlIdSatuan[]" id="dtlIdSatuan-<?php echo $value;?>" value="<?php echo $dtlIdSatuan?>"/>                               
+                            <select name="dtlIdSatuan[]" id="dtlIdSatuan-<?php echo $value;?>" class="form-control select2 dtlIdSatuan" style="width: 100%;" required="true">
+                				<option value=""></option>
+                                <?php foreach($satuanData as $row): ?>
+                                <option value="<?php echo $row['id']?>" <?php echo ($dtlIdSatuan == $row['id'])?'selected':''?>><?php echo $row['satuan_name'] . " ( " . $row['satuan_conv'] . " Pcs) "?></option>
+                                <?php endforeach; ?>
+                			</select>
+                            <!--input type="text" name="dtlNmSatuan[]" id="dtlNmSatuan-<?php echo $value;?>" class="form-control col-sm-12" value="<?php echo $dtlNmSatuan; ?>" readonly="true"/>
+                            <input type="hidden" name="dtlIdSatuan[]" id="dtlIdSatuan-<?php echo $value;?>" value="<?php echo $dtlIdSatuan?>"/-->                               
                         </td>  
                         <td>
                             <input type="text" name="dltHarga[]" id="dltHarga-<?php echo $value;?>" class="form-control col-sm-12 numeric dltHarga" style="text-align: right;" value="<?php echo $dltHarga; ?>"/>
@@ -277,8 +283,14 @@
                                     <input type="text" name="dltKuantitas[]" id="dltKuantitas-<?php echo $value;?>" class="form-control col-sm-12 numeric dltKuantitas" style="text-align: right;"  value="<?php echo $dltKuantitas;?>"/>
                                 </td>  
                                 <td>
-                                    <input type="text" name="dtlNmSatuan[]" id="dtlNmSatuan-<?php echo $value;?>" class="form-control col-sm-12" value="<?php echo $dtlNmSatuan; ?>" readonly="true"/>
-                                    <input type="hidden" name="dtlIdSatuan[]" id="dtlIdSatuan-<?php echo $value;?>" value="<?php echo $dtlIdSatuan?>"/>                               
+                                    <select name="dtlIdSatuan[]" id="dtlIdSatuan-<?php echo $value;?>" class="form-control select2 dtlIdSatuan" style="width: 100%;" required="true">
+                        				<option value=""></option>
+                                        <?php foreach($satuanData as $row): ?>
+                                        <option value="<?php echo $row['id']?>" <?php echo ($dtlIdSatuan == $row['id'])?'selected':''?>><?php echo $row['satuan_name'] . " ( " . $row['satuan_conv'] . " Pcs) "?></option>
+                                        <?php endforeach; ?>
+                        			</select>
+                                    <!--input type="text" name="dtlNmSatuan[]" id="dtlNmSatuan-<?php echo $value;?>" class="form-control col-sm-12" value="<?php echo $dtlNmSatuan; ?>" readonly="true"/>
+                                    <input type="hidden" name="dtlIdSatuan[]" id="dtlIdSatuan-<?php echo $value;?>" value="<?php echo $dtlIdSatuan?>"/-->                               
                                 </td>  
                                 <td>
                                     <input type="text" name="dltHarga[]" id="dltHarga-<?php echo $value;?>" class="form-control col-sm-12 numeric dltHarga" style="text-align: right;" value="<?php echo $dltHarga; ?>"/>
@@ -321,8 +333,14 @@
                                 <input type="text" name="dltKuantitas[]" id="dltKuantitas-1" class="form-control col-sm-12 numeric dltKuantitas" style="text-align: right;"/>
                             </td>  
                             <td>
-                                <input type="text" name="dtlNmSatuan[]" id="dtlNmSatuan-1" class="form-control col-sm-12" readonly="true"/>
-                                <input type="hidden" name="dtlIdSatuan[]" id="dtlIdSatuan-1"/>                               
+                                <select name="dtlIdSatuan[]" id="dtlIdSatuan-1" class="form-control select2 dtlIdSatuan" style="width: 100%;" required="true">
+                    				<option value=""></option>
+                                    <?php foreach($satuanData as $row): ?>
+                                    <option value="<?php echo $row['id']?>"><?php echo $row['satuan_name'] . " ( " . $row['satuan_conv'] . " Pcs) "?></option>
+                                    <?php endforeach; ?>
+                    			</select>
+                                <!--input type="text" name="dtlNmSatuan[]" id="dtlNmSatuan-1" class="form-control col-sm-12" readonly="true"/>
+                                <input type="hidden" name="dtlIdSatuan[]" id="dtlIdSatuan-1"/-->                               
                             </td>  
                             <td>
                                 <input type="text" name="dltHarga[]" id="dltHarga-1" class="form-control col-sm-12 numeric dltHarga" style="text-align: right;" required="true"/>
@@ -431,8 +449,7 @@
                                 '<td><select name="dtlProduk[]" id="dtlProduk-' + n + '" class="form-control select2 dtlProduk" style="width: 100%;"><option value=""></option></select></td>' +
                                 '<td><input type="text" name="dltKuantitas[]" id="dltKuantitas-' + n + '" class="form-control col-sm-12 numeric dltKuantitas" style="text-align: right;"/></td>' +
                                 '<td>' +
-                                    '<input type="text" name="dtlNmSatuan[]" id="dtlNmSatuan-' + n + '" class="form-control col-sm-12" readonly="true"/>' +
-                                    '<input type="hidden" name="dtlIdSatuan[]" id="dtlIdSatuan-' + n + '"/>' +
+                                    '<select name="dtlIdSatuan[]" id="dtlIdSatuan-' + n + '" class="form-control select2 dtlIdSatuan" style="width: 100%;"><option value=""></option></select>' +
                                 '</td>' +
                                 '<td><input type="text" name="dltHarga[]" id="dltHarga-' + n + '" class="form-control col-sm-12 numeric dltHarga" style="text-align: right;"/></td>' +
                                 '<td><input type="text" name="dltTotal[]" id="dltTotal-' + n + '" class="form-control col-sm-12 numeric dltTotal" style="text-align: right;"/></td>' +
@@ -448,35 +465,36 @@
             box_html.hide();
             $('.my-data-barang tr.text-data-barang:last').after(box_html);
             $('#dtlProduk-' + n + '').populate();
+            $('#dtlIdSatuan-' + n + '').satuan();
             $(".select2").select2();
             $( ".numeric" ).number( true , 0);
-            $( '#dtlProduk-' + n ).change(function() {
-                var dtlProdukVal = $(this).val();
-                var dtlProdukID = $(this).attr('id');
-                var splitVal = dtlProdukID.split('-');
-                var indexRow = splitVal[1];
-                $.getJSON('<?php echo base_url('purchasing/data_barang/detail');?>/' + dtlProdukVal, function (data) {
-                    if (data == '003') { alert('Data Not Found!'); } 
-                    else { 
-                        $("#dtlIdSatuan-" + indexRow ).val(data.id);
-                        $("#dtlNmSatuan-" + indexRow ).val(data.nama);                   
-                    }
-                });  
-                //var dataExist = false;                
-//                $('.dtlProduk').each(function(){
-//                    var dtlProdukVal2 = $('.dtlProduk').val();
-//                    if(dtlProdukVal == dtlProdukVal2){     
-//                        dataExist = true;                        
-//                        alert(dtlProdukVal2 + '-' + dtlProdukVal + '-' + indexRow);
-//                        $(".dtlIdSatuan-" + indexRow ).val('value');
-//                        $(".dtlNmSatuan-" + indexRow ).val('value');
-//                        $('#dtlProduk-' + indexRow ).select2("val", "");  
-//                        return false;   
+           // $( '#dtlProduk-' + n ).change(function() {
+//                var dtlProdukVal = $(this).val();
+//                var dtlProdukID = $(this).attr('id');
+//                var splitVal = dtlProdukID.split('-');
+//                var indexRow = splitVal[1];
+//                $.getJSON('<?php echo base_url('purchasing/data_barang/detail');?>/' + dtlProdukVal, function (data) {
+//                    if (data == '003') { alert('Data Not Found!'); } 
+//                    else { 
+//                        $("#dtlIdSatuan-" + indexRow ).val(data.id);
+//                        $("#dtlNmSatuan-" + indexRow ).val(data.nama);                   
 //                    }
-//                });
+//                });  
+//                //var dataExist = false;                
+////                $('.dtlProduk').each(function(){
+////                    var dtlProdukVal2 = $('.dtlProduk').val();
+////                    if(dtlProdukVal == dtlProdukVal2){     
+////                        dataExist = true;                        
+////                        alert(dtlProdukVal2 + '-' + dtlProdukVal + '-' + indexRow);
+////                        $(".dtlIdSatuan-" + indexRow ).val('value');
+////                        $(".dtlNmSatuan-" + indexRow ).val('value');
+////                        $('#dtlProduk-' + indexRow ).select2("val", "");  
+////                        return false;   
+////                    }
+////                });
+////                
 //                
-                
-            });
+//            });
             
             calculate();
             hitungPajak();
@@ -495,19 +513,19 @@
             return true;
         });
         
-        $( "#dtlProduk-1" ).change(function() {
-            var dtlProdukVal = $(this).val();
-            var dtlProdukID = $(this).attr('id');
-            var splitVal = dtlProdukID.split('-');
-            var indexRow = splitVal[1];
-            $.getJSON('<?php echo base_url('purchasing/data_barang/detail');?>/' + dtlProdukVal, function (data) {
-                if (data == '003') { alert('Data Not Found!'); } 
-                else { 
-                    $("#dtlIdSatuan-" + indexRow ).val(data.id);
-                    $("#dtlNmSatuan-" + indexRow ).val(data.nama);                   
-                }
-            });
-        });
+        //$( "#dtlProduk-1" ).change(function() {
+//            var dtlProdukVal = $(this).val();
+//            var dtlProdukID = $(this).attr('id');
+//            var splitVal = dtlProdukID.split('-');
+//            var indexRow = splitVal[1];
+//            $.getJSON('<?php echo base_url('purchasing/data_barang/detail');?>/' + dtlProdukVal, function (data) {
+//                if (data == '003') { alert('Data Not Found!'); } 
+//                else { 
+//                    $("#dtlIdSatuan-" + indexRow ).val(data.id);
+//                    $("#dtlNmSatuan-" + indexRow ).val(data.nama);                   
+//                }
+//            });
+//        });
         
         /* Menghitung Total Tiap Barang */
         calculate();
@@ -625,7 +643,12 @@
         <?php endforeach; ?>
     }
     
-    
+    $.fn.satuan = function() {
+      $(this)
+        <?php foreach($satuanData as $row): ?>
+            .append('<option value="<?php echo $row['id']?>"><?php echo $row['satuan_name'] . " ( " . $row['satuan_conv'] . " Pcs) "?></option>')
+        <?php endforeach; ?>
+    }
     
 </script>
 

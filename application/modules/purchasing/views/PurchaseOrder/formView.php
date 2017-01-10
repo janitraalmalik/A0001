@@ -157,6 +157,7 @@
                             $dtlIdSatuan = $rowDetail['kd_satuan'];
                             $contentSatuanRow = $this->Satuan_model->find($dtlIdSatuan,'id');
                             $dtlNmSatuan = $contentSatuanRow['satuan_name'];
+                            $satuan_conv = $contentSatuanRow['satuan_conv'];
                             $dltHarga = str_replace(',', '', $rowDetail['harga_satuan']);
                             $dltTotal = $dltKuantitas*$dltHarga;
                             $dtlPajakCheck = $rowDetail['ppn'];
@@ -184,7 +185,7 @@
                         </td>  
                         <td>
                             <div style="text-align: center;">
-                                <span><?php echo $dtlNmSatuan; ?></span>
+                                <span><?php echo $dtlNmSatuan . " (" . $satuan_conv . " Pcs) "; ?></span>
                             </div>                              
                         </td>  
                         <td>

@@ -45,6 +45,7 @@ class Data_satuan extends MY_Controller {
 			$row[] = $no;
 			$row[] = $grid->satuan_kd;
 			$row[] = $grid->satuan_name;
+			$row[] = $grid->satuan_conv;
 			$row[] = '<div style="width:100%;text-align:center;">
                         <a class="btn btn-xs btn-flat btn-info" href="'.site_url($grid_state . '/edit/' .$grid->id).'" title="Update Data">Update</a> &nbsp;
                         <a class="btn btn-xs btn-flat btn-danger" onclick="return confirm(\'Are you sure to delete data ' . $grid->satuan_name . ' ?\')" href="'.site_url($grid_state . '/delete/'.$grid->id).'" title="Delete Data">Delete</a>
@@ -113,6 +114,7 @@ class Data_satuan extends MY_Controller {
                                 'satuan_kd'     => post('codeSatuan'),
                                 'satuan_name'   => post('nameSatuan'),
 								'satuan_desc'   => post('descSatuan'),
+								'satuan_conv'   => post('jmlSatuan'),
 								'kd_jns_usaha'  => $this->_roleCode,
                             );
             $insert = $this->Satuan_model->add($insertContent);
@@ -147,6 +149,7 @@ class Data_satuan extends MY_Controller {
                     'satuan_kd'     => post('codeSatuan'),
                     'satuan_name'   => post('nameSatuan'),
         			'satuan_desc'   => post('descSatuan'),
+                    'satuan_conv'   => post('jmlSatuan'),
         			'kd_jns_usaha'  => $this->_roleCode,
 			);		
 			

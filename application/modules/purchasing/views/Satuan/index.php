@@ -45,6 +45,7 @@ $(document).ready(function(){
 				<th width="2%">No.</th>
 				<th width=""> Code</th>
 				<th width=""> Name</th>
+				<th width=""> Jml Qty</th>
 				<th style="width:125px;"></th>
 			</tr>
 		</thead>

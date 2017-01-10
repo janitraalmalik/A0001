@@ -68,6 +68,19 @@ $(document).ready(function() {
     		</div>
     	</div>
         <div class="form-group">
+    		<label class="col-sm-2 control-label input-sm">Jumlah Per Satuan</label>
+    		<div class="col-sm-3">
+                <input 
+                    class="form-control input-sm numeric"
+                    type="text" 
+                    name="jmlSatuan" 
+                    placeholder="Jumlah Per Satuan" 
+                    value="<?php echo (empty($contentData['satuan_conv']))? set_value('jmlSatuan') : $contentData['satuan_conv']; ?>" 
+                    required="true"/>
+                <?php echo form_error('jmlSatuan', '<label class="text-red">', '</label>'); ?>
+    		</div>
+    	</div>
+        <div class="form-group">
     		<label class="col-sm-2 control-label input-sm">Keterangan</label>
             <div class="col-sm-3">
                 <textarea 
@@ -90,6 +103,11 @@ $(document).ready(function() {
     <?php echo form_close(); ?>
 </section>
 
+<script>
+$(document).ready(function() {
+    $( ".numeric" ).number( true , 0);
+});
+</script>
 <!--div class="callout callout-info">
 	<span>Untuk penulisan format tanggal pada MS. Excel harus menggunakan format tanggal bahasa Indonesia, contoh : 99/99/9999</span>
 </div-->

@@ -4,8 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Satuan_model extends MY_Model {
 
 	private $table 			= 'p_m_satuan';
-	private $column_order 	= array(null,'satuan_kd','satuan_name',null);
-	private $column_search 	= array('satuan_kd','satuan_name');  
+	private $column_order 	= array(null,'satuan_kd','satuan_name','satuan_conv',null);
+	private $column_search 	= array('satuan_kd','satuan_name','satuan_conv');  
 	private $order 			= array('id' => 'desc'); 
 	
     public function __construct(){

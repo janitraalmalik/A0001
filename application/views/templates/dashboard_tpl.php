@@ -64,7 +64,7 @@
       <!-- Small boxes (Stat box) -->
       <div class="row">
         
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-lg-2 col-xs-4">
           <!-- small box -->
           <a href="<?php echo base_url(); ?>inventory" class="">
             <div class="small-box bg-yellow">
@@ -98,7 +98,7 @@
           </a>
         </div>
         <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-lg-2 col-xs-4">
           <!-- small box -->
           <a href="<?php echo base_url(); ?>hrm" class="">
             <div class="small-box bg-red">
@@ -124,6 +124,22 @@
                 </div>
                 <div class="icon">
                   <i class="fa fa-barcode"></i>
+                </div>
+                <div class="small-box-footer">
+                    More info <i class="fa fa-arrow-circle-right"></i>
+                </div>
+            </div>
+          </a>
+        </div>
+        <div class="col-lg-2 col-xs-4">
+          <!-- small box -->
+          <a href="<?php echo base_url(); ?>/report" class="">
+            <div class="small-box bg-blue">
+                <div class="inner">
+                  <h3>Report</h3><br /><br />
+                </div>
+                <div class="icon">
+                  <i class="fa fa-bar-chart"></i>
                 </div>
                 <div class="small-box-footer">
                     More info <i class="fa fa-arrow-circle-right"></i>

@@ -87,7 +87,7 @@ class Data_barang extends MY_Controller {
                 }           
             }
 		} 
-        $contentSatuan = $this->Satuan_model->all();    
+        //$contentSatuan = $this->Satuan_model->all();    
         
         
         $contect = array(
@@ -96,8 +96,8 @@ class Data_barang extends MY_Controller {
             			'moduleSubTitle'   => $title,
             			'back'		       => $grid_state,
             			'action'	       => $this->page->base_url("/{$action}/{$id}"),
-            			'contentData'	   => $contentData,
-                        'contentSatuan'    => $contentSatuan
+            			'contentData'	   => $contentData
+                        //'contentSatuan'    => $contentSatuan
                         );
         
 		$this->page->view('Barang/form',$contect);
@@ -124,7 +124,7 @@ class Data_barang extends MY_Controller {
                                 'brg_kd'     => post('codeBarang'),
                                 'brg_nama'   => post('nameBarang'),
 								'brg_desc'   => post('descBarang'),
-                                'brg_satuan' => post('satuanBarang'),
+                                //'brg_satuan' => post('satuanBarang'),
 								'cat_barang_id'   => post('catBarang'),
 								'kd_jns_usaha'  => $this->_roleCode,
                             );
@@ -160,7 +160,7 @@ class Data_barang extends MY_Controller {
                                 'brg_kd'     => post('codeBarang'),
                                 'brg_nama'   => post('nameBarang'),
 								'brg_desc'   => post('descBarang'),
-                                'brg_satuan' => post('satuanBarang'),
+                                //'brg_satuan' => post('satuanBarang'),
 								'cat_barang_id'   => post('catBarang'),
                                 'kd_jns_usaha'  => $this->_roleCode,
 			);		
@@ -183,23 +183,23 @@ class Data_barang extends MY_Controller {
                 
 	}
     
-    public function detail($id){
-		if ($this->agent->referrer() == '') redirect('my404');
-        
-        if(!isset($id) || $id == ''){
-            $message_code = '003'; //Not Found Data
-            die(json_encode($message_code));
-        }
-        
-        $dataBarang = $this->Barang_model->find($id,"brg_kd");
-        $data_row = $this->Satuan_model->find($dataBarang['brg_satuan'],'id');
-        $data_arr = array(
-                            'id'=> $data_row['id'],
-                            'kode'=> $data_row['satuan_kd'],
-                            'nama'=> $data_row['satuan_name']
-                        );
-        die(json_encode($data_arr));
-    }
+    //public function detail($id){
+//		if ($this->agent->referrer() == '') redirect('my404');
+//        
+//        if(!isset($id) || $id == ''){
+//            $message_code = '003'; //Not Found Data
+//            die(json_encode($message_code));
+//        }
+//        
+//        $dataBarang = $this->Barang_model->find($id,"brg_kd");
+//        $data_row = $this->Satuan_model->find($dataBarang['brg_satuan'],'id');
+//        $data_arr = array(
+//                            'id'=> $data_row['id'],
+//                            'kode'=> $data_row['satuan_kd'],
+//                            'nama'=> $data_row['satuan_name']
+//                        );
+//        die(json_encode($data_arr));
+//    }
 	
 	public function delete($id){
 		if ($this->agent->referrer() == '') redirect('my404');
