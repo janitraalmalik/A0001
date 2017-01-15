@@ -1,64 +1,108 @@
-<script type="text/javascript">
-$(document).ready(function(){
-    $('body').addClass('sidebar-collapse');	  
-});
-</script>
-<?php 
-    $module = $this->uri->segment(1);
-    $submodule = $this->uri->segment(2); 
-    $uri = $module . '/' . $submodule; 
+<?php
+    
+      header("Content-type: application/vnd-ms-excel");
+      header("Content-Disposition: attachment; filename=" . $fileName . ".xls");
+        
 ?>
-<style>
-    .footReport{   border-top: 2px solid #6b6b6b!important;
-        border-bottom: 2px solid #6b6b6b!important;}
-    .text-right{
-        text-align: right;
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+?><!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title><?php echo $moduleTitle; ?></title>
+    
+	<style type="text/css">
+
+	::selection { background-color: #E13300; color: white; }
+	::-moz-selection { background-color: #E13300; color: white; }
+
+	body {
+		background-color: #fff;
+		margin: 0;
+        padding :0;
+		font: 13px/20px normal Helvetica, Arial, sans-serif;
+		color: #4F5155;
+	}
+
+	a {
+		color: #003399;
+		background-color: transparent;
+		font-weight: normal;
+	}
+
+	h1 {
+		color: #444;
+		background-color: transparent;
+		border-bottom: 1px solid #D0D0D0;
+		font-size: 19px;
+		font-weight: normal;
+		margin: 0 0 14px 0;
+		padding: 14px 15px 10px 15px;
+	}
+
+	code {
+		font-family: Consolas, Monaco, Courier New, Courier, monospace;
+		font-size: 12px;
+		background-color: #f9f9f9;
+		border: 1px solid #D0D0D0;
+		color: #002166;
+		display: block;
+		margin: 14px 0 14px 0;
+		padding: 12px 10px 12px 10px;
+	}
+
+	#body {
+		margin: 0 15px 0 15px;
+	}
+
+	p.footer {
+		text-align: right;
+		font-size: 11px;
+		border-top: 1px solid #D0D0D0;
+		line-height: 32px;
+		padding: 0 10px 0 10px;
+		margin: 20px 0 0 0;
+	}
+    .text-center{
+        text-align:center;
     }
-</style>
-<section class="content-header">
-    <form  class="form-horizontal" role="form" action=""  method="get">
-        <div class="row">
-            <div class="col-md-8">
-                <div class="box-body">
-                    <div class="form-group">
-                      <label for="inputEmail3" class="col-sm-2 control-label">Tanggal</label>
-                      <div class="col-sm-3">
-                           <input type="text" name="start" class="form-control input-sm datepicker" placeholder="Start" value="<?php echo (!empty($inputGet['start']))? $inputGet['start'] : date('d-m-Y')?>"/>
-                      </div>
-                      <div class="col-sm-3">
-                            <input type="text" name="end" class="form-control input-sm datepicker" placeholder="End" value="<?php echo (!empty($inputGet['end']))? $inputGet['end'] : date('d-m-Y')?>"/>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label for="inputEmail3" class="col-sm-2 control-label">&nbsp;</label>
-                      <div class="col-sm-6">    
-                        <button type="submit" class="btn btn-primary">Cari</button>
-                        <a 
-                            target="_BLANK"
-                            href="<?php echo base_url($uri) ?>/<?php echo $linkPDF ?>?start=<?php echo (!empty($inputGet['start']))? $inputGet['start'] : date('d-m-Y')?>&end=<?php echo (!empty($inputGet['end']))? $inputGet['end'] : date('d-m-Y')?>&supplier=<?php echo (!empty($inputGet['supplier']))? $inputGet['supplier'] : 0?>" 
-                            class="btn btn-success">
-                            Cetak PDF
-                        </a>
-                        <a 
-                            target="_BLANK"
-                            href="<?php echo base_url($uri) ?>/<?php echo $linkExcel ?>?start=<?php echo (!empty($inputGet['start']))? $inputGet['start'] : date('d-m-Y')?>&end=<?php echo (!empty($inputGet['end']))? $inputGet['end'] : date('d-m-Y')?>&supplier=<?php echo (!empty($inputGet['supplier']))? $inputGet['supplier'] : 0?>" 
-                            class="btn btn-success">
-                            Export Excel
-                        </a>
-                      </div>
-                    </div>
-                </div>
-            </div>
-        
-        </div>
-        
-    </form>
-</section>
-<section class="content">
-    <h3 class="text-center"><b><?php echo $this->_roleName ?></b></h3>
-    <h4 class="text-center">Periode : <?php echo (!empty($inputGet['start']))? $inputGet['start'] : date('d-m-Y')?> - <?php echo (!empty($inputGet['end']))? $inputGet['end'] : date('d-m-Y')?></h4>
-    <h4 class="text-center"><?php echo $moduleTitle; ?></h4>
-	<table id="datatables" class="table table-bordered table-hover">
+	#container {
+		margin: 10px;
+	}
+	
+	img{float:left;padding-right:10px;}
+    table.gridtable {
+    	font-family: verdana,arial,sans-serif;
+    	font-size:11px;
+    	color:#333333;
+    	border-width: 1px;
+    	border-color: #666666;
+    	border-collapse: collapse;
+    }
+    table.gridtable th {
+    	border-width: 1px;
+    	padding: 8px;
+    	border-style: solid;
+    	border-color: #666666;
+    	background-color: #dedede;
+    }
+    table.gridtable td {
+    	border-width: 1px;
+    	padding: 8px;
+    	border-style: solid;
+    	border-color: #666666;
+    	background-color: #ffffff;
+    }
+	</style>
+</head>
+<body>
+
+<div id="container">
+	<h2 class="text-center" style="margin: 0!important;"><b><?php echo $this->_roleName ?></b></h2>
+    <h4 class="text-center" style="margin: 0!important;">Periode : <?php echo (!empty($inputGet['start']))? $inputGet['start'] : date('d-m-Y')?> - <?php echo (!empty($inputGet['end']))? $inputGet['end'] : date('d-m-Y')?></h4>
+    <h4 class="text-center" style="margin-top: 0!important;"><?php echo $moduleTitle; ?></h4>
+	<table id="datatables" class="gridtable" style="font-size: 12px;">
 		<thead>
 			<tr class="info">
 				<th width="25%"> Uraian</th>
@@ -264,4 +308,7 @@ $(document).ready(function(){
         <tbody>
         </tbody>
 	</table>
-</section>
+</div>
+
+</body>
+</html>
